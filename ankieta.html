@@ -262,7 +262,7 @@ button.primary:hover{filter:brightness(1.08)}
   <section class="finish">
     <div class="finish-head">
       <h2>Podsumowanie</h2>
-      <p>Sprawdź odpowiedzi i odeślij je nam. Plik zapisze się na Twoim urządzeniu — możesz go wysłać mailem jako załącznik.</p>
+      <p id="finish-lede">Sprawdź odpowiedzi i odeślij je nam. Plik zapisze się na Twoim urządzeniu — możesz go wysłać mailem jako załącznik.</p>
     </div>
     <div class="summary" id="summary">Odpowiedz na pytania, a tutaj pojawi się gotowe podsumowanie.</div>
     <div class="consent">
@@ -273,6 +273,7 @@ button.primary:hover{filter:brightness(1.08)}
       </label>
     </div>
     <div class="actions">
+      <button class="primary" id="btn-send" type="button" hidden>Wyślij odpowiedzi</button>
       <button class="primary" id="btn-download" type="button">Pobierz plik z odpowiedziami</button>
       <button id="btn-mail" type="button">Wyślij e-mailem</button>
       <button id="btn-copy" type="button">Kopiuj podsumowanie</button>
@@ -294,7 +295,13 @@ button.primary:hover{filter:brightness(1.08)}
 const FIRMA = "Twoja firma";
 const KONTAKT_EMAIL = "kontakt@twojafirma.pl";
 
+/* Adres skryptu Google (kończy się na /exec). Zostaw pusty, a ankieta
+   wróci do trybu „pobierz plik i odeślij mailem”. Instrukcja: README.md */
+const ENDPOINT = "";
+
 const STORAGE_KEY = "ankieta-matura-v1";
+const ID_KEY = "ankieta-matura-id";
+const WYSLANO_KEY = "ankieta-matura-wyslano";
 const INNE = "__inne__";
 
 const SURVEY = [
@@ -767,11 +774,25 @@ function safeName(){
   return "ankieta-" + (base || "maturzysta") + "-" + stamp;
 }
 
+function losowyId(){
+  try { if (crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+  return "a-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+}
+
+function zgloszenieId(){
+  try {
+    let v = localStorage.getItem(ID_KEY);
+    if (!v) { v = losowyId(); localStorage.setItem(ID_KEY, v); }
+    return v;
+  } catch (e) { return losowyId(); }
+}
+
 function payload(){
   const dane = {};
   allItems.forEach(item => { dane[item.id] = { pytanie: item.q, odpowiedz: answerText(item) }; });
   return JSON.stringify({
     formularz: "ankieta-matura-v1",
+    id: zgloszenieId(),
     wypelniono: new Date().toISOString(),
     zgoda: document.getElementById("zgoda").checked,
     imie: (answers.imie || "").trim(),
@@ -794,6 +815,38 @@ async function saveFile(filename, text, mime){
     return "anchor";
   } catch (e) { return null; }
 }
+
+async function wyslijNaSerwer(){
+  const res = await fetch(ENDPOINT, { method: "POST", body: payload() });
+  if (!res.ok) throw new Error("serwer odpowiedział " + res.status);
+  const out = await res.json();
+  if (!out || !out.ok) throw new Error((out && out.blad) || "serwer odrzucił zgłoszenie");
+  return out;
+}
+
+function gotowyDoWyslania(){
+  if (flagMissing()) { say("Zostało jeszcze kilka wymaganych pytań — zaznaczyliśmy pierwsze z nich.", true); return false; }
+  if (!document.getElementById("zgoda").checked) { say("Zaznacz zgodę na wykorzystanie odpowiedzi, wtedy wyślemy ankietę.", true); return false; }
+  return true;
+}
+
+const btnSend = document.getElementById("btn-send");
+btnSend.addEventListener("click", async () => {
+  if (!gotowyDoWyslania()) return;
+  btnSend.disabled = true;
+  say("Wysyłamy odpowiedzi…");
+  try {
+    await wyslijNaSerwer();
+    try { localStorage.setItem(WYSLANO_KEY, new Date().toISOString()); } catch (e) {}
+    say("Wysłane. Mamy Twoje odpowiedzi — plan przygotujemy i odezwiemy się na podany kontakt.");
+    btnSend.textContent = "Wyślij poprawione odpowiedzi";
+  } catch (err) {
+    say("Nie udało się wysłać (" + err.message + "). Pobieramy dla Ciebie plik z odpowiedziami — odeślij go na " + KONTAKT_EMAIL + ".", true);
+    await saveFile(safeName() + ".json", payload(), "application/json");
+  } finally {
+    btnSend.disabled = false;
+  }
+});
 
 document.getElementById("btn-download").addEventListener("click", async () => {
   if (flagMissing()) { say("Zostało jeszcze kilka wymaganych pytań — zaznaczyliśmy pierwsze z nich.", true); return; }
@@ -837,6 +890,22 @@ document.getElementById("btn-reset").addEventListener("click", () => {
 });
 
 /* ---------- start ---------- */
+if (ENDPOINT) {
+  btnSend.hidden = false;
+  document.getElementById("btn-mail").hidden = true;
+  document.getElementById("btn-download").classList.remove("primary");
+  document.getElementById("btn-download").textContent = "Pobierz kopię dla siebie";
+  document.getElementById("finish-lede").textContent =
+    "Sprawdź odpowiedzi i wyślij je jednym kliknięciem. Niczego nie musisz do nas odsyłać — ankieta trafi do nas sama.";
+  try {
+    const kiedy = localStorage.getItem(WYSLANO_KEY);
+    if (kiedy) {
+      btnSend.textContent = "Wyślij poprawione odpowiedzi";
+      say("Twoje odpowiedzi dotarły do nas " + new Date(kiedy).toLocaleString("pl-PL") + ". Możesz je poprawić i wysłać ponownie.");
+    }
+  } catch (e) {}
+}
+
 document.getElementById("foot-text").textContent =
   "Ankieta startowa · " + FIRMA + " · odpowiedzi trafiają wyłącznie do nas i służą do przygotowania Twojego planu nauki. Pytania oznaczone gwiazdką są wymagane.";
 updateProgress();
