@@ -11,13 +11,13 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
 <style>
 :root{
-  --paper:#F2F4F3;
+  --paper:#F7F3EC;
   --surface:#FFFFFF;
   --ink:#14191B;
-  --ink-2:#4A565B;
-  --ink-3:#78868A;
-  --line:#DBE2E0;
-  --line-soft:#E9EEEC;
+  --ink-2:#575F58;
+  --ink-3:#8A8B80;
+  --line:#E4DDD1;
+  --line-soft:#EFE9DF;
   --accent:#1F5B4C;
   --accent-ink:#FFFFFF;
   --accent-soft:#E5EFEA;
@@ -32,15 +32,15 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#0E1312; --surface:#161D1B; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
-    --line:#27312E; --line-soft:#1D2624; --accent:#6BC4A6; --accent-ink:#0A1310; --accent-soft:#17261F;
+    --paper:#12110F; --surface:#1B1A17; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
+    --line:#2C2A25; --line-soft:#211F1B; --accent:#6BC4A6; --accent-ink:#0A1310; --accent-soft:#17261F;
     --gold:#D8AE63; --gold-soft:#241E12; --warn:#E08A77;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
   }
 }
 :root[data-theme="dark"]{
-  --paper:#0E1312; --surface:#161D1B; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
-  --line:#27312E; --line-soft:#1D2624; --accent:#6BC4A6; --accent-ink:#0A1310; --accent-soft:#17261F;
+  --paper:#12110F; --surface:#1B1A17; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
+  --line:#2C2A25; --line-soft:#211F1B; --accent:#6BC4A6; --accent-ink:#0A1310; --accent-soft:#17261F;
   --gold:#D8AE63; --gold-soft:#241E12; --warn:#E08A77;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
 }
@@ -229,92 +229,87 @@ button.primary:hover{filter:brightness(1.08)}
 }
 .foot a{color:var(--accent)}
 
-/* ---------- intro 3D ---------- */
+/* ---------- intro: tydzień z planu ---------- */
 .intro{
-  --i-bg:#080D0B; --i-ink:#ECF3EF; --i-ink-2:#93A9A1; --i-accent:#63C3A5; --i-gold:#CBA354;
+  --i-ink:#2A322E; --i-ink-2:#6E7B74; --i-akcent:#2F6B58; --i-zloto:#B07F27;
   position:relative;
-  height:min(100svh, 880px);
-  min-height:580px;
+  height:min(93svh, 840px);
+  min-height:560px;
   overflow:hidden;
-  background:radial-gradient(130% 85% at 62% 6%, #15281F 0%, #0C1512 52%, #070C0A 100%);
+  background:
+    radial-gradient(90% 55% at 78% 16%, rgba(255,228,206,.85) 0%, rgba(255,228,206,0) 62%),
+    linear-gradient(168deg, #EFE8F3 0%, #F7EAE6 28%, #FCF2E8 58%, #FBF6EE 100%);
   isolation:isolate;
 }
 .intro canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .intro-warstwa{
   position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(125% 75% at 50% 40%, transparent 42%, rgba(4,8,7,.55) 100%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
-  background-blend-mode:normal, overlay;
-  opacity:.34;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+  opacity:.16;
 }
 .intro-tresc{
   position:relative;z-index:2;height:100%;
   max-width:720px;margin:0 auto;
   padding-left:20px;padding-right:20px;
-  padding-block:clamp(40px,7.5vh,76px) 34px;
-  display:flex;flex-direction:column;justify-content:space-between;gap:24px;
+  padding-block:clamp(38px,7vh,74px) 30px;
+  display:flex;flex-direction:column;justify-content:space-between;gap:22px;
   pointer-events:none;
 }
-.intro-tresc a,.intro-tresc button{pointer-events:auto}
+.intro-tresc a{pointer-events:auto}
 
-.intro .eyebrow{color:var(--i-accent);margin:0 0 18px}
-.intro h1{color:var(--i-ink);margin:0 0 18px;max-width:14ch}
-.intro h1 em{color:var(--i-accent)}
-.intro .lede{color:var(--i-ink-2);max-width:44ch;margin:0}
+.intro .eyebrow{color:var(--i-akcent);margin:0 0 20px}
+.intro h1{color:var(--i-ink);margin:0 0 20px;max-width:15ch}
+.intro h1 em{color:var(--i-akcent)}
+.intro .lede{color:var(--i-ink-2);max-width:42ch;margin:0}
 
-.intro-akcje{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;margin-top:28px}
+.intro-akcje{display:flex;flex-direction:column;align-items:flex-start;gap:15px;margin-top:30px}
 .cta{
   display:inline-flex;align-items:center;gap:10px;
-  background:var(--i-accent);color:#062018;text-decoration:none;
-  font-weight:600;font-size:15.5px;padding:13px 24px;border-radius:99px;
-  transition:transform .18s cubic-bezier(.2,.8,.3,1), box-shadow .18s, filter .18s;
-  box-shadow:0 10px 30px -12px rgba(99,195,165,.75);
+  background:var(--i-akcent);color:#FBF7EF;text-decoration:none;
+  font-weight:600;font-size:15.5px;padding:14px 26px;border-radius:99px;
+  box-shadow:0 12px 26px -14px rgba(47,107,88,.75);
+  transition:transform .2s cubic-bezier(.2,.8,.3,1), box-shadow .2s, filter .2s;
 }
-.cta:hover{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 16px 36px -14px rgba(99,195,165,.85)}
+.cta:hover{transform:translateY(-2px);filter:brightness(1.07);box-shadow:0 18px 34px -16px rgba(47,107,88,.8)}
 .cta:focus-visible{outline:2px solid var(--i-ink);outline-offset:3px}
-.cta .strzalka{transition:transform .18s cubic-bezier(.2,.8,.3,1)}
+.cta .strzalka{transition:transform .2s cubic-bezier(.2,.8,.3,1)}
 .cta:hover .strzalka{transform:translateY(3px)}
 .intro-meta{
-  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--i-ink-2);
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;line-height:1.8;
+  text-transform:uppercase;color:var(--i-ink-2);max-width:38ch;
 }
 
-.intro-stopka{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 20px}
+.intro-stopka{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 20px}
 .legenda{
-  margin:0;font-family:var(--mono);font-size:11.5px;line-height:1.65;
-  letter-spacing:.03em;color:var(--i-ink-2);max-width:40ch;
+  margin:0;font-size:13.5px;line-height:1.6;color:var(--i-ink-2);max-width:34ch;
 }
-.legenda i{display:inline-block;width:7px;height:7px;border-radius:2px;background:var(--i-gold);margin-right:5px}
+.legenda b{color:var(--i-ink);font-weight:600}
 .zjazd{
   font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--i-ink-2);display:flex;align-items:center;gap:9px;white-space:nowrap;
 }
-.zjazd span{display:block;width:1px;height:26px;background:linear-gradient(var(--i-ink-2), transparent);animation:zjazd 2.4s ease-in-out infinite}
-@keyframes zjazd{0%,100%{opacity:.25;transform:scaleY(.6);transform-origin:top}50%{opacity:1;transform:scaleY(1)}}
+.zjazd span{display:block;width:1px;height:26px;background:linear-gradient(var(--i-ink-2), transparent);animation:zjazd 2.6s ease-in-out infinite}
+@keyframes zjazd{0%,100%{opacity:.25;transform:scaleY(.6);transform-origin:top}50%{opacity:.9;transform:scaleY(1)}}
 
-/* wejście tekstu */
 .intro .eyebrow,.intro h1,.intro .lede,.intro-akcje,.intro-stopka{
-  opacity:0;transform:translateY(14px);
-  transition:opacity .9s cubic-bezier(.2,.7,.3,1), transform .9s cubic-bezier(.2,.7,.3,1);
+  opacity:0;transform:translateY(12px);
+  transition:opacity 1s cubic-bezier(.2,.7,.3,1), transform 1s cubic-bezier(.2,.7,.3,1);
 }
 .intro.gotowe .eyebrow{opacity:1;transform:none;transition-delay:.05s}
-.intro.gotowe h1{opacity:1;transform:none;transition-delay:.18s}
-.intro.gotowe .lede{opacity:1;transform:none;transition-delay:.32s}
-.intro.gotowe .intro-akcje{opacity:1;transform:none;transition-delay:.46s}
-.intro.gotowe .intro-stopka{opacity:1;transform:none;transition-delay:.62s}
+.intro.gotowe h1{opacity:1;transform:none;transition-delay:.16s}
+.intro.gotowe .lede{opacity:1;transform:none;transition-delay:.3s}
+.intro.gotowe .intro-akcje{opacity:1;transform:none;transition-delay:.44s}
+.intro.gotowe .intro-stopka{opacity:1;transform:none;transition-delay:.6s}
 
-/* bez WebGL — scena zastępcza, nadal czytelna */
-.intro.bez-3d{background:radial-gradient(120% 80% at 60% 10%, #1B3329 0%, #0C1512 55%, #070C0A 100%)}
 .intro.bez-3d canvas{display:none}
 
 @media (max-width:620px){
-  .intro{height:min(100svh, 760px)}
+  .intro{height:min(94svh, 760px)}
   .intro h1{max-width:100%}
-  .intro-tresc{padding-block:clamp(36px,7vh,64px) 20px}
-  .zjazd{display:none}
+  .intro-tresc{padding-block:clamp(32px,6vh,58px) 22px;justify-content:flex-start}
+  .zjazd,.legenda{display:none}
 }
-
 
 html{scroll-behavior:smooth}
 #form{scroll-margin-top:70px;padding-top:6px}
@@ -333,16 +328,16 @@ html{scroll-behavior:smooth}
   <div class="intro-warstwa" aria-hidden="true"></div>
   <div class="intro-tresc">
     <div>
-      <p class="eyebrow">Ankieta startowa · plan nauki</p>
-      <h1>Zanim ułożymy Twój plan, <em>poznajmy Twoją maturę</em>.</h1>
-      <p class="lede">Kilka minut pytań o cel, czas i sposób, w jaki najlepiej Ci się pracuje. Z odpowiedzi powstaje harmonogram, który da się wytrzymać do maja.</p>
+      <p class="eyebrow">Ankieta startowa</p>
+      <h1>Plan nauki, który <em>da się polubić</em>.</h1>
+      <p class="lede">Odpowiedz na kilka pytań o cel, czas i to, jak uczysz się najlepiej. Ułożymy z tego tygodniowy plan skrojony na Twój rytm — z miejscem na odpoczynek i bez zarywania nocy.</p>
       <div class="intro-akcje">
         <a class="cta" href="#form">Zacznij ankietę <span class="strzalka" aria-hidden="true">↓</span></a>
-        <span class="intro-meta">ok. 6 minut · zapisuje się samo · bez logowania</span>
+        <span class="intro-meta">ok. 6 minut · bez logowania</span>
       </div>
     </div>
     <div class="intro-stopka">
-      <p class="legenda">Każdy słupek to jeden dzień nauki, kolumna to tydzień.<br><i></i>Złota kolumna — Twoja matura.</p>
+      <p class="legenda">Obok: <b>prawdziwy tydzień</b> z planu ułożonego dla maturzystki celującej w 86% z matematyki.</p>
       <p class="zjazd">Przewiń <span></span></p>
     </div>
   </div>
@@ -1015,8 +1010,10 @@ if (Object.keys(answers).length) persist();
 
 <script>
 /* ==========================================================================
-   Intro 3D — plan nauki, który buduje się tydzień po tygodniu.
+   Intro — tydzień z gotowego planu, rozłożony na kartkach.
    Czysty WebGL, bez bibliotek: ankieta ma działać też offline, z dysku.
+   Treść kartek rysowana na zwykłym płótnie 2D i wgrywana jako tekstura,
+   dzięki czemu na kartkach stoi prawdziwy plan, a nie ozdobne kreski.
    ========================================================================== */
 (function () {
   const intro = document.getElementById("intro");
@@ -1028,156 +1025,290 @@ if (Object.keys(answers).length) persist();
 
   let gl = null;
   try {
-    const opcje = { antialias: true, alpha: true, depth: true, powerPreference: "high-performance" };
+    const opcje = { antialias: true, alpha: true, depth: true };
     gl = canvas.getContext("webgl", opcje) || canvas.getContext("experimental-webgl", opcje);
   } catch (e) { /* brak WebGL — zostaje tło i tekst */ }
   if (!gl) { intro.classList.add("bez-3d"); pokazTekst(); return; }
 
-  /* ---------- plan: kolumna = tydzień, rząd = dzień nauki ---------- */
-  const TYGODNIE = 14, DNI = 5, ROZSTAW = 1.3, BOK = 0.94;
-  const RYTM_DNIA = [0.86, 1.0, 0.74, 1.12, 0.92];   // wtorki i czwartki mocniejsze
-  const FERIE = [5, 6];
+  /* ---------- co stoi na kartkach ---------- */
+  const KARTY = [
+    { e: "PONIEDZIAŁEK · 45 MIN", t: "Ciągi — zadania 12–18",     k: "#E1ECE2", x: -3.15, z: -2.30, o:  0.05, u: 0.02 },
+    { e: "WTOREK · 30 MIN",       t: "Powtórka: stereometria",    k: "#FBF3E5", x: -0.30, z: -2.50, o: -0.04, u: 0.30 },
+    { e: "ŚRODA · 60 MIN",        t: "Arkusz CKE, zadania 1–15",  k: "#E8E6F2", x:  2.50, z: -2.20, o:  0.06, u: 0.02 },
+    { e: "CZWARTEK · 45 MIN",     t: "Funkcja kwadratowa",        k: "#FBE4D7", x: -3.35, z: -0.78, o: -0.05, u: 0.02 },
+    { e: "PIĄTEK · 30 MIN",       t: "Fiszki: wzory na skróty",   k: "#E1ECE2", x: -0.58, z: -0.92, o:  0.03, u: 0.02 },
+    { e: "SOBOTA · 90 MIN",       t: "Cały arkusz na czas",       k: "#EDF1E4", x:  2.24, z: -0.62, o: -0.06, u: 0.26 },
+    { e: "NIEDZIELA",             t: "Wolne — odpoczywasz",       k: "#FBF3E5", x: -3.02, z:  0.74, o:  0.04, u: 0.02, typ: "wolne" },
+    { e: "TWÓJ RYTM",             t: "Krótkie sesje, wieczorem",  k: "#E8E6F2", x: -0.26, z:  0.62, o: -0.03, u: 0.02 },
+    { e: "POSTĘP",                t: "62% materiału za Tobą",     k: "#E1ECE2", x:  2.54, z:  0.96, o:  0.05, u: 0.02, typ: "pasek", p: 0.62 },
+    { e: "CO DWA TYGODNIE",       t: "Sprawdzamy postępy",        k: "#FBE4D7", x: -3.20, z:  2.22, o: -0.04, u: 0.02 },
+    { e: "FERIE",                 t: "Lżejszy tydzień",           k: "#EDF1E4", x: -0.48, z:  2.38, o:  0.05, u: 0.02 },
+    { e: "MAJ · MATURA",          t: "Cel: 86%",                  k: "#F7D89B", x:  2.62, z:  2.30, o: -0.05, u: 0.44, typ: "cel", s: 1.14 }
+  ];
 
-  function wysokosc(t, d) {
-    if (t === TYGODNIE - 1) return 2.45;                       // tydzień matury
-    let h = 0.34 + 1.5 * Math.pow(t / (TYGODNIE - 2), 1.7);    // obciążenie rośnie do maja
-    if (FERIE.indexOf(t) > -1) h *= 0.5;
-    return h * RYTM_DNIA[d];
-  }
-  function barwa(t) {
-    if (t === TYGODNIE - 1) return [0.80, 0.65, 0.33];
-    const k = Math.pow(t / (TYGODNIE - 2), 0.85);
-    return [0.13 + k * 0.13, 0.26 + k * 0.25, 0.22 + k * 0.21];
+  const SZER = 2.35, GLEB = 1.18, GRUB = 0.055;
+  const ATLAS = 2048, KAFEL_W = 512, KAFEL_H = 256, KOLUMN = 4;
+
+  /* ---------- treść kartek na płótnie 2D ---------- */
+  const plotno = document.createElement("canvas");
+  plotno.width = ATLAS; plotno.height = ATLAS;
+
+  function zawin(g, tekst, maks) {
+    const slowa = tekst.split(" "), linie = [];
+    let biezaca = "";
+    slowa.forEach(w => {
+      const test = biezaca ? biezaca + " " + w : w;
+      if (g.measureText(test).width > maks && biezaca) { linie.push(biezaca); biezaca = w; }
+      else biezaca = test;
+    });
+    if (biezaca) linie.push(biezaca);
+    return linie;
   }
 
-  /* ---------- bryła słupka: prostopadłościan o zaokrąglonych narożnikach ---------- */
-  function kontur(r, seg) {
+  function zaokraglony(g, x, y, w, h, r) {
+    g.beginPath();
+    g.moveTo(x + r, y);
+    g.arcTo(x + w, y, x + w, y + h, r);
+    g.arcTo(x + w, y + h, x, y + h, r);
+    g.arcTo(x, y + h, x, y, r);
+    g.arcTo(x, y, x + w, y, r);
+    g.closePath();
+  }
+
+  function rysujKartki() {
+    const g = plotno.getContext("2d");
+    g.clearRect(0, 0, ATLAS, ATLAS);
+    KARTY.forEach((karta, i) => {
+      const kx = (i % KOLUMN) * KAFEL_W, ky = ((i / KOLUMN) | 0) * KAFEL_H;
+      const cel = karta.typ === "cel";
+      const atrament = cel ? "#5C4318" : "#36443D";
+      const cichy = cel ? "#8C6A26" : "#7E8C84";
+
+      g.save();
+      g.translate(kx, ky);
+      g.fillStyle = karta.k;
+      g.fillRect(0, 0, KAFEL_W, KAFEL_H);
+
+      g.textBaseline = "alphabetic";
+      try { g.letterSpacing = "2.2px"; } catch (e) {}
+      g.font = "500 18px 'IBM Plex Mono', ui-monospace, monospace";
+      g.fillStyle = cichy;
+      g.fillText(karta.e, 38, 54);
+      try { g.letterSpacing = "0px"; } catch (e) {}
+
+      g.font = (cel ? "600 42px" : "600 32px") + " 'IBM Plex Sans', system-ui, sans-serif";
+      g.fillStyle = atrament;
+      zawin(g, karta.t, 436).slice(0, 2).forEach((l, j) => g.fillText(l, 38, (cel ? 140 : 126) + j * 42));
+
+      if (karta.typ === "pasek") {
+        g.fillStyle = "rgba(54,68,61,.13)";
+        zaokraglony(g, 38, 186, 436, 12, 6); g.fill();
+        g.fillStyle = "#2F6B58";
+        zaokraglony(g, 38, 186, 436 * karta.p, 12, 6); g.fill();
+      } else if (karta.typ === "cel") {
+        g.strokeStyle = "rgba(92,67,24,.42)";
+        g.lineWidth = 3;
+        g.beginPath(); g.arc(438, 176, 26, 0, Math.PI * 2); g.stroke();
+        g.strokeStyle = "#5C4318"; g.lineWidth = 5; g.lineCap = "round"; g.lineJoin = "round";
+        g.beginPath(); g.moveTo(427, 176); g.lineTo(435, 185); g.lineTo(451, 166); g.stroke();
+      } else if (karta.typ === "wolne") {
+        g.fillStyle = "rgba(176,127,39,.5)";
+        g.beginPath(); g.arc(50, 190, 9, 0, Math.PI * 2); g.fill();
+        g.font = "500 17px 'IBM Plex Mono', ui-monospace, monospace";
+        g.fillStyle = cichy;
+        g.fillText("bez wyrzutów sumienia", 70, 196);
+      } else {
+        g.fillStyle = "rgba(54,68,61,.16)";
+        g.fillRect(38, 192, 436, 1.5);
+      }
+      g.restore();
+    });
+  }
+
+  rysujKartki();
+
+  const tekstura = gl.createTexture();
+  function wgrajTeksture() {
+    gl.bindTexture(gl.TEXTURE_2D, tekstura);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, plotno);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    const ext = gl.getExtension("EXT_texture_filter_anisotropic") ||
+                gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic");
+    if (ext) {
+      gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT,
+        Math.min(8, gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
+    }
+  }
+  wgrajTeksture();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => { rysujKartki(); wgrajTeksture(); });
+  }
+
+  /* ---------- geometria kartki ---------- */
+  function obrysKartki(hw, hg, r, seg) {
     const pkt = [];
-    const rogi = [[0.5 - r, 0.5 - r], [-0.5 + r, 0.5 - r], [-0.5 + r, -0.5 + r], [0.5 - r, -0.5 + r]];
+    const rogi = [[hw - r, hg - r], [-hw + r, hg - r], [-hw + r, -hg + r], [hw - r, -hg + r]];
     for (let i = 0; i < 4; i++) {
-      const a0 = i * Math.PI / 2, [cx, cz] = rogi[i];
+      const a0 = i * Math.PI / 2, c = rogi[i];
       for (let s = 0; s <= seg; s++) {
         const a = a0 + (s / seg) * Math.PI / 2;
-        pkt.push({ x: cx + r * Math.cos(a), z: cz + r * Math.sin(a), nx: Math.cos(a), nz: Math.sin(a) });
+        pkt.push({ x: c[0] + r * Math.cos(a), z: c[1] + r * Math.sin(a), nx: Math.cos(a), nz: Math.sin(a) });
       }
     }
     return pkt;
   }
 
-  const OBRYS = kontur(0.17, 4);
+  const OBRYS = obrysKartki(SZER / 2, GLEB / 2, 0.085, 4);
   const N = OBRYS.length;
-  const WIERZ = N * 6 + N * 3;                       // ściany boczne + wieczko
-  const ILE = TYGODNIE * DNI;
-  const POLA = 18;                                   // floatów na wierzchołek
-  const dane = new Float32Array(ILE * WIERZ * POLA);
+  const WIERZ = N * 6 + N * 3;
+  const POLA = 17;
+  const dane = new Float32Array(KARTY.length * WIERZ * POLA);
 
-  let k = 0;
-  function wierzcholek(px, py, pz, nx, ny, nz, s, g, c, r1, r2, op) {
-    dane[k++] = px; dane[k++] = py; dane[k++] = pz;
-    dane[k++] = nx; dane[k++] = ny; dane[k++] = nz;
-    dane[k++] = s[0]; dane[k++] = s[1]; dane[k++] = s[2];
-    dane[k++] = g[0]; dane[k++] = g[1]; dane[k++] = g[2];
-    dane[k++] = c[0]; dane[k++] = c[1]; dane[k++] = c[2];
-    dane[k++] = r1; dane[k++] = r2; dane[k++] = op;
+  let w = 0;
+  function wierzcholek(px, py, pz, nx, ny, nz, karta) {
+    dane[w++] = px; dane[w++] = py; dane[w++] = pz;
+    dane[w++] = nx; dane[w++] = ny; dane[w++] = nz;
+    dane[w++] = karta.x; dane[w++] = karta.u; dane[w++] = karta.z;
+    dane[w++] = karta.o; dane[w++] = karta.s || 1; dane[w++] = karta._op;
+    dane[w++] = karta._kol[0]; dane[w++] = karta._kol[1]; dane[w++] = karta._kol[2];
+    dane[w++] = karta._uv[0]; dane[w++] = karta._uv[1];
   }
 
-  const losowe = (() => { let n = 20260501; return () => (n = (n * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff; })();
-  const srodekX = (TYGODNIE - 1) * ROZSTAW / 2, srodekZ = (DNI - 1) * ROZSTAW / 2;
+  function hex(s) {
+    const n = parseInt(s.slice(1), 16);
+    return [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
+  }
 
-  for (let t = 0; t < TYGODNIE; t++) {
-    for (let d = 0; d < DNI; d++) {
-      const h = wysokosc(t, d);
-      const rozmiar = [BOK, h, BOK];
-      const miejsce = [t * ROZSTAW - srodekX, 0, d * ROZSTAW - srodekZ];
-      const kolor = barwa(t);
-      const r1 = losowe(), r2 = losowe();
-      const opoznienie = t * 0.078 + d * 0.026 + r1 * 0.05;
+  KARTY.forEach((karta, i) => {
+    karta._kol = hex(karta.k);
+    karta._uv = [(i % KOLUMN) * KAFEL_W / ATLAS, ((i / KOLUMN) | 0) * KAFEL_H / ATLAS];
+    karta._op = (karta.z + 2.6) * 0.14 + (karta.x + 3.5) * 0.035;
+  });
 
-      for (let i = 0; i < N; i++) {                       // ściany boczne
-        const p = OBRYS[i], q = OBRYS[(i + 1) % N];
-        const rog = [
-          [p, 0], [q, 0], [q, 1],
-          [p, 0], [q, 1], [p, 1]
-        ];
-        for (const [o, y] of rog) {
-          wierzcholek(o.x, y, o.z, o.nx, 0, o.nz, rozmiar, miejsce, kolor, r1, r2, opoznienie);
-        }
-      }
-      for (let i = 0; i < N; i++) {                       // wieczko
-        const p = OBRYS[i], q = OBRYS[(i + 1) % N];
-        wierzcholek(0, 1, 0, 0, 1, 0, rozmiar, miejsce, kolor, r1, r2, opoznienie);
-        wierzcholek(p.x, 1, p.z, 0, 1, 0, rozmiar, miejsce, kolor, r1, r2, opoznienie);
-        wierzcholek(q.x, 1, q.z, 0, 1, 0, rozmiar, miejsce, kolor, r1, r2, opoznienie);
-      }
+  KARTY.forEach(karta => {
+    for (let i = 0; i < N; i++) {
+      const p = OBRYS[i], q = OBRYS[(i + 1) % N];
+      [[p, 0], [q, 0], [q, 1], [p, 0], [q, 1], [p, 1]].forEach(([o, y]) => {
+        wierzcholek(o.x, y, o.z, o.nx, 0, o.nz, karta);
+      });
     }
-  }
+    for (let i = 0; i < N; i++) {
+      const p = OBRYS[i], q = OBRYS[(i + 1) % N];
+      wierzcholek(0, 1, 0, 0, 1, 0, karta);
+      wierzcholek(p.x, 1, p.z, 0, 1, 0, karta);
+      wierzcholek(q.x, 1, q.z, 0, 1, 0, karta);
+    }
+  });
+
+  // prostokąty cieni — jeden na kartkę
+  const cienie = new Float32Array(KARTY.length * 6 * 10);
+  let c = 0;
+  KARTY.forEach(karta => {
+    [[-1, -1], [1, -1], [1, 1], [-1, -1], [1, 1], [-1, 1]].forEach(([sx, sz]) => {
+      cienie[c++] = sx; cienie[c++] = sz;
+      cienie[c++] = karta.x; cienie[c++] = karta.u; cienie[c++] = karta.z;
+      cienie[c++] = karta.o; cienie[c++] = karta.s || 1; cienie[c++] = karta._op;
+      cienie[c++] = 0; cienie[c++] = 0;
+    });
+  });
 
   /* ---------- shadery ---------- */
+  const WSPOLNE = `
+float opadanie(float czas, float opoznienie, float odrazu){
+  float p = clamp((czas - opoznienie) / 1.05, 0.0, 1.0);
+  p = max(p, odrazu);
+  return 1.0 - pow(1.0 - p, 3.0);
+}
+mat2 obrotY(float k){ float s = sin(k), c = cos(k); return mat2(c, -s, s, c); }`;
+
   const VS = `
 precision highp float;
-attribute vec3 aPos, aNor, aRozmiar, aMiejsce, aKolor;
-attribute vec2 aLos;
-attribute float aOpoznienie;
+attribute vec3 aPos, aNor, aSrodek, aKolor;
+attribute vec2 aUV;
+attribute float aObrot, aSkala, aOpoznienie;
 uniform mat4 uProj, uWidok;
-uniform float uCzas, uOdKrazu;
+uniform float uCzas, uOdRazu;
+uniform vec2 uKafel;
 varying vec3 vNor, vSwiat, vKolor;
-varying float vWys;
-
-mat3 obrot(vec3 os, float kat){
-  float c = cos(kat), s = sin(kat), t = 1.0 - c;
-  return mat3(
-    t*os.x*os.x + c,       t*os.x*os.y - s*os.z, t*os.x*os.z + s*os.y,
-    t*os.x*os.y + s*os.z,  t*os.y*os.y + c,      t*os.y*os.z - s*os.x,
-    t*os.x*os.z - s*os.y,  t*os.y*os.z + s*os.x, t*os.z*os.z + c
-  );
-}
-
+varying vec2 vUV;
+varying float vGora;
+${WSPOLNE}
 void main(){
-  float p = clamp((uCzas - aOpoznienie) / 1.15, 0.0, 1.0);
-  p = max(p, uOdKrazu);
-  float e = 1.0 - pow(1.0 - p, 3.0);
+  float e = opadanie(uCzas, aOpoznienie, uOdRazu);
+  vec3 p = aPos * aSkala;
+  p.y = aPos.y * ${GRUB.toFixed(3)} * aSkala;
+  p.xz = obrotY(aObrot) * p.xz;
 
-  vec3 os = normalize(vec3(aLos.x * 2.0 - 1.0, 0.55, aLos.y * 2.0 - 1.0));
-  mat3 R = obrot(os, (1.0 - e) * 1.7);
+  float oddech = sin(uCzas * 0.5 + aSrodek.x * 0.7 + aSrodek.z * 1.3) * 0.012 * e;
+  float wysokosc = aSrodek.y + (1.0 - e) * 2.4 + oddech;
 
-  vec3 lok = R * vec3(aPos.x * aRozmiar.x, aPos.y * aRozmiar.y * e, aPos.z * aRozmiar.z);
-  vec3 zdaleka = vec3((aLos.x - 0.5) * 3.2, 7.5 + aLos.y * 5.0, (aLos.y - 0.5) * 3.2) * (1.0 - e);
-  float kolysanie = sin(uCzas * 0.65 + aMiejsce.x * 0.42 + aMiejsce.z * 0.9) * 0.035 * e;
-
-  vSwiat = aMiejsce + zdaleka + lok + vec3(0.0, kolysanie, 0.0);
-  vNor = normalize(R * (aNor / aRozmiar));
+  vSwiat = vec3(aSrodek.x, wysokosc, aSrodek.z) + p;
+  vNor = normalize(vec3(obrotY(aObrot) * aNor.xz, aNor.y).xzy);
   vKolor = aKolor;
-  vWys = aPos.y;
+  vGora = step(0.5, aNor.y);
+  vUV = aUV + vec2((aPos.x / ${SZER.toFixed(3)}) + 0.5, (aPos.z / ${GLEB.toFixed(3)}) + 0.5) * uKafel;
   gl_Position = uProj * uWidok * vec4(vSwiat, 1.0);
 }`;
 
   const FS = `
 precision highp float;
 varying vec3 vNor, vSwiat, vKolor;
-varying float vWys;
-uniform vec3 uOko, uMgla;
-uniform vec2 uMglaZakres;
-
+varying vec2 vUV;
+varying float vGora;
+uniform sampler2D uTex;
+uniform vec3 uOko;
 void main(){
   vec3 Nn = normalize(vNor);
+  vec3 L = normalize(vec3(-0.42, 0.9, 0.5));
+  float d = max(dot(Nn, L), 0.0);
+
+  vec3 barwa = vGora > 0.5 ? texture2D(uTex, vUV).rgb : vKolor * 0.9;
+  vec3 kol = barwa * (0.66 + 0.40 * d);
+
   vec3 V = normalize(uOko - vSwiat);
-  vec3 barwa = vKolor * mix(0.42, 1.0, smoothstep(0.0, 0.65, vWys));
-
-  vec3 L1 = normalize(vec3(-0.45, 1.0, 0.6));
-  vec3 L2 = normalize(vec3(0.85, 0.3, -0.55));
-  float d1 = max(dot(Nn, L1), 0.0);
-  float d2 = max(dot(Nn, L2), 0.0);
-
-  vec3 swiatlo = barwa * (0.17 + 1.02 * d1) + barwa * 0.3 * d2;
-  float polysk = pow(max(dot(Nn, normalize(L1 + V)), 0.0), 46.0) * 0.32;
-  float obwodka = pow(1.0 - max(dot(Nn, V), 0.0), 3.0) * 0.5;
-
-  vec3 kol = swiatlo + vec3(polysk) + vKolor * obwodka;
-  kol = mix(kol, uMgla, smoothstep(uMglaZakres.x, uMglaZakres.y, length(uOko - vSwiat)));
+  kol += vec3(1.0, 0.97, 0.92) * pow(1.0 - max(dot(Nn, V), 0.0), 4.0) * 0.06;
   gl_FragColor = vec4(kol, 1.0);
 }`;
 
-  const VS_PODLOGA = `
+  const VS_CIEN = `
+precision highp float;
+attribute vec2 aRog;
+attribute vec3 aSrodek;
+attribute float aObrot, aSkala, aOpoznienie;
+uniform mat4 uProj, uWidok;
+uniform float uCzas, uOdRazu;
+varying vec2 vLok, vPol;
+varying float vWys;
+${WSPOLNE}
+void main(){
+  float e = opadanie(uCzas, aOpoznienie, uOdRazu);
+  float h = aSrodek.y + (1.0 - e) * 2.4;
+  vWys = h;
+  vPol = vec2(${(SZER / 2).toFixed(3)}, ${(GLEB / 2).toFixed(3)}) * aSkala;
+  float rozciag = 1.35 + h * 0.6;
+  vLok = aRog * vPol * rozciag;
+  vec2 p = obrotY(aObrot) * vLok;
+  vec3 swiat = vec3(aSrodek.x + p.x + h * 0.34, 0.004, aSrodek.z + p.y + h * 0.26);
+  gl_Position = uProj * uWidok * vec4(swiat, 1.0);
+}`;
+
+  const FS_CIEN = `
+precision highp float;
+varying vec2 vLok, vPol;
+varying float vWys;
+void main(){
+  float d = length(max(abs(vLok) - vPol, 0.0));
+  float rozmyc = 0.07 + vWys * 0.6;
+  float a = (1.0 - smoothstep(0.0, rozmyc, d)) * 0.28 / (1.0 + vWys * 1.6);
+  vec3 kol = vec3(0.40, 0.34, 0.28);
+  gl_FragColor = vec4(kol * a, a);
+}`;
+
+  const VS_STRONA = `
 precision highp float;
 attribute vec2 aXZ;
 uniform mat4 uProj, uWidok;
@@ -1187,19 +1318,19 @@ void main(){
   gl_Position = uProj * uWidok * vec4(vSwiat, 1.0);
 }`;
 
-  const FS_PODLOGA = `
+  const FS_STRONA = `
 precision highp float;
 varying vec3 vSwiat;
 uniform vec3 uOko;
-uniform float uRozstaw;
 void main(){
   float odl = length(uOko - vSwiat);
-  vec2 f = abs(fract(vSwiat.xz / uRozstaw + 0.5) - 0.5);
-  float grubosc = 0.016 + odl * 0.0022;
-  float linia = 1.0 - smoothstep(0.0, grubosc, min(f.x, f.y));
-  float zasieg = 1.0 - smoothstep(0.45, 1.0, length(vSwiat.xz / vec2(12.5, 7.0)));
-  vec3 kol = mix(vec3(0.045, 0.078, 0.068), vec3(0.11, 0.24, 0.20), linia);
-  gl_FragColor = vec4(kol, zasieg * (0.55 + linia * 0.45));
+  vec2 q = fract(vSwiat.xz / 0.58 + 0.5) - 0.5;
+  float promien = 0.028 + odl * 0.0012;
+  float kropka = 1.0 - smoothstep(promien, promien + 0.022, length(q * 0.58));
+  float zasieg = 1.0 - smoothstep(0.32, 1.0, length(vSwiat.xz / vec2(11.5, 8.5)));
+  vec3 kol = mix(vec3(0.988, 0.968, 0.937), vec3(0.878, 0.827, 0.757), kropka * 0.6);
+  float a = zasieg;
+  gl_FragColor = vec4(kol * a, a);
 }`;
 
   function kompiluj(typ, src) {
@@ -1218,32 +1349,37 @@ void main(){
     return p;
   }
 
-  let progSlupki, progPodloga, bufSlupki, bufPodloga;
+  let progKarty, progCien, progStrona;
   try {
-    progSlupki = program(VS, FS);
-    progPodloga = program(VS_PODLOGA, FS_PODLOGA);
+    progKarty = program(VS, FS);
+    progCien = program(VS_CIEN, FS_CIEN);
+    progStrona = program(VS_STRONA, FS_STRONA);
   } catch (e) {
     intro.classList.add("bez-3d");
     pokazTekst();
     return;
   }
 
-  bufSlupki = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, bufSlupki);
+  const bufKarty = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, bufKarty);
   gl.bufferData(gl.ARRAY_BUFFER, dane, gl.STATIC_DRAW);
 
-  const R = 26;
-  bufPodloga = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, bufPodloga);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-R, -R, R, -R, R, R, -R, -R, R, R, -R, R]), gl.STATIC_DRAW);
+  const bufCien = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, bufCien);
+  gl.bufferData(gl.ARRAY_BUFFER, cienie, gl.STATIC_DRAW);
 
-  const atr = {};
-  ["aPos", "aNor", "aRozmiar", "aMiejsce", "aKolor", "aLos", "aOpoznienie"].forEach(n => atr[n] = gl.getAttribLocation(progSlupki, n));
-  const uni = {};
-  ["uProj", "uWidok", "uCzas", "uOdKrazu", "uOko", "uMgla", "uMglaZakres"].forEach(n => uni[n] = gl.getUniformLocation(progSlupki, n));
-  const uniP = {};
-  ["uProj", "uWidok", "uOko", "uRozstaw"].forEach(n => uniP[n] = gl.getUniformLocation(progPodloga, n));
-  const atrP = gl.getAttribLocation(progPodloga, "aXZ");
+  const Z = 30;
+  const bufStrona = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, bufStrona);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-Z, -Z, Z, -Z, Z, Z, -Z, -Z, Z, Z, -Z, Z]), gl.STATIC_DRAW);
+
+  const aK = {}, uK = {}, aC = {}, uC = {}, uS = {};
+  ["aPos", "aNor", "aSrodek", "aObrot", "aSkala", "aOpoznienie", "aKolor", "aUV"].forEach(n => aK[n] = gl.getAttribLocation(progKarty, n));
+  ["uProj", "uWidok", "uCzas", "uOdRazu", "uOko", "uTex", "uKafel"].forEach(n => uK[n] = gl.getUniformLocation(progKarty, n));
+  ["aRog", "aSrodek", "aObrot", "aSkala", "aOpoznienie"].forEach(n => aC[n] = gl.getAttribLocation(progCien, n));
+  ["uProj", "uWidok", "uCzas", "uOdRazu"].forEach(n => uC[n] = gl.getUniformLocation(progCien, n));
+  ["uProj", "uWidok", "uOko"].forEach(n => uS[n] = gl.getUniformLocation(progStrona, n));
+  const aS = gl.getAttribLocation(progStrona, "aXZ");
 
   /* ---------- macierze ---------- */
   function perspektywa(out, fov, aspekt, blisko, daleko) {
@@ -1269,11 +1405,9 @@ void main(){
     out[15] = 1;
     return out;
   }
-
   const mProj = new Float32Array(16), mWidok = new Float32Array(16);
-  const MGLA = [0.043, 0.075, 0.065];
 
-  /* ---------- rozmiar płótna ---------- */
+  /* ---------- rozmiar, myszka, widoczność ---------- */
   let szer = 1, wys = 1;
   function dopasuj() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -1283,12 +1417,8 @@ void main(){
     if (canvas.width !== szer || canvas.height !== wys) { canvas.width = szer; canvas.height = wys; }
   }
   dopasuj();
-  addEventListener("resize", () => {
-    dopasuj();
-    if (wolniej) rysuj(start + 9000);
-  }, { passive: true });
+  addEventListener("resize", () => { dopasuj(); if (wolniej) rysuj(start + 9000); }, { passive: true });
 
-  /* ---------- myszka: delikatna paralaksa ---------- */
   let celMX = 0, celMY = 0, mX = 0, mY = 0;
   if (!wolniej) {
     intro.addEventListener("pointermove", e => {
@@ -1299,37 +1429,48 @@ void main(){
     intro.addEventListener("pointerleave", () => { celMX = 0; celMY = 0; }, { passive: true });
   }
 
-  /* ---------- pętla ---------- */
   let widoczne = true;
   if ("IntersectionObserver" in window) {
-    new IntersectionObserver(([w]) => { widoczne = w.isIntersecting; }, { threshold: 0 }).observe(intro);
+    new IntersectionObserver(([x]) => { widoczne = x.isIntersecting; }, { threshold: 0 }).observe(intro);
   }
 
   const start = performance.now();
-  const plynnie = (x) => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  const plynnie = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+
+  function podlacz(bufor, pary, skok) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufor);
+    pary.forEach(([loc, ile, off]) => {
+      if (loc < 0) return;
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, ile, gl.FLOAT, false, skok, off);
+    });
+  }
+  function odlacz(pary) {
+    pary.forEach(([loc]) => { if (loc >= 0) gl.disableVertexAttribArray(loc); });
+  }
 
   function rysuj(teraz) {
     const czas = (teraz - start) / 1000;
     const aspekt = szer / wys;
-
     const szeroki = aspekt > 1.15;
-    const k = wolniej ? 1 : plynnie(Math.min(czas / 2.6, 1));
-    const koniec = szeroki ? 28 : 37;
-    const promien = 12 + (koniec - 12) * k;
-    const azymut = (-1.05 + 0.44 * k) + (wolniej ? 0 : Math.sin(czas * 0.085) * 0.05) + mX * 0.09;
-    const wznios = (1.26 - (szeroki ? 0.40 : 0.46) * k) - mY * 0.05;
+
+    const k = wolniej ? 1 : plynnie(Math.min(czas / 3.0, 1));
+    const koniec = szeroki ? 22.0 : 26.5;
+    const promien = koniec + 3.4 * (1 - k);
+    const azymut = -0.30 + (wolniej ? 0 : Math.sin(czas * 0.07) * 0.035) + mX * 0.055;
+    const wznios = 0.60 + 0.07 * k - mY * 0.035;
 
     const oko = [
       Math.sin(azymut) * Math.sin(wznios) * promien,
-      Math.cos(wznios) * promien + 1.4,
+      Math.cos(wznios) * promien,
       Math.cos(azymut) * Math.sin(wznios) * promien
     ];
-    perspektywa(mProj, szeroki ? 0.58 : 0.66, aspekt, 0.1, 160);
-    // przesunięcie kadru: scena schodzi w dół, na szerokim ekranie także w prawo,
-    // żeby nagłówek miał czyste tło po lewej
-    mProj[8] = (szeroki ? -0.24 : 0.13) * k;
-    mProj[9] = (szeroki ? 0.26 : 0.52) * k;
-    patrzNa(mWidok, oko, [0, 1.1, 0], [0, 1, 0]);
+    perspektywa(mProj, szeroki ? 0.56 : 0.66, aspekt, 0.1, 120);
+    // scena leży po prawej stronie kolumny z tekstem; przy tej odległości
+    // kamery mieści się w kadrze od 1280 px wzwyż, nie wchodząc na przycisk
+    mProj[8] = (szeroki ? -0.40 : 0.02) * k;
+    mProj[9] = (szeroki ? 0.24 : 0.58) * k;
+    patrzNa(mWidok, oko, [0, 0, 0], [0, 1, 0]);
 
     gl.viewport(0, 0, szer, wys);
     gl.clearColor(0, 0, 0, 0);
@@ -1337,58 +1478,65 @@ void main(){
     gl.enable(gl.DEPTH_TEST);
     gl.disable(gl.CULL_FACE);
     gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
-    // podłoga
-    gl.useProgram(progPodloga);
-    gl.bindBuffer(gl.ARRAY_BUFFER, bufPodloga);
-    gl.enableVertexAttribArray(atrP);
-    gl.vertexAttribPointer(atrP, 2, gl.FLOAT, false, 8, 0);
-    gl.uniformMatrix4fv(uniP.uProj, false, mProj);
-    gl.uniformMatrix4fv(uniP.uWidok, false, mWidok);
-    gl.uniform3fv(uniP.uOko, oko);
-    gl.uniform1f(uniP.uRozstaw, ROZSTAW);
+    // strona notatnika
+    gl.useProgram(progStrona);
+    const paryS = [[aS, 2, 0]];
+    podlacz(bufStrona, paryS, 8);
+    gl.uniformMatrix4fv(uS.uProj, false, mProj);
+    gl.uniformMatrix4fv(uS.uWidok, false, mWidok);
+    gl.uniform3fv(uS.uOko, oko);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
-    gl.disableVertexAttribArray(atrP);
+    odlacz(paryS);
 
-    // słupki
-    gl.useProgram(progSlupki);
-    gl.bindBuffer(gl.ARRAY_BUFFER, bufSlupki);
-    const b = POLA * 4;
-    const pola = [[atr.aPos, 3, 0], [atr.aNor, 3, 12], [atr.aRozmiar, 3, 24], [atr.aMiejsce, 3, 36],
-                  [atr.aKolor, 3, 48], [atr.aLos, 2, 60], [atr.aOpoznienie, 1, 68]];
-    pola.forEach(([loc, ile, off]) => {
-      if (loc < 0) return;
-      gl.enableVertexAttribArray(loc);
-      gl.vertexAttribPointer(loc, ile, gl.FLOAT, false, b, off);
-    });
-    gl.uniformMatrix4fv(uni.uProj, false, mProj);
-    gl.uniformMatrix4fv(uni.uWidok, false, mWidok);
-    gl.uniform1f(uni.uCzas, czas);
-    gl.uniform1f(uni.uOdKrazu, wolniej ? 1 : 0);
-    gl.uniform3fv(uni.uOko, oko);
-    gl.uniform3fv(uni.uMgla, MGLA);
-    gl.uniform2f(uni.uMglaZakres, promien * 0.62, promien * 2.35);
-    gl.drawArrays(gl.TRIANGLES, 0, ILE * WIERZ);
-    pola.forEach(([loc]) => { if (loc >= 0) gl.disableVertexAttribArray(loc); });
+    // cienie
+    gl.depthMask(false);
+    gl.useProgram(progCien);
+    const paryC = [[aC.aRog, 2, 0], [aC.aSrodek, 3, 8], [aC.aObrot, 1, 20], [aC.aSkala, 1, 24], [aC.aOpoznienie, 1, 28]];
+    podlacz(bufCien, paryC, 40);
+    gl.uniformMatrix4fv(uC.uProj, false, mProj);
+    gl.uniformMatrix4fv(uC.uWidok, false, mWidok);
+    gl.uniform1f(uC.uCzas, czas);
+    gl.uniform1f(uC.uOdRazu, wolniej ? 1 : 0);
+    gl.drawArrays(gl.TRIANGLES, 0, KARTY.length * 6);
+    odlacz(paryC);
+    gl.depthMask(true);
+
+    // kartki
+    gl.useProgram(progKarty);
+    const paryK = [[aK.aPos, 3, 0], [aK.aNor, 3, 12], [aK.aSrodek, 3, 24], [aK.aObrot, 1, 36],
+                   [aK.aSkala, 1, 40], [aK.aOpoznienie, 1, 44], [aK.aKolor, 3, 48], [aK.aUV, 2, 60]];
+    podlacz(bufKarty, paryK, POLA * 4);
+    gl.uniformMatrix4fv(uK.uProj, false, mProj);
+    gl.uniformMatrix4fv(uK.uWidok, false, mWidok);
+    gl.uniform1f(uK.uCzas, czas);
+    gl.uniform1f(uK.uOdRazu, wolniej ? 1 : 0);
+    gl.uniform3fv(uK.uOko, oko);
+    gl.uniform2f(uK.uKafel, KAFEL_W / ATLAS, KAFEL_H / ATLAS);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, tekstura);
+    gl.uniform1i(uK.uTex, 0);
+    gl.drawArrays(gl.TRIANGLES, 0, KARTY.length * WIERZ);
+    odlacz(paryK);
   }
 
   function klatka(teraz) {
-    mX += (celMX - mX) * 0.06;
-    mY += (celMY - mY) * 0.06;
+    mX += (celMX - mX) * 0.05;
+    mY += (celMY - mY) * 0.05;
     if (widoczne && !document.hidden) rysuj(teraz);
-    if (!wolniej) requestAnimationFrame(klatka);
+    requestAnimationFrame(klatka);
   }
 
   if (wolniej) {
-    rysuj(start + 9000);          // jedna nieruchoma klatka po złożeniu planu
+    rysuj(start + 9000);
     pokazTekst();
   } else {
     requestAnimationFrame(klatka);
-    setTimeout(pokazTekst, 260);
+    setTimeout(pokazTekst, 240);
   }
 
-  gl.canvas.addEventListener("webglcontextlost", e => { e.preventDefault(); intro.classList.add("bez-3d"); });
+  canvas.addEventListener("webglcontextlost", e => { e.preventDefault(); intro.classList.add("bez-3d"); });
 })();
 </script>
 <!--strip-->

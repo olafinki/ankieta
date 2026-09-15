@@ -80,24 +80,37 @@ trafią na tę samą listę.
 W arkuszu Google powstają dwie karty: `Odpowiedzi` (czytelna tabela, jedna
 kolumna na pytanie) i ukryta `Dane` (z niej czyta panel — nie kasuj jej).
 
-## Intro 3D
+## Intro
 
-Ankieta otwiera się sceną, która buduje plan nauki na oczach kursanta:
-każdy słupek to jeden dzień, kolumna to tydzień, wysokość to obciążenie
-nauką, a złota kolumna na końcu to tydzień matury. Elementy wlatują od
-pierwszego tygodnia do ostatniego, kamera odjeżdża z ujęcia z bliska do
-widoku 3/4, potem scena oddycha i reaguje na ruch myszy.
+Ankieta otwiera się sceną 3D: na stronie notatnika ląduje prawdziwy tydzień
+z gotowego planu — kartka po kartce, od poniedziałku do złotej kartki
+„Maj · Matura”. Kartki opadają z góry z lekkim obrotem, cienie pod nimi
+zbierają się w miarę lądowania, a potem scena spokojnie oddycha i reaguje
+na ruch myszy. Chodzi o to, żeby pierwsze wrażenie brzmiało „to jest do
+ogarnięcia”, a nie „czeka Cię harówka” — stąd ciepłe, poranne barwy
+i kartka „Niedziela — wolne, odpoczywasz”.
 
-Napisane w czystym WebGL, bez żadnej biblioteki z zewnątrz — dlatego plik
-nadal waży tyle co nic i działa otwarty prosto z dysku, bez internetu.
-Gdy przeglądarka nie obsługuje WebGL, zostaje samo tło i tekst; gdy
-system ma włączone ograniczenie animacji, scena rysuje jedną nieruchomą
-klatkę po złożeniu planu.
+Napisane w czystym WebGL, bez żadnej biblioteki z zewnątrz — plik działa
+otwarty prosto z dysku, bez internetu. Napisy na kartkach rysuje zwykłe
+płótno 2D i trafiają na scenę jako tekstura, więc stoi na nich prawdziwy
+plan, a nie ozdobne kreski. Bez WebGL zostaje samo tło i tekst; przy
+włączonym ograniczeniu animacji scena rysuje jedną nieruchomą klatkę
+po wylądowaniu kartek.
 
-Parametry sceny znajdziesz na początku drugiego znacznika `<script>`:
-`TYGODNIE`, `DNI`, `RYTM_DNIA` (rozkład obciążenia w tygodniu) i `FERIE`
-(tygodnie z przerwą). Zmiana `TYGODNIE` na 20 wydłuża plan do pięciu
-miesięcy — reszta dopasuje się sama.
+Treść kartek to tablica `KARTY` na początku drugiego znacznika `<script>`.
+Jeden wpis to jedna kartka:
+
+```js
+{ e:"ŚRODA · 60 MIN", t:"Arkusz CKE, zadania 1–15", k:"#E8E6F2",
+  x: 2.50, z: -2.20, o: 0.06, u: 0.02 }
+```
+
+`e` to etykieta, `t` tytuł, `k` kolor kartki, `x` i `z` miejsce na stronie,
+`o` obrót, `u` wysokość unoszenia. Dodatkowe `typ:"pasek"` rysuje pasek
+postępu, `typ:"cel"` złotą kartkę z ptaszkiem, `typ:"wolne"` dopisek pod
+tytułem. Wymieniając teksty na swoje, pokazujesz klientowi własny plan —
+to najskuteczniejsza część tej strony, więc warto ją dopasować do tego,
+co naprawdę sprzedajesz.
 
 ## O co pytamy
 
