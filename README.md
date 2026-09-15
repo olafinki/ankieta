@@ -80,6 +80,25 @@ trafią na tę samą listę.
 W arkuszu Google powstają dwie karty: `Odpowiedzi` (czytelna tabela, jedna
 kolumna na pytanie) i ukryta `Dane` (z niej czyta panel — nie kasuj jej).
 
+## Intro 3D
+
+Ankieta otwiera się sceną, która buduje plan nauki na oczach kursanta:
+każdy słupek to jeden dzień, kolumna to tydzień, wysokość to obciążenie
+nauką, a złota kolumna na końcu to tydzień matury. Elementy wlatują od
+pierwszego tygodnia do ostatniego, kamera odjeżdża z ujęcia z bliska do
+widoku 3/4, potem scena oddycha i reaguje na ruch myszy.
+
+Napisane w czystym WebGL, bez żadnej biblioteki z zewnątrz — dlatego plik
+nadal waży tyle co nic i działa otwarty prosto z dysku, bez internetu.
+Gdy przeglądarka nie obsługuje WebGL, zostaje samo tło i tekst; gdy
+system ma włączone ograniczenie animacji, scena rysuje jedną nieruchomą
+klatkę po złożeniu planu.
+
+Parametry sceny znajdziesz na początku drugiego znacznika `<script>`:
+`TYGODNIE`, `DNI`, `RYTM_DNIA` (rozkład obciążenia w tygodniu) i `FERIE`
+(tygodnie z przerwą). Zmiana `TYGODNIE` na 20 wydłuża plan do pięciu
+miesięcy — reszta dopasuje się sama.
+
 ## O co pytamy
 
 **01 Kim jesteś** — imię, kontakt, termin matury.
