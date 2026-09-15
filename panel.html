@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Panel odpowiedzi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+<style>
+:root{
+  --paper:#F2F4F3; --surface:#FFFFFF; --ink:#14191B; --ink-2:#4A565B; --ink-3:#78868A;
+  --line:#DBE2E0; --line-soft:#E9EEEC; --accent:#1F5B4C; --accent-ink:#FFFFFF; --accent-soft:#E5EFEA;
+  --gold:#A7761F; --warn:#9B3E2E; --r:8px;
+  --sans:"IBM Plex Sans", ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --serif:"Newsreader", ui-serif, Georgia, serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1312; --surface:#161D1B; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
+    --line:#27312E; --line-soft:#1D2624; --accent:#6BC4A6; --accent-ink:#0A1310; --accent-soft:#17261F;
+    --gold:#D8AE63; --warn:#E08A77;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1312; --surface:#161D1B; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
+  --line:#27312E; --line-soft:#1D2624; --accent:#6BC4A6; --accent-ink:#0A1310; --accent-soft:#17261F;
+  --gold:#D8AE63; --warn:#E08A77;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55}
+[hidden]{display:none !important}
+.wrap{max-width:880px;margin:0 auto;padding-left:20px;padding-right:20px;padding-block:48px 72px}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(28px,5vw,42px);line-height:1.1;margin:0 0 14px;letter-spacing:-.015em}
+.lede{color:var(--ink-2);margin:0 0 32px;max-width:58ch}
+.drop{
+  border:1.5px dashed var(--line);border-radius:12px;background:var(--surface);
+  padding:36px 24px;text-align:center;transition:all .15s;cursor:pointer;
+}
+.drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop p{margin:0;color:var(--ink-2)}
+.drop .big{font-size:17px;color:var(--ink);font-weight:500;margin-bottom:6px}
+.drop .small{font-size:13.5px;color:var(--ink-3);margin-top:8px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:28px 0 18px}
+.count{font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);margin-right:auto}
+button{font-family:var(--sans);font-size:14px;font-weight:500;cursor:pointer;border-radius:var(--r);padding:10px 16px;border:1px solid var(--line);background:var(--surface);color:var(--ink);transition:all .15s}
+button:hover{border-color:var(--ink-3)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.card{border:1px solid var(--line);border-radius:10px;background:var(--surface);margin-bottom:10px;overflow:hidden}
+.card-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;padding:16px 18px;cursor:pointer}
+.card-head:hover{background:var(--accent-soft)}
+.who{font-weight:600;font-size:16.5px}
+.tag{
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;padding:3px 8px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);border:1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.tag.goal{background:transparent;color:var(--gold);border-color:color-mix(in srgb, var(--gold) 35%, transparent)}
+.when{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.card-body{border-top:1px solid var(--line-soft);padding:6px 18px 18px}
+.row{display:grid;grid-template-columns:1fr;gap:2px;padding-block:11px;border-bottom:1px solid var(--line-soft)}
+.row:last-child{border-bottom:0}
+.row dt{font-size:13.5px;color:var(--ink-3);margin:0}
+.row dd{margin:0;font-size:15px}
+.row dd.empty{color:var(--ink-3);font-style:italic}
+@media (min-width:640px){ .row{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:baseline} }
+dl{margin:0}
+.empty-state{padding:44px 20px;text-align:center;color:var(--ink-3)}
+.foot{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+.status{font-size:14px;color:var(--ink-2);min-height:20px;margin:12px 0 0}
+.status.err{color:var(--warn)}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Panel wewnętrzny</p>
+  <h1>Odpowiedzi z ankiet</h1>
+  <p class="lede">Wrzuć pliki <code>.json</code>, które odesłali kursanci. Zobaczysz je tutaj jako listę, a całość wyeksportujesz do arkusza jednym przyciskiem. Pliki nie opuszczają Twojego komputera — wszystko dzieje się w przeglądarce.</p>
+
+  <div class="drop" id="drop" tabindex="0" role="button" aria-label="Wczytaj pliki z odpowiedziami">
+    <p class="big">Przeciągnij pliki tutaj albo kliknij, żeby wybrać</p>
+    <p>Obsługujemy pliki z ankiety startowej (<code>ankieta-*.json</code>)</p>
+    <p class="small">Możesz wczytać wiele plików naraz.</p>
+  </div>
+  <input type="file" id="picker" accept="application/json,.json" multiple hidden>
+  <p class="status" id="status"></p>
+
+  <div class="toolbar" hidden id="toolbar">
+    <span class="count" id="count"></span>
+    <button id="btn-expand" type="button">Rozwiń wszystkie</button>
+    <button class="primary" id="btn-csv" type="button">Pobierz arkusz (CSV)</button>
+    <button id="btn-clear" type="button">Wyczyść listę</button>
+  </div>
+
+  <div id="list"></div>
+
+  <footer class="foot">
+    <p>Panel czyta wyłącznie pliki wskazane przez Ciebie. Zamknięcie karty kasuje listę — plikom nic się nie dzieje.</p>
+  </footer>
+</div>
+
+<script>
+const entries = [];
+const drop = document.getElementById("drop");
+const picker = document.getElementById("picker");
+const list = document.getElementById("list");
+const toolbar = document.getElementById("toolbar");
+
+function say(text, isError){
+  const s = document.getElementById("status");
+  s.textContent = text || "";
+  s.classList.toggle("err", !!isError);
+}
+
+drop.addEventListener("click", () => picker.click());
+drop.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); picker.click(); } });
+picker.addEventListener("change", () => readFiles([...picker.files]));
+["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => readFiles([...(e.dataTransfer?.files || [])]));
+
+async function readFiles(files){
+  const jsons = files.filter(f => /\.json$/i.test(f.name) || f.type === "application/json");
+  if (!jsons.length) { say("To nie są pliki z ankiety. Szukaj plików z rozszerzeniem .json.", true); return; }
+  let added = 0, skipped = 0;
+  for (const file of jsons) {
+    try {
+      const data = JSON.parse(await file.text());
+      if (!data || !data.dane) { skipped++; continue; }
+      entries.push({ file: file.name, data });
+      added++;
+    } catch (e) { skipped++; }
+  }
+  render();
+  say(added + (added === 1 ? " ankieta wczytana" : " ankiet wczytanych") +
+      (skipped ? ", " + skipped + " pominięto (nie rozpoznaliśmy formatu)" : "."), false);
+}
+
+function val(entry, id){
+  const d = entry.data.dane?.[id];
+  return d ? (d.odpowiedz || "") : "";
+}
+
+function when(entry){
+  const raw = entry.data.wypelniono;
+  if (!raw) return "";
+  const d = new Date(raw);
+  return isNaN(d) ? "" : d.toLocaleString("pl-PL", { dateStyle: "short", timeStyle: "short" });
+}
+
+function render(){
+  list.innerHTML = "";
+  toolbar.hidden = entries.length === 0;
+  document.getElementById("count").textContent =
+    entries.length + (entries.length === 1 ? " ankieta" : " ankiet");
+
+  if (!entries.length) return;
+
+  entries.forEach((entry, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const head = document.createElement("div");
+    head.className = "card-head";
+    head.setAttribute("role", "button");
+    head.tabIndex = 0;
+
+    const who = document.createElement("span");
+    who.className = "who";
+    who.textContent = entry.data.imie || val(entry, "imie") || entry.file;
+    head.appendChild(who);
+
+    const przedmiot = val(entry, "przedmiot");
+    if (przedmiot) { const t = document.createElement("span"); t.className = "tag"; t.textContent = przedmiot; head.appendChild(t); }
+    const cel = val(entry, "cel_procent");
+    if (cel) { const t = document.createElement("span"); t.className = "tag goal"; t.textContent = "cel " + cel; head.appendChild(t); }
+    const czas = val(entry, "czas_tyg");
+    if (czas) { const t = document.createElement("span"); t.className = "tag"; t.textContent = czas + "/tydz."; head.appendChild(t); }
+
+    const time = document.createElement("span");
+    time.className = "when";
+    time.textContent = when(entry);
+    head.appendChild(time);
+
+    const body = document.createElement("div");
+    body.className = "card-body";
+    body.hidden = true;
+
+    const dl = document.createElement("dl");
+    Object.values(entry.data.dane).forEach(item => {
+      const row = document.createElement("div");
+      row.className = "row";
+      const dt = document.createElement("dt");
+      dt.textContent = item.pytanie;
+      const dd = document.createElement("dd");
+      if (item.odpowiedz) { dd.textContent = item.odpowiedz; }
+      else { dd.textContent = "brak odpowiedzi"; dd.className = "empty"; }
+      row.appendChild(dt); row.appendChild(dd);
+      dl.appendChild(row);
+    });
+    body.appendChild(dl);
+
+    const toggle = () => { body.hidden = !body.hidden; };
+    head.addEventListener("click", toggle);
+    head.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+
+    card.appendChild(head);
+    card.appendChild(body);
+    list.appendChild(card);
+  });
+}
+
+document.getElementById("btn-expand").addEventListener("click", e => {
+  const bodies = [...list.querySelectorAll(".card-body")];
+  const anyHidden = bodies.some(b => b.hidden);
+  bodies.forEach(b => { b.hidden = !anyHidden; });
+  e.target.textContent = anyHidden ? "Zwiń wszystkie" : "Rozwiń wszystkie";
+});
+
+document.getElementById("btn-clear").addEventListener("click", () => {
+  entries.length = 0;
+  render();
+  say("Lista wyczyszczona.");
+});
+
+document.getElementById("btn-csv").addEventListener("click", () => {
+  const ids = [];
+  const headers = ["Plik", "Wypełniono"];
+  entries.forEach(e => Object.entries(e.data.dane).forEach(([id, item]) => {
+    if (!ids.includes(id)) { ids.push(id); headers.push(item.pytanie); }
+  }));
+  const esc = v => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+  const rows = [headers.map(esc).join(";")];
+  entries.forEach(e => {
+    rows.push([esc(e.file), esc(when(e))].concat(ids.map(id => esc(val(e, id)))).join(";"));
+  });
+  const csv = "﻿" + rows.join("\r\n");
+  const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+  const a = document.createElement("a");
+  a.href = url; a.download = "ankiety-" + new Date().toISOString().slice(0, 10) + ".csv";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  say("Arkusz pobrany. Otwiera się w Excelu i Arkuszach Google (separator: średnik).");
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,849 @@
+<!--strip-->
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--/strip-->
+<title>Ankieta startowa maturzysty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+:root{
+  --paper:#F2F4F3;
+  --surface:#FFFFFF;
+  --ink:#14191B;
+  --ink-2:#4A565B;
+  --ink-3:#78868A;
+  --line:#DBE2E0;
+  --line-soft:#E9EEEC;
+  --accent:#1F5B4C;
+  --accent-ink:#FFFFFF;
+  --accent-soft:#E5EFEA;
+  --gold:#A7761F;
+  --gold-soft:#F5EEDF;
+  --warn:#9B3E2E;
+  --shadow:0 1px 2px rgba(20,25,27,.05), 0 8px 24px -16px rgba(20,25,27,.28);
+  --r:8px;
+  --sans:"IBM Plex Sans", ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --serif:"Newsreader", ui-serif, Georgia, "Times New Roman", serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1312; --surface:#161D1B; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
+    --line:#27312E; --line-soft:#1D2624; --accent:#6BC4A6; --accent-ink:#0A1310; --accent-soft:#17261F;
+    --gold:#D8AE63; --gold-soft:#241E12; --warn:#E08A77;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1312; --surface:#161D1B; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
+  --line:#27312E; --line-soft:#1D2624; --accent:#6BC4A6; --accent-ink:#0A1310; --accent-soft:#17261F;
+  --gold:#D8AE63; --gold-soft:#241E12; --warn:#E08A77;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+[hidden]{display:none !important}
+img{max-width:100%}
+::selection{background:var(--accent-soft);color:var(--ink)}
+
+/* ---------- pasek postępu ---------- */
+.bar{
+  position:sticky;
+  top:env(safe-area-inset-top, 0px);
+  z-index:20;
+  background:color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.bar-in{
+  max-width:720px;margin:0 auto;
+  padding-block:10px;padding-left:20px;padding-right:20px;
+  display:flex;align-items:center;gap:14px;
+}
+.bar-label{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-2);white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+.track{flex:1;height:3px;background:var(--line);border-radius:99px;overflow:hidden;min-width:60px}
+.fill{height:100%;width:0%;background:var(--accent);border-radius:99px;transition:width .35s cubic-bezier(.2,.8,.3,1)}
+.saved{
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);white-space:nowrap;
+  opacity:0;transition:opacity .4s;
+}
+.saved.on{opacity:1}
+@media (max-width:560px){ .saved{display:none} }
+
+/* ---------- układ ---------- */
+.wrap{max-width:720px;margin:0 auto;padding-left:20px;padding-right:20px;padding-block:0 72px}
+
+/* ---------- nagłówek ---------- */
+.hero{padding-block:56px 40px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 20px;
+}
+h1{
+  font-family:var(--serif);font-weight:400;font-size:clamp(32px,6.2vw,50px);
+  line-height:1.08;letter-spacing:-.015em;margin:0 0 18px;text-wrap:balance;
+}
+h1 em{font-style:italic;color:var(--accent)}
+.lede{font-size:17px;line-height:1.6;color:var(--ink-2);margin:0;max-width:56ch}
+.meta{
+  display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:26px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-3);
+  text-transform:uppercase;
+}
+.meta span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:5px;height:5px;border-radius:99px;background:var(--accent);flex:none}
+
+/* ---------- sekcje ---------- */
+.sec{padding-block:44px 8px}
+.sec + .sec{border-top:1px solid var(--line)}
+.sec-head{display:flex;gap:16px;align-items:baseline;margin-bottom:34px}
+.sec-num{
+  font-family:var(--mono);font-size:12px;color:var(--accent);
+  letter-spacing:.06em;flex:none;padding-top:2px;
+}
+.sec-head h2{
+  font-family:var(--serif);font-weight:400;font-size:24px;letter-spacing:-.01em;
+  margin:0 0 4px;line-height:1.2;
+}
+.sec-head p{margin:0;color:var(--ink-3);font-size:14.5px;max-width:52ch}
+
+/* ---------- pytanie ---------- */
+.q{padding-block:26px;border-top:1px solid var(--line-soft);scroll-margin-top:76px}
+.q:first-of-type{border-top:0;padding-top:0}
+.q-head{display:flex;gap:14px;margin-bottom:16px}
+.q-num{
+  font-family:var(--mono);font-size:12px;color:var(--ink-3);
+  flex:none;padding-top:3px;font-variant-numeric:tabular-nums;min-width:22px;
+}
+.q-label{font-size:17px;font-weight:600;margin:0;line-height:1.4;letter-spacing:-.005em}
+.q-hint{margin:5px 0 0;font-size:14px;color:var(--ink-3);line-height:1.5}
+.req{color:var(--accent);font-weight:500;margin-left:3px}
+.q.missing .q-label{color:var(--warn)}
+.q.missing .q-num::after{content:"!";color:var(--warn);margin-left:2px}
+
+.opts{display:flex;flex-direction:column;gap:7px;padding-left:36px}
+.opts.chips{flex-direction:row;flex-wrap:wrap;gap:7px}
+@media (max-width:520px){ .opts{padding-left:0} }
+
+.opt{
+  display:flex;align-items:flex-start;gap:11px;
+  padding:11px 14px;border:1px solid var(--line);border-radius:var(--r);
+  background:var(--surface);cursor:pointer;position:relative;
+  transition:border-color .15s, background .15s;
+  font-size:15px;line-height:1.45;
+}
+.opts.chips .opt{padding:9px 13px;align-items:center}
+.opt:hover{border-color:var(--ink-3)}
+.opt input{position:absolute;opacity:0;width:0;height:0}
+.mark{
+  flex:none;width:16px;height:16px;margin-top:2px;
+  border:1.5px solid var(--ink-3);background:transparent;
+  display:grid;place-items:center;transition:all .15s;
+}
+.opts.chips .mark{margin-top:0}
+.mark.radio{border-radius:99px}
+.mark.box{border-radius:4px}
+.mark::after{content:"";width:8px;height:8px;transform:scale(0);transition:transform .15s cubic-bezier(.3,1.4,.5,1)}
+.mark.radio::after{border-radius:99px;background:var(--accent-ink)}
+.mark.box::after{
+  width:9px;height:5px;border-left:2px solid var(--accent-ink);border-bottom:2px solid var(--accent-ink);
+  transform:rotate(-45deg) scale(0);margin-top:-2px;
+}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt:has(input:checked) .mark{background:var(--accent);border-color:var(--accent)}
+.opt:has(input:checked) .mark.radio::after{transform:scale(1)}
+.opt:has(input:checked) .mark.box::after{transform:rotate(-45deg) scale(1)}
+.opt:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+.opt-t strong{font-weight:600}
+.opt-note{display:block;color:var(--ink-3);font-size:13.5px;margin-top:1px}
+
+/* ---------- pola tekstowe ---------- */
+input[type="text"],input[type="email"],input[type="date"],textarea{
+  width:100%;font-family:var(--sans);font-size:15px;color:var(--ink);
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:11px 13px;line-height:1.5;transition:border-color .15s;
+}
+textarea{resize:vertical;min-height:88px}
+input:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+input::placeholder,textarea::placeholder{color:var(--ink-3)}
+.free{padding-left:36px}
+@media (max-width:520px){ .free{padding-left:0} }
+.other-wrap{margin-top:7px;padding-left:27px}
+.opts.chips + .other-wrap{padding-left:0}
+@media (max-width:520px){ .other-wrap{padding-left:0} }
+
+/* ---------- akcent celu ---------- */
+.goal .opt:has(input:checked){border-color:var(--gold);background:var(--gold-soft)}
+.goal .opt:has(input:checked) .mark{background:var(--gold);border-color:var(--gold)}
+
+/* ---------- podsumowanie ---------- */
+.finish{margin-top:48px;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.finish-head{padding:26px 24px 0}
+.finish-head h2{font-family:var(--serif);font-weight:400;font-size:26px;margin:0 0 8px;letter-spacing:-.01em}
+.finish-head p{margin:0;color:var(--ink-2);font-size:15px;max-width:52ch}
+.summary{
+  margin:22px 24px;padding:18px 20px;background:var(--paper);border-radius:var(--r);
+  font-family:var(--mono);font-size:12.5px;line-height:1.75;color:var(--ink-2);
+  max-height:300px;overflow:auto;white-space:pre-wrap;word-break:break-word;
+  border:1px solid var(--line-soft);
+}
+.consent{margin:0 24px 20px}
+.actions{
+  display:flex;flex-wrap:wrap;gap:10px;
+  padding:20px 24px;border-top:1px solid var(--line-soft);background:var(--paper);
+}
+button{
+  font-family:var(--sans);font-size:14.5px;font-weight:500;cursor:pointer;
+  border-radius:var(--r);padding:12px 20px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink);transition:all .15s;
+}
+button:hover{border-color:var(--ink-3)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button.primary:hover{filter:brightness(1.08)}
+.status{padding:0 24px 20px;font-size:14px;color:var(--ink-2)}
+.status:empty{display:none}
+.status.err{color:var(--warn)}
+
+/* ---------- stopka ---------- */
+.foot{
+  margin-top:40px;padding-top:22px;border-top:1px solid var(--line);
+  font-size:13px;color:var(--ink-3);line-height:1.6;
+}
+.foot a{color:var(--accent)}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important;animation:none !important;scroll-behavior:auto !important}
+}
+</style>
+<!--strip-->
+</head>
+<body>
+<!--/strip-->
+
+<div class="bar">
+  <div class="bar-in">
+    <span class="bar-label" id="progress-label">0 / 0 pytań</span>
+    <div class="track" role="progressbar" aria-labelledby="progress-label"><div class="fill" id="progress-fill"></div></div>
+    <span class="saved" id="saved-note"></span>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Ankieta startowa · plan nauki</p>
+    <h1>Zanim ułożymy Twój plan, <em>poznajmy Twoją maturę</em>.</h1>
+    <p class="lede">Dwadzieścia parę pytań o cel, czas i sposób, w jaki najlepiej Ci się pracuje. Na tej podstawie ułożymy harmonogram, który da się wytrzymać do maja — a nie taki, który wygląda dobrze na papierze.</p>
+    <div class="meta">
+      <span><i class="dot"></i>ok. 6 minut</span>
+      <span><i class="dot"></i>odpowiedzi zapisują się same</span>
+      <span><i class="dot"></i>bez logowania</span>
+    </div>
+  </header>
+
+  <main id="form"></main>
+
+  <section class="finish">
+    <div class="finish-head">
+      <h2>Podsumowanie</h2>
+      <p>Sprawdź odpowiedzi i odeślij je nam. Plik zapisze się na Twoim urządzeniu — możesz go wysłać mailem jako załącznik.</p>
+    </div>
+    <div class="summary" id="summary">Odpowiedz na pytania, a tutaj pojawi się gotowe podsumowanie.</div>
+    <div class="consent">
+      <label class="opt" for="zgoda">
+        <input type="checkbox" id="zgoda">
+        <span class="mark box"></span>
+        <span class="opt-t">Zgadzam się na wykorzystanie moich odpowiedzi wyłącznie w celu przygotowania indywidualnego planu nauki.<span class="opt-note">Danych nie przekazujemy nikomu innemu.</span></span>
+      </label>
+    </div>
+    <div class="actions">
+      <button class="primary" id="btn-download" type="button">Pobierz plik z odpowiedziami</button>
+      <button id="btn-mail" type="button">Wyślij e-mailem</button>
+      <button id="btn-copy" type="button">Kopiuj podsumowanie</button>
+      <button id="btn-reset" type="button">Wyczyść formularz</button>
+    </div>
+    <p class="status" id="status"></p>
+  </section>
+
+  <footer class="foot">
+    <p id="foot-text"></p>
+  </footer>
+</div>
+
+<script>
+/* ==========================================================================
+   Ankieta startowa maturzysty
+   Zmień dwie linie poniżej na dane swojej firmy — reszta działa sama.
+   ========================================================================== */
+const FIRMA = "Twoja firma";
+const KONTAKT_EMAIL = "kontakt@twojafirma.pl";
+
+const STORAGE_KEY = "ankieta-matura-v1";
+const INNE = "__inne__";
+
+const SURVEY = [
+  {
+    title: "Kim jesteś",
+    intro: "Podstawy, żeby plan trafił do właściwej osoby i we właściwym terminie.",
+    items: [
+      { id:"imie", type:"text", required:true,
+        q:"Jak masz na imię?",
+        placeholder:"np. Zuzia" },
+      { id:"kontakt", type:"text", required:true,
+        q:"Gdzie mamy odesłać gotowy plan?",
+        hint:"E-mail albo numer telefonu — wybierz, co wygodniejsze.",
+        placeholder:"np. zuzia@example.com" },
+      { id:"termin_matury", type:"radio", required:true, chips:true, other:true,
+        q:"W którym terminie zdajesz maturę?",
+        options:["Maj 2026","Maj 2027","Maj 2028","Poprawka w sierpniu"] }
+    ]
+  },
+  {
+    title: "Cel",
+    intro: "Wynik, o który gramy, i punkt, z którego startujemy.",
+    items: [
+      { id:"przedmiot", type:"radio", required:true, other:true, chips:true,
+        q:"Jakiego przedmiotu chcesz się uczyć?",
+        hint:"Jeśli potrzebujesz planu na kilka przedmiotów, wypełnij ankietę osobno dla każdego — plany się wtedy nie pogryzą.",
+        options:["Matematyka","Język polski","Język angielski","Biologia","Chemia","Fizyka","Geografia","Historia","WOS","Informatyka"] },
+      { id:"poziom", type:"radio", required:true, chips:true, other:true,
+        q:"Na jakim poziomie zdajesz ten przedmiot?",
+        options:["Podstawowy","Rozszerzony","Dwujęzyczny","Jeszcze nie zdecydowałem/am"] },
+      { id:"cel_procent", type:"radio", required:true, goal:true, other:true,
+        q:"Ile chcesz procent z matury?",
+        hint:"Podaj wynik, który naprawdę Cię zadowoli — od niego liczymy wstecz cały harmonogram.",
+        options:[
+          {v:"30–50%", note:"chcę spokojnie zdać"},
+          {v:"51–70%", note:"przyzwoity wynik bez nerwów"},
+          {v:"71–85%", note:"celuję w konkretną rekrutację"},
+          {v:"86–95%", note:"walczę o wysoki próg"},
+          {v:"96–100%", note:"maksimum, bez taryfy ulgowej"}
+        ],
+        otherLabel:"Mam na myśli konkretny wynik — wpisz jaki" },
+      { id:"stan_teraz", type:"radio", required:true, chips:true, other:true,
+        q:"Ile procent masz teraz?",
+        hint:"Ostatnia próbna, diagnostyczna albo samodzielnie rozwiązany arkusz CKE. Szacunek w zupełności wystarczy.",
+        options:["0–30%","31–50%","51–70%","71–85%","86–100%","Nie pisałem/am jeszcze arkusza"] },
+      { id:"po_co", type:"radio", required:false, other:true,
+        q:"Po co Ci ten wynik?",
+        hint:"Cel poza samą maturą bardzo pomaga utrzymać tempo w marcu i kwietniu.",
+        options:[
+          {v:"Wymarzony kierunek studiów", note:"wiem, jaki próg muszę przeskoczyć"},
+          {v:"Rekrutacja, ale kierunek jeszcze nieustalony"},
+          {v:"Stypendium albo indeks bez rekrutacji"},
+          {v:"Dla siebie — chcę wiedzieć, że umiem"}
+        ],
+        otherLabel:"Inny powód — napisz jaki (np. nazwa kierunku)" }
+    ]
+  },
+  {
+    title: "Rytm nauki",
+    intro: "Ta część decyduje o kształcie planu bardziej niż cokolwiek innego.",
+    items: [
+      { id:"tryb", type:"radio", required:true, other:true,
+        q:"Wolisz uczyć się dużo jednorazowo czy rozkładać sobie naukę na różne dni?",
+        options:[
+          {v:"Jedna długa sesja", note:"3 godziny i więcej, raz–dwa razy w tygodniu"},
+          {v:"Średnie bloki", note:"1,5–2 godziny, kilka razy w tygodniu"},
+          {v:"Krótkie odcinki codziennie", note:"30–45 minut, ale regularnie"},
+          {v:"Zależy od tygodnia", note:"potrzebuję planu, który da się przesuwać"}
+        ] },
+      { id:"czas_tyg", type:"radio", required:true, chips:true, other:true,
+        q:"Ile czasu tygodniowo jesteś w stanie poświęcić na naukę tego przedmiotu?",
+        hint:"Odpowiedz realnie, nie ambitnie — plan i tak zweryfikuje pierwszy tydzień.",
+        options:["Do 2 godzin","2–4 godziny","4–6 godzin","6–10 godzin","Ponad 10 godzin"] },
+      { id:"dni", type:"radio", required:false, chips:true, other:true,
+        q:"Ile dni w tygodniu realnie możesz usiąść do nauki?",
+        options:["1–2 dni","3–4 dni","5–6 dni","Codziennie"] },
+      { id:"pora", type:"radio", required:false, other:true,
+        q:"O jakiej porze uczysz się najskuteczniej?",
+        options:[
+          {v:"Rano, przed szkołą"},
+          {v:"Wczesne popołudnie", note:"zaraz po powrocie do domu"},
+          {v:"Późne popołudnie", note:"16:00–19:00"},
+          {v:"Wieczór", note:"19:00–23:00"},
+          {v:"Późna noc"},
+          {v:"Różnie, zależy od dnia"}
+        ] },
+      { id:"styl", type:"check", required:true, other:true,
+        q:"Jak jest Ci się najłatwiej uczyć?",
+        hint:"Możesz zaznaczyć kilka odpowiedzi — zwykle działa mieszanka dwóch lub trzech.",
+        options:[
+          {v:"Wizualnie", note:"schematy, wykresy, mapy myśli, kolory"},
+          {v:"Ze słuchu", note:"wykłady, nagrania, tłumaczenie sobie na głos"},
+          {v:"Czytając i notując", note:"własne notatki, podkreślenia, streszczenia"},
+          {v:"Przez zadania", note:"uczę się, rozwiązując arkusze i przykłady"},
+          {v:"Tłumacząc komuś innemu", note:"sprawdzam się, gdy muszę wyjaśnić temat"},
+          {v:"W ruchu", note:"chodząc, na stojąco, z fiszkami w ręku"}
+        ] },
+      { id:"styl_opis", type:"textarea", required:false,
+        q:"Opisz własnymi słowami, jak wygląda Twoja najlepsza sesja nauki.",
+        hint:"Co się wtedy dzieje? Gdzie siedzisz, od czego zaczynasz, co masz przed sobą?",
+        placeholder:"np. Najlepiej idzie mi, kiedy mam wydrukowany arkusz i przerabiam zadanie po zadaniu, a teorię doczytuję dopiero wtedy, gdy się na czymś zatnę." }
+    ]
+  },
+  {
+    title: "Co przeszkadza",
+    intro: "Dobry plan omija przeszkody, zamiast udawać, że ich nie ma.",
+    items: [
+      { id:"braki", type:"check", required:true, other:true,
+        q:"Czego najbardziej brakuje Ci w nauce tego przedmiotu?",
+        options:[
+          {v:"Teorii od podstaw", note:"dużo zaległości z wcześniejszych lat"},
+          {v:"Powtórki materiału", note:"znam to, ale wywietrzało"},
+          {v:"Techniki zadań maturalnych", note:"wiem, o co chodzi, ale gubię punkty"},
+          {v:"Rozplanowania czasu na egzaminie"},
+          {v:"Systematyczności"},
+          {v:"Motywacji i sensu"}
+        ] },
+      { id:"dzialy", type:"textarea", required:false,
+        q:"Które działy albo typy zadań sprawiają Ci największą trudność?",
+        hint:"Wypisz je z głowy, choćby hasłowo — to od nich zwykle zaczynamy plan.",
+        placeholder:"np. stereometria, ciągi, zadania na dowodzenie" },
+      { id:"przeszkody", type:"check", required:false, other:true,
+        q:"Co najczęściej wybija Cię z systematycznej nauki?",
+        options:[
+          {v:"Odkładanie na później"},
+          {v:"Inne przedmioty i sprawdziany"},
+          {v:"Praca zarobkowa"},
+          {v:"Sport lub zajęcia dodatkowe"},
+          {v:"Telefon i media społecznościowe"},
+          {v:"Brak konkretnego planu na dziś"},
+          {v:"Zmęczenie po szkole"}
+        ] }
+    ]
+  },
+  {
+    title: "Warunki",
+    intro: "Budżet, materiały i data, do której chcesz mieć wszystko za sobą.",
+    items: [
+      { id:"budzet", type:"radio", required:true, other:true,
+        q:"Ile jesteś w stanie wydać na materiały do nauki?",
+        hint:"Łącznie, na cały okres przygotowań. Plan dopasujemy do kwoty — przy zerowym budżecie opieramy się na arkuszach CKE i materiałach darmowych.",
+        options:[
+          {v:"0 zł", note:"tylko darmowe materiały"},
+          {v:"Do 50 zł"},
+          {v:"50–150 zł"},
+          {v:"150–300 zł"},
+          {v:"300–600 zł"},
+          {v:"Powyżej 600 zł"}
+        ] },
+      { id:"materialy", type:"check", required:false, other:true,
+        q:"Z jakich materiałów już korzystasz?",
+        options:[
+          {v:"Arkusze CKE z poprzednich lat"},
+          {v:"Zbiory zadań"},
+          {v:"Kursy online i YouTube"},
+          {v:"Notatki ze szkoły"},
+          {v:"Fiszki lub aplikacje"},
+          {v:"Podręcznik i repetytorium"},
+          {v:"Z żadnych — zaczynam od zera"}
+        ] },
+      { id:"korepetycje", type:"radio", required:false, chips:true, other:true,
+        q:"Chodzisz obecnie na korepetycje lub kurs?",
+        options:["Nie","Tak, raz w tygodniu","Tak, dwa razy lub częściej","Planuję zacząć"] },
+      { id:"do_kiedy", type:"radio", required:true, other:true,
+        q:"Do kiedy chciałbyś skończyć się uczyć?",
+        hint:"Chodzi o moment, w którym materiał jest przerobiony, a zostaje już tylko spokojne powtarzanie.",
+        options:[
+          {v:"Trzy miesiące przed maturą", note:"luty — potem już tylko powtórki i arkusze"},
+          {v:"Miesiąc przed maturą", note:"początek kwietnia"},
+          {v:"Dwa tygodnie przed maturą"},
+          {v:"Uczę się do ostatniego dnia"}
+        ],
+        otherLabel:"Mam własną datę — wpisz ją (np. 15.03.2027)" },
+      { id:"kontrola", type:"radio", required:false, other:true,
+        q:"Jak chcesz dostawać plan i pilnować postępów?",
+        options:[
+          {v:"Plan tygodniowy", note:"z krótkim podsumowaniem co tydzień"},
+          {v:"Plan miesięczny", note:"sam/a rozpisuję sobie tygodnie"},
+          {v:"Jeden plan na cały okres", note:"wolę mieć wszystko z góry"}
+        ] },
+      { id:"wspolpraca", type:"radio", required:false, other:true,
+        q:"Wolisz pracować samodzielnie czy z prowadzącym?",
+        options:[
+          {v:"Samodzielnie według planu"},
+          {v:"Plan i konsultacje raz w tygodniu"},
+          {v:"Regularne zajęcia jeden na jeden"},
+          {v:"W małej grupie"}
+        ] },
+      { id:"uwagi", type:"textarea", required:false,
+        q:"Czy jest coś jeszcze, co powinniśmy wiedzieć?",
+        hint:"Dysleksja lub inne dostosowania, olimpiada, dłuższy wyjazd, praca na zmiany, cokolwiek, co wpływa na tydzień.",
+        placeholder:"Możesz zostawić puste." }
+    ]
+  }
+];
+
+/* ---------- stan ---------- */
+let answers = {};
+try {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) answers = JSON.parse(raw) || {};
+} catch (e) { answers = {}; }
+
+const allItems = SURVEY.flatMap(s => s.items);
+const requiredItems = allItems.filter(i => i.required);
+
+function norm(opt){
+  return (typeof opt === "string") ? {v:opt} : opt;
+}
+function elem(tag, cls, text){
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;
+  return n;
+}
+
+/* ---------- budowa formularza ---------- */
+const formRoot = document.getElementById("form");
+let qCounter = 0;
+
+SURVEY.forEach((section, si) => {
+  const sec = elem("section", "sec");
+  const head = elem("div", "sec-head");
+  head.appendChild(elem("span", "sec-num", String(si + 1).padStart(2, "0")));
+  const headText = elem("div");
+  headText.appendChild(elem("h2", null, section.title));
+  headText.appendChild(elem("p", null, section.intro));
+  head.appendChild(headText);
+  sec.appendChild(head);
+
+  section.items.forEach(item => {
+    qCounter++;
+    sec.appendChild(buildQuestion(item, qCounter));
+  });
+
+  formRoot.appendChild(sec);
+});
+
+function buildQuestion(item, number){
+  const q = elem("div", "q");
+  q.id = "q-" + item.id;
+  q.dataset.id = item.id;
+
+  const head = elem("div", "q-head");
+  head.appendChild(elem("span", "q-num", String(number)));
+  const ht = elem("div");
+  const label = elem("h3", "q-label");
+  label.appendChild(document.createTextNode(item.q));
+  if (item.required) {
+    const star = elem("span", "req", "*");
+    star.title = "Pytanie wymagane";
+    ht.appendChild(label);
+    label.appendChild(star);
+  } else {
+    ht.appendChild(label);
+  }
+  if (item.hint) ht.appendChild(elem("p", "q-hint", item.hint));
+  head.appendChild(ht);
+  q.appendChild(head);
+
+  if (item.type === "text") {
+    const wrap = elem("div", "free");
+    const input = elem("input");
+    input.type = "text";
+    input.id = "f-" + item.id;
+    input.placeholder = item.placeholder || "";
+    input.value = answers[item.id] || "";
+    input.addEventListener("input", () => { setAnswer(item.id, input.value.trim()); });
+    wrap.appendChild(input);
+    q.appendChild(wrap);
+    return q;
+  }
+
+  if (item.type === "textarea") {
+    const wrap = elem("div", "free");
+    const ta = elem("textarea");
+    ta.id = "f-" + item.id;
+    ta.placeholder = item.placeholder || "";
+    ta.value = answers[item.id] || "";
+    ta.addEventListener("input", () => { setAnswer(item.id, ta.value.trim()); });
+    wrap.appendChild(ta);
+    q.appendChild(wrap);
+    return q;
+  }
+
+  const multi = item.type === "check";
+  const opts = elem("div", "opts" + (item.chips ? " chips" : "") + (item.goal ? " goal" : ""));
+  const stored = answers[item.id];
+  const chosen = multi
+    ? (Array.isArray(stored && stored.wybor) ? stored.wybor : [])
+    : (stored && stored.wybor ? stored.wybor : "");
+  const storedOther = (stored && typeof stored.inne === "string") ? stored.inne : "";
+
+  const list = item.options.map(norm).concat(item.other
+    ? [{ v: INNE, label: item.otherLabel || "Inne — wpisz własną odpowiedź" }]
+    : []);
+
+  const otherWrap = elem("div", "other-wrap");
+  otherWrap.hidden = true;
+  const otherInput = elem("input");
+  otherInput.type = "text";
+  otherInput.id = "f-" + item.id + "-inne";
+  otherInput.placeholder = "Twoja odpowiedź…";
+  otherInput.value = storedOther;
+  otherWrap.appendChild(otherInput);
+
+  list.forEach((opt, oi) => {
+    const isOther = opt.v === INNE;
+    const label = elem("label", "opt");
+    const input = elem("input");
+    input.type = multi ? "checkbox" : "radio";
+    input.name = "n-" + item.id;
+    input.id = "f-" + item.id + "-" + oi;
+    input.value = opt.v;
+    input.checked = multi ? chosen.includes(opt.v) : chosen === opt.v;
+
+    const mark = elem("span", "mark " + (multi ? "box" : "radio"));
+    const text = elem("span", "opt-t");
+    text.appendChild(document.createTextNode(opt.label || opt.v));
+    if (opt.note) text.appendChild(elem("span", "opt-note", opt.note));
+
+    label.appendChild(input);
+    label.appendChild(mark);
+    label.appendChild(text);
+    opts.appendChild(label);
+
+    input.addEventListener("change", () => {
+      collectChoice(item, opts, otherWrap, otherInput);
+    });
+    if (isOther) {
+      input.addEventListener("change", () => { if (input.checked) otherInput.focus(); });
+    }
+  });
+
+  q.appendChild(opts);
+  q.appendChild(otherWrap);
+
+  otherInput.addEventListener("input", () => {
+    const otherBox = opts.querySelector('input[value="' + INNE + '"]');
+    if (otherBox && !otherBox.checked) otherBox.checked = true;
+    collectChoice(item, opts, otherWrap, otherInput);
+  });
+
+  syncOther(opts, otherWrap);
+  return q;
+}
+
+function syncOther(opts, otherWrap){
+  const otherBox = opts.querySelector('input[value="' + INNE + '"]');
+  otherWrap.hidden = !(otherBox && otherBox.checked);
+}
+
+function collectChoice(item, opts, otherWrap, otherInput){
+  syncOther(opts, otherWrap);
+  const checked = [...opts.querySelectorAll("input:checked")].map(i => i.value);
+  const value = { wybor: item.type === "check" ? checked : (checked[0] || "") };
+  if (checked.includes(INNE)) value.inne = otherInput.value.trim();
+  setAnswer(item.id, value);
+}
+
+/* ---------- zapis i postęp ---------- */
+let saveTimer = null;
+function setAnswer(id, value){
+  answers[id] = value;
+  document.getElementById("q-" + id)?.classList.remove("missing");
+  updateProgress();
+  renderSummary();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(persist, 400);
+}
+
+function persist(){
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(answers));
+    const note = document.getElementById("saved-note");
+    const t = new Date();
+    note.textContent = "zapisano " + String(t.getHours()).padStart(2,"0") + ":" + String(t.getMinutes()).padStart(2,"0");
+    note.classList.add("on");
+  } catch (e) { /* tryb prywatny — formularz działa dalej, tylko bez autozapisu */ }
+}
+
+function isFilled(item){
+  const a = answers[item.id];
+  if (a == null) return false;
+  if (typeof a === "string") return a.trim().length > 0;
+  const w = a.wybor;
+  const picked = Array.isArray(w) ? w.length > 0 : !!w;
+  if (!picked) return false;
+  const onlyOther = Array.isArray(w) ? (w.length === 1 && w[0] === INNE) : w === INNE;
+  if (onlyOther) return !!(a.inne && a.inne.trim());
+  return true;
+}
+
+function updateProgress(){
+  const done = requiredItems.filter(isFilled).length;
+  const total = requiredItems.length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById("progress-fill").style.width = pct + "%";
+  document.getElementById("progress-label").textContent =
+    done === total ? "komplet — " + total + " / " + total : done + " / " + total + " pytań";
+}
+
+/* ---------- podsumowanie ---------- */
+function answerText(item){
+  const a = answers[item.id];
+  if (a == null) return "";
+  if (typeof a === "string") return a;
+  const w = Array.isArray(a.wybor) ? a.wybor : (a.wybor ? [a.wybor] : []);
+  const parts = w.map(v => v === INNE ? (a.inne ? a.inne : "") : v).filter(Boolean);
+  return parts.join(", ");
+}
+
+function buildSummary(){
+  const lines = [];
+  const imie = (answers.imie || "").trim();
+  lines.push("ANKIETA STARTOWA — " + (imie || "bez imienia"));
+  lines.push("Wypełniono: " + new Date().toLocaleString("pl-PL"));
+  lines.push("");
+  SURVEY.forEach(section => {
+    lines.push("— " + section.title.toUpperCase() + " —");
+    section.items.forEach(item => {
+      const val = answerText(item);
+      lines.push(item.q);
+      lines.push("  " + (val || "(brak odpowiedzi)"));
+    });
+    lines.push("");
+  });
+  return lines.join("\n").trim();
+}
+
+function renderSummary(){
+  const box = document.getElementById("summary");
+  const any = allItems.some(isFilled);
+  box.textContent = any ? buildSummary() : "Odpowiedz na pytania, a tutaj pojawi się gotowe podsumowanie.";
+}
+
+/* ---------- walidacja i wysyłka ---------- */
+function firstMissing(){
+  return requiredItems.find(item => !isFilled(item));
+}
+
+function flagMissing(){
+  requiredItems.forEach(item => {
+    document.getElementById("q-" + item.id)
+      ?.classList.toggle("missing", !isFilled(item));
+  });
+  const miss = firstMissing();
+  if (miss) {
+    document.getElementById("q-" + miss.id)
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  return miss;
+}
+
+function say(text, isError){
+  const s = document.getElementById("status");
+  s.textContent = text;
+  s.classList.toggle("err", !!isError);
+}
+
+function safeName(){
+  const imie = (answers.imie || "ankieta").trim().toLowerCase();
+  const przedmiot = answerText({ id:"przedmiot" }) || "";
+  const base = (imie + "-" + przedmiot)
+    .replace(/ą/g,"a").replace(/ć/g,"c").replace(/ę/g,"e").replace(/ł/g,"l")
+    .replace(/ń/g,"n").replace(/ó/g,"o").replace(/ś/g,"s").replace(/[żź]/g,"z")
+    .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+  const d = new Date();
+  const stamp = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+  return "ankieta-" + (base || "maturzysta") + "-" + stamp;
+}
+
+function payload(){
+  const dane = {};
+  allItems.forEach(item => { dane[item.id] = { pytanie: item.q, odpowiedz: answerText(item) }; });
+  return JSON.stringify({
+    formularz: "ankieta-matura-v1",
+    wypelniono: new Date().toISOString(),
+    zgoda: document.getElementById("zgoda").checked,
+    imie: (answers.imie || "").trim(),
+    dane: dane,
+    podsumowanie: buildSummary()
+  }, null, 2);
+}
+
+async function saveFile(filename, text, mime){
+  try {
+    const downloads = await window.claude?.use?.("downloads");
+    if (downloads) { await downloads.save({ filename, data: text }); return "capability"; }
+  } catch (e) { /* odrzucone albo niedostępne — próbujemy zwykłego pobrania */ }
+  try {
+    const url = URL.createObjectURL(new Blob([text], { type: mime }));
+    const a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    return "anchor";
+  } catch (e) { return null; }
+}
+
+document.getElementById("btn-download").addEventListener("click", async () => {
+  if (flagMissing()) { say("Zostało jeszcze kilka wymaganych pytań — zaznaczyliśmy pierwsze z nich.", true); return; }
+  if (!document.getElementById("zgoda").checked) { say("Zaznacz zgodę na wykorzystanie odpowiedzi, wtedy pobierzemy plik.", true); return; }
+  say("Przygotowujemy plik…");
+  const ok = await saveFile(safeName() + ".json", payload(), "application/json");
+  say(ok
+    ? "Gotowe. Plik zapisał się na Twoim urządzeniu — odeślij go nam jako załącznik na " + KONTAKT_EMAIL + "."
+    : "Pobieranie nie ruszyło. Użyj przycisku „Kopiuj podsumowanie” i wklej odpowiedzi do maila.", !ok);
+});
+
+document.getElementById("btn-mail").addEventListener("click", () => {
+  if (flagMissing()) { say("Zostało jeszcze kilka wymaganych pytań — zaznaczyliśmy pierwsze z nich.", true); return; }
+  const imie = (answers.imie || "").trim();
+  const subject = "Ankieta startowa" + (imie ? " — " + imie : "");
+  const href = "mailto:" + KONTAKT_EMAIL +
+    "?subject=" + encodeURIComponent(subject) +
+    "&body=" + encodeURIComponent(buildSummary());
+  window.location.href = href;
+  say("Otwieramy program pocztowy z gotową treścią. Jeśli nic się nie stało, skopiuj podsumowanie ręcznie.");
+});
+
+document.getElementById("btn-copy").addEventListener("click", async () => {
+  const text = buildSummary();
+  try {
+    await navigator.clipboard.writeText(text);
+    say("Skopiowano podsumowanie do schowka.");
+  } catch (e) {
+    const box = document.getElementById("summary");
+    const r = document.createRange(); r.selectNodeContents(box);
+    const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    say("Zaznaczyliśmy podsumowanie — skopiuj je skrótem Ctrl+C (Cmd+C na Macu).");
+  }
+});
+
+document.getElementById("btn-reset").addEventListener("click", () => {
+  if (!confirm("Wyczyścić wszystkie odpowiedzi? Tej operacji nie da się cofnąć.")) return;
+  answers = {};
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  location.reload();
+});
+
+/* ---------- start ---------- */
+document.getElementById("foot-text").textContent =
+  "Ankieta startowa · " + FIRMA + " · odpowiedzi trafiają wyłącznie do nas i służą do przygotowania Twojego planu nauki. Pytania oznaczone gwiazdką są wymagane.";
+updateProgress();
+renderSummary();
+if (Object.keys(answers).length) persist();
+</script>
+<!--strip-->
+</body>
+</html>
+<!--/strip-->
