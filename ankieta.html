@@ -412,12 +412,13 @@ const SURVEY = [
     title: "Cel",
     intro: "Wynik, o który gramy, i punkt, z którego startujemy.",
     items: [
-      { id:"przedmiot", type:"radio", required:true, other:true, chips:true,
-        q:"Jakiego przedmiotu chcesz się uczyć?",
-        hint:"Jeśli potrzebujesz planu na kilka przedmiotów, wypełnij ankietę osobno dla każdego — plany się wtedy nie pogryzą.",
+      { id:"przedmiot", type:"check", required:true, other:true, chips:true,
+        q:"Jakich przedmiotów chcesz się uczyć?",
+        hint:"Możesz zaznaczyć kilka. Przy większej liczbie przedmiotów ułożymy plan tak, żeby nie biły się o ten sam wieczór.",
         options:["Matematyka","Język polski","Język angielski","Biologia","Chemia","Fizyka","Geografia","Historia","WOS","Informatyka"] },
-      { id:"poziom", type:"radio", required:true, chips:true, other:true,
-        q:"Na jakim poziomie zdajesz ten przedmiot?",
+      { id:"poziom", type:"check", required:true, chips:true, other:true,
+        q:"Na jakim poziomie zdajesz?",
+        hint:"Zaznacz wszystko, co Cię dotyczy — podstawa i rozszerzenie mogą iść razem. Jeśli poziom różni się między przedmiotami, dopisz to w polu „Inne”.",
         options:["Podstawowy","Rozszerzony","Dwujęzyczny","Jeszcze nie zdecydowałem/am"] },
       { id:"cel_procent", type:"radio", required:true, goal:true, other:true,
         q:"Ile chcesz procent z matury?",
@@ -432,7 +433,7 @@ const SURVEY = [
         otherLabel:"Mam na myśli konkretny wynik — wpisz jaki" },
       { id:"stan_teraz", type:"radio", required:true, chips:true, other:true,
         q:"Ile procent masz teraz?",
-        hint:"Ostatnia próbna, diagnostyczna albo samodzielnie rozwiązany arkusz CKE. Szacunek w zupełności wystarczy.",
+        hint:"Ostatnia próbna, diagnostyczna albo samodzielnie rozwiązany arkusz CKE. Szacunek wystarczy; przy kilku przedmiotach podaj wynik z tego, na którym najbardziej Ci zależy.",
         options:["0–30%","31–50%","51–70%","71–85%","86–100%","Nie pisałem/am jeszcze arkusza"] },
       { id:"po_co", type:"radio", required:false, other:true,
         q:"Po co Ci ten wynik?",
@@ -459,7 +460,7 @@ const SURVEY = [
           {v:"Zależy od tygodnia", note:"potrzebuję planu, który da się przesuwać"}
         ] },
       { id:"czas_tyg", type:"radio", required:true, chips:true, other:true,
-        q:"Ile czasu tygodniowo jesteś w stanie poświęcić na naukę tego przedmiotu?",
+        q:"Ile czasu tygodniowo jesteś w stanie poświęcić na naukę tych przedmiotów?",
         hint:"Odpowiedz realnie, nie ambitnie — plan i tak zweryfikuje pierwszy tydzień.",
         options:["Do 2 godzin","2–4 godziny","4–6 godzin","6–10 godzin","Ponad 10 godzin"] },
       { id:"dni", type:"radio", required:false, chips:true, other:true,
@@ -497,7 +498,7 @@ const SURVEY = [
     intro: "Dobry plan omija przeszkody, zamiast udawać, że ich nie ma.",
     items: [
       { id:"braki", type:"check", required:true, other:true,
-        q:"Czego najbardziej brakuje Ci w nauce tego przedmiotu?",
+        q:"Czego najbardziej brakuje Ci w nauce?",
         options:[
           {v:"Teorii od podstaw", note:"dużo zaległości z wcześniejszych lat"},
           {v:"Powtórki materiału", note:"znam to, ale wywietrzało"},
@@ -851,7 +852,7 @@ function say(text, isError){
 
 function safeName(){
   const imie = (answers.imie || "ankieta").trim().toLowerCase();
-  const przedmiot = answerText({ id:"przedmiot" }) || "";
+  const przedmiot = (answerText({ id:"przedmiot" }) || "").split(",")[0].trim();
   const base = (imie + "-" + przedmiot)
     .replace(/ą/g,"a").replace(/ć/g,"c").replace(/ę/g,"e").replace(/ł/g,"l")
     .replace(/ń/g,"n").replace(/ó/g,"o").replace(/ś/g,"s").replace(/[żź]/g,"z")

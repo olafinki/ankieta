@@ -331,7 +331,9 @@ function render(){
 
     const sub = document.createElement("span");
     sub.className = "tab-sub";
-    sub.textContent = [val(a, "przedmiot"), kiedyTekst(a)].filter(Boolean).join(" · ");
+    const przedmioty = val(a, "przedmiot").split(",").map(x => x.trim()).filter(Boolean);
+    const skrot = przedmioty.length > 1 ? przedmioty[0] + " +" + (przedmioty.length - 1) : (przedmioty[0] || "");
+    sub.textContent = [skrot, kiedyTekst(a)].filter(Boolean).join(" · ");
 
     b.appendChild(name);
     b.appendChild(sub);
@@ -399,8 +401,8 @@ function rysujDetal(){
   const chips = document.createElement("div");
   chips.className = "chips";
   const dodaj = (text, cls) => { if (!text) return; const s = document.createElement("span"); s.className = "chip" + (cls ? " " + cls : ""); s.textContent = text; chips.appendChild(s); };
-  dodaj(val(a, "przedmiot"));
-  dodaj(val(a, "poziom"));
+  val(a, "przedmiot").split(",").forEach(x => dodaj(x.trim()));
+  val(a, "poziom").split(",").forEach(x => dodaj(x.trim(), "plain"));
   dodaj(val(a, "cel_procent") ? "cel " + val(a, "cel_procent") : "", "goal");
   dodaj(val(a, "stan_teraz") ? "teraz " + val(a, "stan_teraz") : "", "plain");
   dodaj(val(a, "czas_tyg") ? val(a, "czas_tyg") + " / tydzień" : "", "plain");

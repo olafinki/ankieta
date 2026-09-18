@@ -122,7 +122,8 @@ co naprawdę sprzedajesz.
 
 **01 Kim jesteś** — imię, kontakt, termin matury.
 
-**02 Cel** — przedmiot, poziom, docelowy wynik procentowy, wynik obecny,
+**02 Cel** — przedmioty (można zaznaczyć kilka naraz), poziom — podstawa,
+rozszerzenie albo oba — docelowy wynik procentowy, wynik obecny,
 powód (kierunek studiów, próg rekrutacyjny, stypendium).
 
 **03 Rytm nauki** — jedna długa sesja czy krótkie odcinki, godziny
