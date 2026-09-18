@@ -87,8 +87,14 @@ z gotowego planu — kartka po kartce, od poniedziałku do złotej kartki
 „Maj · Matura”. Kartki opadają z góry z lekkim obrotem, cienie pod nimi
 zbierają się w miarę lądowania, a potem scena spokojnie oddycha i reaguje
 na ruch myszy. Chodzi o to, żeby pierwsze wrażenie brzmiało „to jest do
-ogarnięcia”, a nie „czeka Cię harówka” — stąd ciepłe, poranne barwy
-i kartka „Niedziela — wolne, odpoczywasz”.
+ogarnięcia”, a nie „czeka Cię harówka” — stąd kartka „Niedziela — wolne,
+odpoczywasz”.
+
+Scena nie ma własnej palety: czyta zmienne CSS formularza (`--paper`,
+`--surface`, `--accent`, `--gold`…), więc kartki wyglądają dokładnie jak
+odpowiedzi w ankiecie — białe z cienką ramką, zielone jak zaznaczone,
+złota jak pytanie o cel. Zmiana barw na górze pliku przemalowuje też
+intro, a przy motywie ciemnym scena przerysowuje się sama.
 
 Napisane w czystym WebGL, bez żadnej biblioteki z zewnątrz — plik działa
 otwarty prosto z dysku, bez internetu. Napisy na kartkach rysuje zwykłe

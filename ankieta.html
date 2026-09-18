@@ -229,16 +229,13 @@ button.primary:hover{filter:brightness(1.08)}
 }
 .foot a{color:var(--accent)}
 
-/* ---------- intro: tydzień z planu ---------- */
+/* ---------- intro: tydzień z planu, w barwach formularza ---------- */
 .intro{
-  --i-ink:#2A322E; --i-ink-2:#6E7B74; --i-akcent:#2F6B58; --i-zloto:#B07F27;
   position:relative;
   height:min(93svh, 840px);
   min-height:560px;
   overflow:hidden;
-  background:
-    radial-gradient(90% 55% at 78% 16%, rgba(255,228,206,.85) 0%, rgba(255,228,206,0) 62%),
-    linear-gradient(168deg, #EFE8F3 0%, #F7EAE6 28%, #FCF2E8 58%, #FBF6EE 100%);
+  background:var(--paper);
   isolation:isolate;
 }
 .intro canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -246,7 +243,7 @@ button.primary:hover{filter:brightness(1.08)}
   position:absolute;inset:0;pointer-events:none;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
   mix-blend-mode:multiply;
-  opacity:.16;
+  opacity:.1;
 }
 .intro-tresc{
   position:relative;z-index:2;height:100%;
@@ -258,38 +255,36 @@ button.primary:hover{filter:brightness(1.08)}
 }
 .intro-tresc a{pointer-events:auto}
 
-.intro .eyebrow{color:var(--i-akcent);margin:0 0 20px}
-.intro h1{color:var(--i-ink);margin:0 0 20px;max-width:15ch}
-.intro h1 em{color:var(--i-akcent)}
-.intro .lede{color:var(--i-ink-2);max-width:42ch;margin:0}
+.intro .eyebrow{color:var(--accent);margin:0 0 20px}
+.intro h1{color:var(--ink);margin:0 0 20px;max-width:15ch}
+.intro h1 em{color:var(--accent)}
+.intro .lede{color:var(--ink-2);max-width:42ch;margin:0}
 
 .intro-akcje{display:flex;flex-direction:column;align-items:flex-start;gap:15px;margin-top:30px}
 .cta{
   display:inline-flex;align-items:center;gap:10px;
-  background:var(--i-akcent);color:#FBF7EF;text-decoration:none;
-  font-weight:600;font-size:15.5px;padding:14px 26px;border-radius:99px;
-  box-shadow:0 12px 26px -14px rgba(47,107,88,.75);
+  background:var(--accent);color:var(--accent-ink);text-decoration:none;
+  font-weight:600;font-size:15.5px;padding:14px 26px;border-radius:10px;
+  box-shadow:0 10px 24px -14px color-mix(in srgb, var(--accent) 65%, transparent);
   transition:transform .2s cubic-bezier(.2,.8,.3,1), box-shadow .2s, filter .2s;
 }
-.cta:hover{transform:translateY(-2px);filter:brightness(1.07);box-shadow:0 18px 34px -16px rgba(47,107,88,.8)}
-.cta:focus-visible{outline:2px solid var(--i-ink);outline-offset:3px}
+.cta:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 16px 30px -16px color-mix(in srgb, var(--accent) 75%, transparent)}
+.cta:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .cta .strzalka{transition:transform .2s cubic-bezier(.2,.8,.3,1)}
 .cta:hover .strzalka{transform:translateY(3px)}
 .intro-meta{
   font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;line-height:1.8;
-  text-transform:uppercase;color:var(--i-ink-2);max-width:38ch;
+  text-transform:uppercase;color:var(--ink-3);max-width:38ch;
 }
 
 .intro-stopka{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 20px}
-.legenda{
-  margin:0;font-size:13.5px;line-height:1.6;color:var(--i-ink-2);max-width:34ch;
-}
-.legenda b{color:var(--i-ink);font-weight:600}
+.legenda{margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-2);max-width:34ch}
+.legenda b{color:var(--ink);font-weight:600}
 .zjazd{
   font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--i-ink-2);display:flex;align-items:center;gap:9px;white-space:nowrap;
+  color:var(--ink-3);display:flex;align-items:center;gap:9px;white-space:nowrap;
 }
-.zjazd span{display:block;width:1px;height:26px;background:linear-gradient(var(--i-ink-2), transparent);animation:zjazd 2.6s ease-in-out infinite}
+.zjazd span{display:block;width:1px;height:26px;background:linear-gradient(var(--ink-3), transparent);animation:zjazd 2.6s ease-in-out infinite}
 @keyframes zjazd{0%,100%{opacity:.25;transform:scaleY(.6);transform-origin:top}50%{opacity:.9;transform:scaleY(1)}}
 
 .intro .eyebrow,.intro h1,.intro .lede,.intro-akcje,.intro-stopka{
@@ -1023,6 +1018,29 @@ if (Object.keys(answers).length) persist();
   const wolniej = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const pokazTekst = () => intro.classList.add("gotowe");
 
+  /* ---------- barwy bierzemy wprost z formularza, razem z motywem ---------- */
+  function hexRgb(t) {
+    const n = parseInt(String(t).replace("#", "").trim(), 16) || 0;
+    return [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
+  }
+  function motyw() {
+    const cs = getComputedStyle(document.documentElement);
+    const t = n => (cs.getPropertyValue(n) || "").trim() || "#000000";
+    const m = {
+      papier: t("--paper"), powierzchnia: t("--surface"), akcent: t("--accent-soft"),
+      zloto: t("--gold-soft"), linia: t("--line"), atrament: t("--ink"),
+      cichy: t("--ink-3"), ziel: t("--accent"), zlotyTusz: t("--gold")
+    };
+    const p = hexRgb(m.papier);
+    m.ciemny = (p[0] * 0.299 + p[1] * 0.587 + p[2] * 0.114) < 0.5;
+    m.rgb = {
+      papier: p, powierzchnia: hexRgb(m.powierzchnia), akcent: hexRgb(m.akcent),
+      zloto: hexRgb(m.zloto), linia: hexRgb(m.linia)
+    };
+    return m;
+  }
+  let M = motyw();
+
   let gl = null;
   try {
     const opcje = { antialias: true, alpha: true, depth: true };
@@ -1032,19 +1050,20 @@ if (Object.keys(answers).length) persist();
 
   /* ---------- co stoi na kartkach ---------- */
   const KARTY = [
-    { e: "PONIEDZIAŁEK · 45 MIN", t: "Ciągi — zadania 12–18",     k: "#E1ECE2", x: -3.15, z: -2.30, o:  0.05, u: 0.02 },
-    { e: "WTOREK · 30 MIN",       t: "Powtórka: stereometria",    k: "#FBF3E5", x: -0.30, z: -2.50, o: -0.04, u: 0.30 },
-    { e: "ŚRODA · 60 MIN",        t: "Arkusz CKE, zadania 1–15",  k: "#E8E6F2", x:  2.50, z: -2.20, o:  0.06, u: 0.02 },
-    { e: "CZWARTEK · 45 MIN",     t: "Funkcja kwadratowa",        k: "#FBE4D7", x: -3.35, z: -0.78, o: -0.05, u: 0.02 },
-    { e: "PIĄTEK · 30 MIN",       t: "Fiszki: wzory na skróty",   k: "#E1ECE2", x: -0.58, z: -0.92, o:  0.03, u: 0.02 },
-    { e: "SOBOTA · 90 MIN",       t: "Cały arkusz na czas",       k: "#EDF1E4", x:  2.24, z: -0.62, o: -0.06, u: 0.26 },
-    { e: "NIEDZIELA",             t: "Wolne — odpoczywasz",       k: "#FBF3E5", x: -3.02, z:  0.74, o:  0.04, u: 0.02, typ: "wolne" },
-    { e: "TWÓJ RYTM",             t: "Krótkie sesje, wieczorem",  k: "#E8E6F2", x: -0.26, z:  0.62, o: -0.03, u: 0.02 },
-    { e: "POSTĘP",                t: "62% materiału za Tobą",     k: "#E1ECE2", x:  2.54, z:  0.96, o:  0.05, u: 0.02, typ: "pasek", p: 0.62 },
-    { e: "CO DWA TYGODNIE",       t: "Sprawdzamy postępy",        k: "#FBE4D7", x: -3.20, z:  2.22, o: -0.04, u: 0.02 },
-    { e: "FERIE",                 t: "Lżejszy tydzień",           k: "#EDF1E4", x: -0.48, z:  2.38, o:  0.05, u: 0.02 },
-    { e: "MAJ · MATURA",          t: "Cel: 86%",                  k: "#F7D89B", x:  2.62, z:  2.30, o: -0.05, u: 0.44, typ: "cel", s: 1.14 }
+    { e: "PONIEDZIAŁEK · 45 MIN", t: "Ciągi — zadania 12–18",     k: "akcent",       x: -3.15, z: -2.30, o:  0.05, u: 0.02 },
+    { e: "WTOREK · 30 MIN",       t: "Powtórka: stereometria",    k: "powierzchnia", x: -0.30, z: -2.50, o: -0.04, u: 0.30 },
+    { e: "ŚRODA · 60 MIN",        t: "Arkusz CKE, zadania 1–15",  k: "powierzchnia", x:  2.50, z: -2.20, o:  0.06, u: 0.02 },
+    { e: "CZWARTEK · 45 MIN",     t: "Funkcja kwadratowa",        k: "zloto",        x: -3.35, z: -0.78, o: -0.05, u: 0.02 },
+    { e: "PIĄTEK · 30 MIN",       t: "Fiszki: wzory na skróty",   k: "akcent",       x: -0.58, z: -0.92, o:  0.03, u: 0.02 },
+    { e: "SOBOTA · 90 MIN",       t: "Cały arkusz na czas",       k: "powierzchnia", x:  2.24, z: -0.62, o: -0.06, u: 0.26 },
+    { e: "NIEDZIELA",             t: "Wolne — odpoczywasz",       k: "zloto",        x: -3.02, z:  0.74, o:  0.04, u: 0.02, typ: "wolne" },
+    { e: "TWÓJ RYTM",             t: "Krótkie sesje, wieczorem",  k: "powierzchnia", x: -0.26, z:  0.62, o: -0.03, u: 0.02 },
+    { e: "POSTĘP",                t: "62% materiału za Tobą",     k: "akcent",       x:  2.54, z:  0.96, o:  0.05, u: 0.02, typ: "pasek", p: 0.62 },
+    { e: "CO DWA TYGODNIE",       t: "Sprawdzamy postępy",        k: "powierzchnia", x: -3.20, z:  2.22, o: -0.04, u: 0.02 },
+    { e: "FERIE",                 t: "Lżejszy tydzień",           k: "zloto",        x: -0.48, z:  2.38, o:  0.05, u: 0.02 },
+    { e: "MAJ · MATURA",          t: "Cel: 86%",                  k: "zloto",        x:  2.62, z:  2.30, o: -0.05, u: 0.44, typ: "cel", s: 1.14 }
   ];
+
 
   const SZER = 2.35, GLEB = 1.18, GRUB = 0.055;
   const ATLAS = 2048, KAFEL_W = 512, KAFEL_H = 256, KOLUMN = 4;
@@ -1081,12 +1100,14 @@ if (Object.keys(answers).length) persist();
     KARTY.forEach((karta, i) => {
       const kx = (i % KOLUMN) * KAFEL_W, ky = ((i / KOLUMN) | 0) * KAFEL_H;
       const cel = karta.typ === "cel";
-      const atrament = cel ? "#5C4318" : "#36443D";
-      const cichy = cel ? "#8C6A26" : "#7E8C84";
+      const wybrana = karta.k === "akcent";
+      const atrament = M.atrament;
+      const cichy = cel ? M.zlotyTusz : (wybrana ? M.ziel : M.cichy);
+      const obwodka = cel ? M.zlotyTusz : (wybrana ? M.ziel : M.linia);
 
       g.save();
       g.translate(kx, ky);
-      g.fillStyle = karta.k;
+      g.fillStyle = M[karta.k];
       g.fillRect(0, 0, KAFEL_W, KAFEL_H);
 
       g.textBaseline = "alphabetic";
@@ -1101,26 +1122,31 @@ if (Object.keys(answers).length) persist();
       zawin(g, karta.t, 436).slice(0, 2).forEach((l, j) => g.fillText(l, 38, (cel ? 140 : 126) + j * 42));
 
       if (karta.typ === "pasek") {
-        g.fillStyle = "rgba(54,68,61,.13)";
+        g.fillStyle = M.linia;
         zaokraglony(g, 38, 186, 436, 12, 6); g.fill();
-        g.fillStyle = "#2F6B58";
+        g.fillStyle = M.ziel;
         zaokraglony(g, 38, 186, 436 * karta.p, 12, 6); g.fill();
-      } else if (karta.typ === "cel") {
-        g.strokeStyle = "rgba(92,67,24,.42)";
-        g.lineWidth = 3;
-        g.beginPath(); g.arc(438, 176, 26, 0, Math.PI * 2); g.stroke();
-        g.strokeStyle = "#5C4318"; g.lineWidth = 5; g.lineCap = "round"; g.lineJoin = "round";
+      } else if (cel) {
+        g.fillStyle = M.zlotyTusz;
+        g.beginPath(); g.arc(438, 176, 26, 0, Math.PI * 2); g.fill();
+        g.strokeStyle = M.zloto; g.lineWidth = 5; g.lineCap = "round"; g.lineJoin = "round";
         g.beginPath(); g.moveTo(427, 176); g.lineTo(435, 185); g.lineTo(451, 166); g.stroke();
       } else if (karta.typ === "wolne") {
-        g.fillStyle = "rgba(176,127,39,.5)";
-        g.beginPath(); g.arc(50, 190, 9, 0, Math.PI * 2); g.fill();
+        g.fillStyle = M.zlotyTusz;
+        g.beginPath(); g.arc(50, 190, 8, 0, Math.PI * 2); g.fill();
         g.font = "500 17px 'IBM Plex Mono', ui-monospace, monospace";
-        g.fillStyle = cichy;
+        g.fillStyle = M.cichy;
         g.fillText("bez wyrzutów sumienia", 70, 196);
       } else {
-        g.fillStyle = "rgba(54,68,61,.16)";
+        g.fillStyle = M.linia;
         g.fillRect(38, 192, 436, 1.5);
       }
+
+      // obramowanie kartki — takie samo jak przy odpowiedziach w ankiecie
+      g.strokeStyle = obwodka;
+      g.lineWidth = cel || wybrana ? 4 : 3;
+      zaokraglony(g, 2, 2, KAFEL_W - 4, KAFEL_H - 4, 17);
+      g.stroke();
       g.restore();
     });
   }
@@ -1178,31 +1204,30 @@ if (Object.keys(answers).length) persist();
     dane[w++] = karta._uv[0]; dane[w++] = karta._uv[1];
   }
 
-  function hex(s) {
-    const n = parseInt(s.slice(1), 16);
-    return [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
-  }
-
   KARTY.forEach((karta, i) => {
-    karta._kol = hex(karta.k);
     karta._uv = [(i % KOLUMN) * KAFEL_W / ATLAS, ((i / KOLUMN) | 0) * KAFEL_H / ATLAS];
     karta._op = (karta.z + 2.6) * 0.14 + (karta.x + 3.5) * 0.035;
   });
 
-  KARTY.forEach(karta => {
-    for (let i = 0; i < N; i++) {
-      const p = OBRYS[i], q = OBRYS[(i + 1) % N];
-      [[p, 0], [q, 0], [q, 1], [p, 0], [q, 1], [p, 1]].forEach(([o, y]) => {
-        wierzcholek(o.x, y, o.z, o.nx, 0, o.nz, karta);
-      });
-    }
-    for (let i = 0; i < N; i++) {
-      const p = OBRYS[i], q = OBRYS[(i + 1) % N];
-      wierzcholek(0, 1, 0, 0, 1, 0, karta);
-      wierzcholek(p.x, 1, p.z, 0, 1, 0, karta);
-      wierzcholek(q.x, 1, q.z, 0, 1, 0, karta);
-    }
-  });
+  function zbudujGeometrie() {
+    w = 0;
+    KARTY.forEach(karta => {
+      karta._kol = M.rgb[karta.k] || M.rgb.powierzchnia;
+      for (let i = 0; i < N; i++) {
+        const p = OBRYS[i], q = OBRYS[(i + 1) % N];
+        [[p, 0], [q, 0], [q, 1], [p, 0], [q, 1], [p, 1]].forEach(([o, y]) => {
+          wierzcholek(o.x, y, o.z, o.nx, 0, o.nz, karta);
+        });
+      }
+      for (let i = 0; i < N; i++) {
+        const p = OBRYS[i], q = OBRYS[(i + 1) % N];
+        wierzcholek(0, 1, 0, 0, 1, 0, karta);
+        wierzcholek(p.x, 1, p.z, 0, 1, 0, karta);
+        wierzcholek(q.x, 1, q.z, 0, 1, 0, karta);
+      }
+    });
+  }
+  zbudujGeometrie();
 
   // prostokąty cieni — jeden na kartkę
   const cienie = new Float32Array(KARTY.length * 6 * 10);
@@ -1267,10 +1292,10 @@ void main(){
   float d = max(dot(Nn, L), 0.0);
 
   vec3 barwa = vGora > 0.5 ? texture2D(uTex, vUV).rgb : vKolor * 0.9;
-  vec3 kol = barwa * (0.66 + 0.40 * d);
+  vec3 kol = barwa * (0.70 + 0.30 * d);
 
   vec3 V = normalize(uOko - vSwiat);
-  kol += vec3(1.0, 0.97, 0.92) * pow(1.0 - max(dot(Nn, V), 0.0), 4.0) * 0.06;
+  kol += vec3(1.0, 0.98, 0.95) * pow(1.0 - max(dot(Nn, V), 0.0), 4.0) * 0.03;
   gl_FragColor = vec4(kol, 1.0);
 }`;
 
@@ -1300,12 +1325,13 @@ void main(){
 precision highp float;
 varying vec2 vLok, vPol;
 varying float vWys;
+uniform vec3 uCien;
+uniform float uMoc;
 void main(){
   float d = length(max(abs(vLok) - vPol, 0.0));
   float rozmyc = 0.07 + vWys * 0.6;
-  float a = (1.0 - smoothstep(0.0, rozmyc, d)) * 0.28 / (1.0 + vWys * 1.6);
-  vec3 kol = vec3(0.40, 0.34, 0.28);
-  gl_FragColor = vec4(kol * a, a);
+  float a = (1.0 - smoothstep(0.0, rozmyc, d)) * uMoc / (1.0 + vWys * 1.6);
+  gl_FragColor = vec4(uCien * a, a);
 }`;
 
   const VS_STRONA = `
@@ -1321,16 +1347,15 @@ void main(){
   const FS_STRONA = `
 precision highp float;
 varying vec3 vSwiat;
-uniform vec3 uOko;
+uniform vec3 uOko, uPapier, uKropka;
 void main(){
   float odl = length(uOko - vSwiat);
   vec2 q = fract(vSwiat.xz / 0.58 + 0.5) - 0.5;
   float promien = 0.028 + odl * 0.0012;
   float kropka = 1.0 - smoothstep(promien, promien + 0.022, length(q * 0.58));
   float zasieg = 1.0 - smoothstep(0.32, 1.0, length(vSwiat.xz / vec2(11.5, 8.5)));
-  vec3 kol = mix(vec3(0.988, 0.968, 0.937), vec3(0.878, 0.827, 0.757), kropka * 0.6);
-  float a = zasieg;
-  gl_FragColor = vec4(kol * a, a);
+  vec3 kol = mix(uPapier, uKropka, kropka * 0.7);
+  gl_FragColor = vec4(kol * zasieg, zasieg);
 }`;
 
   function kompiluj(typ, src) {
@@ -1377,8 +1402,8 @@ void main(){
   ["aPos", "aNor", "aSrodek", "aObrot", "aSkala", "aOpoznienie", "aKolor", "aUV"].forEach(n => aK[n] = gl.getAttribLocation(progKarty, n));
   ["uProj", "uWidok", "uCzas", "uOdRazu", "uOko", "uTex", "uKafel"].forEach(n => uK[n] = gl.getUniformLocation(progKarty, n));
   ["aRog", "aSrodek", "aObrot", "aSkala", "aOpoznienie"].forEach(n => aC[n] = gl.getAttribLocation(progCien, n));
-  ["uProj", "uWidok", "uCzas", "uOdRazu"].forEach(n => uC[n] = gl.getUniformLocation(progCien, n));
-  ["uProj", "uWidok", "uOko"].forEach(n => uS[n] = gl.getUniformLocation(progStrona, n));
+  ["uProj", "uWidok", "uCzas", "uOdRazu", "uCien", "uMoc"].forEach(n => uC[n] = gl.getUniformLocation(progCien, n));
+  ["uProj", "uWidok", "uOko", "uPapier", "uKropka"].forEach(n => uS[n] = gl.getUniformLocation(progStrona, n));
   const aS = gl.getAttribLocation(progStrona, "aXZ");
 
   /* ---------- macierze ---------- */
@@ -1487,6 +1512,8 @@ void main(){
     gl.uniformMatrix4fv(uS.uProj, false, mProj);
     gl.uniformMatrix4fv(uS.uWidok, false, mWidok);
     gl.uniform3fv(uS.uOko, oko);
+    gl.uniform3fv(uS.uPapier, M.rgb.papier);
+    gl.uniform3fv(uS.uKropka, M.rgb.linia);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     odlacz(paryS);
 
@@ -1499,6 +1526,8 @@ void main(){
     gl.uniformMatrix4fv(uC.uWidok, false, mWidok);
     gl.uniform1f(uC.uCzas, czas);
     gl.uniform1f(uC.uOdRazu, wolniej ? 1 : 0);
+    gl.uniform3fv(uC.uCien, M.ciemny ? [0.0, 0.0, 0.0] : [0.34, 0.29, 0.22]);
+    gl.uniform1f(uC.uMoc, M.ciemny ? 0.5 : 0.26);
     gl.drawArrays(gl.TRIANGLES, 0, KARTY.length * 6);
     odlacz(paryC);
     gl.depthMask(true);
@@ -1535,6 +1564,19 @@ void main(){
     requestAnimationFrame(klatka);
     setTimeout(pokazTekst, 240);
   }
+
+  function odswiezMotyw() {
+    M = motyw();
+    rysujKartki();
+    wgrajTeksture();
+    zbudujGeometrie();
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufKarty);
+    gl.bufferData(gl.ARRAY_BUFFER, dane, gl.STATIC_DRAW);
+    if (wolniej) rysuj(start + 9000);
+  }
+  const jasnosc = matchMedia("(prefers-color-scheme: dark)");
+  (jasnosc.addEventListener ? jasnosc.addEventListener("change", odswiezMotyw) : jasnosc.addListener(odswiezMotyw));
+  new MutationObserver(odswiezMotyw).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
   canvas.addEventListener("webglcontextlost", e => { e.preventDefault(); intro.classList.add("bez-3d"); });
 })();
