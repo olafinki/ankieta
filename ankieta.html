@@ -185,6 +185,27 @@ input:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 
 input::placeholder,textarea::placeholder{color:var(--ink-3)}
 .free{padding-left:36px}
 @media (max-width:520px){ .free{padding-left:0} }
+.poziomy{margin-top:12px;padding-left:36px;display:flex;flex-direction:column;gap:8px}
+.poziom-wiersz{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;
+  padding:10px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);
+}
+.poziom-nazwa{font-size:14.5px;font-weight:600;margin-right:auto}
+.poziom-wybor{display:flex;flex-wrap:wrap;gap:6px}
+.poziom-opcja{
+  position:relative;display:inline-flex;align-items:center;
+  padding:7px 13px;border:1px solid var(--line);border-radius:var(--r);
+  background:var(--paper);color:var(--ink-2);font-size:13.5px;cursor:pointer;
+  transition:background .15s, border-color .15s, color .15s;
+}
+.poziom-opcja input{position:absolute;opacity:0;width:0;height:0}
+.poziom-opcja:hover{border-color:var(--ink-3)}
+.poziom-opcja:has(input:checked){background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:500}
+.poziom-opcja:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:520px){
+  .poziomy{padding-left:0}
+  .poziom-nazwa{width:100%;margin-right:0}
+}
 .other-wrap{margin-top:7px;padding-left:27px}
 .opts.chips + .other-wrap{padding-left:0}
 @media (max-width:520px){ .other-wrap{padding-left:0} }
@@ -390,6 +411,7 @@ const STORAGE_KEY = "ankieta-matura-v1";
 const ID_KEY = "ankieta-matura-id";
 const WYSLANO_KEY = "ankieta-matura-wyslano";
 const INNE = "__inne__";
+const POZIOMY = [["Podstawa", "podstawa"], ["Rozszerzenie", "rozszerzenie"], ["Oba", "podstawa i rozszerzenie"]];
 
 const SURVEY = [
   {
@@ -414,12 +436,9 @@ const SURVEY = [
     items: [
       { id:"przedmiot", type:"check", required:true, other:true, chips:true,
         q:"Jakich przedmiotów chcesz się uczyć?",
-        hint:"Możesz zaznaczyć kilka. Przy większej liczbie przedmiotów ułożymy plan tak, żeby nie biły się o ten sam wieczór.",
-        options:["Matematyka","Język polski","Język angielski","Biologia","Chemia","Fizyka","Geografia","Historia","WOS","Informatyka"] },
-      { id:"poziom", type:"check", required:true, chips:true, other:true,
-        q:"Na jakim poziomie zdajesz?",
-        hint:"Zaznacz wszystko, co Cię dotyczy — podstawa i rozszerzenie mogą iść razem. Jeśli poziom różni się między przedmiotami, dopisz to w polu „Inne”.",
-        options:["Podstawowy","Rozszerzony","Dwujęzyczny","Jeszcze nie zdecydowałem/am"] },
+        hint:"Możesz zaznaczyć kilka. Przy polskim, matematyce i językach dopytamy jeszcze o poziom — pozostałe przedmioty zdaje się wyłącznie na rozszerzeniu.",
+        options:["Matematyka","Język polski","Język angielski","Język niemiecki","Biologia","Chemia","Fizyka","Geografia","Historia","WOS","Informatyka"],
+        poziomy:["Matematyka","Język polski","Język angielski","Język niemiecki"] },
       { id:"cel_procent", type:"radio", required:true, goal:true, other:true,
         q:"Ile chcesz procent z matury?",
         hint:"Podaj wynik, który naprawdę Cię zadowoli — od niego liczymy wstecz cały harmonogram.",
@@ -599,6 +618,12 @@ const requiredItems = allItems.filter(i => i.required);
 function norm(opt){
   return (typeof opt === "string") ? {v:opt} : opt;
 }
+function slug(t){
+  return String(t).toLowerCase()
+    .replace(/ą/g,"a").replace(/ć/g,"c").replace(/ę/g,"e").replace(/ł/g,"l")
+    .replace(/ń/g,"n").replace(/ó/g,"o").replace(/ś/g,"s").replace(/[żź]/g,"z")
+    .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+}
 function elem(tag, cls, text){
   const n = document.createElement(tag);
   if (cls) n.className = cls;
@@ -727,6 +752,46 @@ function buildQuestion(item, number){
   q.appendChild(opts);
   q.appendChild(otherWrap);
 
+  let poziomyWrap = null;
+  if (item.poziomy) {
+    poziomyWrap = elem("div", "poziomy");
+    q.appendChild(poziomyWrap);
+
+    item._odswiezPoziomy = function () {
+      const a = answers[item.id] || {};
+      const wybrane = Array.isArray(a.wybor) ? a.wybor : [];
+      const potrzebne = wybrane.filter(v => item.poziomy.indexOf(v) > -1);
+      poziomyWrap.innerHTML = "";
+      poziomyWrap.hidden = potrzebne.length === 0;
+
+      potrzebne.forEach(nazwa => {
+        const wiersz = elem("div", "poziom-wiersz");
+        wiersz.appendChild(elem("span", "poziom-nazwa", nazwa));
+        const grupa = elem("div", "poziom-wybor");
+        POZIOMY.forEach(([etykieta, wartosc], i) => {
+          const label = elem("label", "poziom-opcja");
+          const input = elem("input");
+          input.type = "radio";
+          input.name = "poziom-" + slug(nazwa);
+          input.id = "f-poziom-" + slug(nazwa) + "-" + i;
+          input.checked = (a.poziomy || {})[nazwa] === wartosc;
+          input.addEventListener("change", () => {
+            const biezace = answers[item.id] || {};
+            const mapa = Object.assign({}, biezace.poziomy);
+            mapa[nazwa] = wartosc;
+            setAnswer(item.id, Object.assign({}, biezace, { poziomy: mapa }));
+          });
+          label.appendChild(input);
+          label.appendChild(document.createTextNode(etykieta));
+          grupa.appendChild(label);
+        });
+        wiersz.appendChild(grupa);
+        poziomyWrap.appendChild(wiersz);
+      });
+    };
+    item._odswiezPoziomy();
+  }
+
   otherInput.addEventListener("input", () => {
     const otherBox = opts.querySelector('input[value="' + INNE + '"]');
     if (otherBox && !otherBox.checked) otherBox.checked = true;
@@ -745,9 +810,19 @@ function syncOther(opts, otherWrap){
 function collectChoice(item, opts, otherWrap, otherInput){
   syncOther(opts, otherWrap);
   const checked = [...opts.querySelectorAll("input:checked")].map(i => i.value);
+  const poprzednie = answers[item.id] || {};
   const value = { wybor: item.type === "check" ? checked : (checked[0] || "") };
   if (checked.includes(INNE)) value.inne = otherInput.value.trim();
+  if (item.poziomy) {
+    // poziomy odznaczonych przedmiotów znikają razem z nimi
+    const mapa = {};
+    checked.forEach(v => {
+      if (poprzednie.poziomy && poprzednie.poziomy[v]) mapa[v] = poprzednie.poziomy[v];
+    });
+    value.poziomy = mapa;
+  }
   setAnswer(item.id, value);
+  if (item._odswiezPoziomy) item._odswiezPoziomy();
 }
 
 /* ---------- zapis i postęp ---------- */
@@ -780,6 +855,11 @@ function isFilled(item){
   if (!picked) return false;
   const onlyOther = Array.isArray(w) ? (w.length === 1 && w[0] === INNE) : w === INNE;
   if (onlyOther) return !!(a.inne && a.inne.trim());
+  if (item.poziomy) {
+    const lista = Array.isArray(w) ? w : [w];
+    const bezPoziomu = lista.some(v => item.poziomy.indexOf(v) > -1 && !(a.poziomy && a.poziomy[v]));
+    if (bezPoziomu) return false;
+  }
   return true;
 }
 
@@ -798,7 +878,11 @@ function answerText(item){
   if (a == null) return "";
   if (typeof a === "string") return a;
   const w = Array.isArray(a.wybor) ? a.wybor : (a.wybor ? [a.wybor] : []);
-  const parts = w.map(v => v === INNE ? (a.inne ? a.inne : "") : v).filter(Boolean);
+  const parts = w.map(v => {
+    if (v === INNE) return a.inne ? a.inne : "";
+    const poziom = a.poziomy && a.poziomy[v];
+    return poziom ? v + " (" + poziom + ")" : v;
+  }).filter(Boolean);
   return parts.join(", ");
 }
 
@@ -852,7 +936,7 @@ function say(text, isError){
 
 function safeName(){
   const imie = (answers.imie || "ankieta").trim().toLowerCase();
-  const przedmiot = (answerText({ id:"przedmiot" }) || "").split(",")[0].trim();
+  const przedmiot = (answerText({ id:"przedmiot" }) || "").split(",")[0].replace(/\s*\(.*$/, "").trim();
   const base = (imie + "-" + przedmiot)
     .replace(/ą/g,"a").replace(/ć/g,"c").replace(/ę/g,"e").replace(/ł/g,"l")
     .replace(/ń/g,"n").replace(/ó/g,"o").replace(/ś/g,"s").replace(/[żź]/g,"z")

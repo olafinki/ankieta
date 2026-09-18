@@ -5,7 +5,7 @@ w którym odpowiedzi pojawiają się same — jako osobna zakładka dla każdej 
 
 | Plik | Do czego służy | Kto to otwiera |
 |---|---|---|
-| `ankieta.html` | 24 pytania o cel, czas, budżet i sposób uczenia się | kursant |
+| `ankieta.html` | 23 pytania o cel, czas, budżet i sposób uczenia się | kursant |
 | `panel.html` | zakładki z odpowiedziami, na żywo z arkusza, eksport CSV | Ty |
 | `serwer.gs` | skrypt Google, który przyjmuje ankiety i wpisuje je do arkusza | wklejasz raz przy konfiguracji |
 
@@ -122,9 +122,17 @@ co naprawdę sprzedajesz.
 
 **01 Kim jesteś** — imię, kontakt, termin matury.
 
-**02 Cel** — przedmioty (można zaznaczyć kilka naraz), poziom — podstawa,
-rozszerzenie albo oba — docelowy wynik procentowy, wynik obecny,
-powód (kierunek studiów, próg rekrutacyjny, stypendium).
+**02 Cel** — przedmioty (można zaznaczyć kilka naraz), docelowy wynik
+procentowy, wynik obecny, powód (kierunek studiów, próg rekrutacyjny,
+stypendium).
+
+Poziom nie jest osobnym pytaniem: po zaznaczeniu polskiego, matematyki
+albo języka pod listą przedmiotów wysuwa się rząd z wyborem *Podstawa /
+Rozszerzenie / Oba* — osobno dla każdego z nich. Pozostałe przedmioty
+zdaje się wyłącznie na rozszerzeniu, więc przy nich nic się nie pokazuje.
+Które przedmioty mają poziom, decyduje pole `poziomy` w pytaniu
+`przedmiot` w tablicy `SURVEY`; dopisanie kolejnego języka to jedna
+pozycja w `options` i jedna w `poziomy`.
 
 **03 Rytm nauki** — jedna długa sesja czy krótkie odcinki, godziny
 tygodniowo, dni w tygodniu, pora dnia, kanał (wzrok, słuch, notatki,
