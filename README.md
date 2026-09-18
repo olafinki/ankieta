@@ -5,7 +5,7 @@ w którym odpowiedzi pojawiają się same — jako osobna zakładka dla każdej 
 
 | Plik | Do czego służy | Kto to otwiera |
 |---|---|---|
-| `ankieta.html` | 23 pytania o cel, czas, budżet i sposób uczenia się | kursant |
+| `ankieta.html` | 30 pytań o cel, czas, budżet i sposób uczenia się | kursant |
 | `panel.html` | zakładki z odpowiedziami, na żywo z arkusza, eksport CSV | Ty |
 | `serwer.gs` | skrypt Google, który przyjmuje ankiety i wpisuje je do arkusza | wklejasz raz przy konfiguracji |
 
@@ -40,10 +40,13 @@ w panelu w ciągu minuty. Nikt niczego nie odsyła mailem.
 W `ankieta.html`, na początku znacznika `<script>`, uzupełnij trzy linijki:
 
 ```js
-const FIRMA = "Twoja firma";
+const FIRMA = "";
 const KONTAKT_EMAIL = "kontakt@twojafirma.pl";
 const ENDPOINT = "https://script.google.com/macros/s/AKfy.../exec";
 ```
+
+`FIRMA` jest pusta i wtedy stopka jej nie pokazuje. Wpisanie nazwy dokłada
+ją do linijki na samym dole ankiety.
 
 Zostawienie `ENDPOINT` pustego wraca do trybu awaryjnego: kursant pobiera
 plik `.json` i odsyła go mailem.
@@ -120,7 +123,8 @@ co naprawdę sprzedajesz.
 
 ## O co pytamy
 
-**01 Kim jesteś** — imię, kontakt, termin matury.
+**01 Kim jesteś** — imię, kontakt, kto wypełnia (uczeń czy rodzic),
+preferowana forma kontaktu, termin matury.
 
 **02 Cel** — przedmioty (można zaznaczyć kilka naraz), docelowy wynik
 procentowy, wynik obecny, powód (kierunek studiów, próg rekrutacyjny,
@@ -135,15 +139,23 @@ Które przedmioty mają poziom, decyduje pole `poziomy` w pytaniu
 pozycja w `options` i jedna w `poziomy`.
 
 **03 Rytm nauki** — jedna długa sesja czy krótkie odcinki, godziny
-tygodniowo, dni w tygodniu, pora dnia, kanał (wzrok, słuch, notatki,
-zadania, tłumaczenie komuś), opis własnej najlepszej sesji nauki.
+tygodniowo, dni w tygodniu, **dni ze stałymi zajęciami** (treningi, praca,
+korepetycje), **jak długo kursant wytrzymuje bez przerwy**, pora dnia,
+kanał (wzrok, słuch, notatki, zadania, tłumaczenie komuś), opis własnej
+najlepszej sesji nauki.
 
 **04 Co przeszkadza** — czego brakuje (teoria, powtórka, technika zadań,
-systematyczność), trudne działy, co wybija z rytmu.
+systematyczność), trudne działy, **nastawienie do matury** (od spokoju po
+odkładanie z przytłoczenia), co wybija z rytmu.
 
 **05 Warunki** — budżet na materiały, materiały posiadane, korepetycje,
-data zakończenia nauki, forma kontroli postępów, praca samodzielna
-czy z prowadzącym, uwagi dodatkowe.
+**od kiedy chce zacząć**, data zakończenia nauki, forma kontroli postępów,
+praca samodzielna czy z prowadzącym, **skąd o Was wie**, uwagi dodatkowe.
+
+Trzy z nowych pytań pracują na Ciebie, nie na plan: kto wypełnia ankietę
+i jak wolałby kontakt (wiadomo, do kogo i czym się odezwać), oraz „skąd
+o nas wiesz" — po kilkunastu ankietach widzisz, który kanał realnie
+przyprowadza klientów.
 
 Przy każdym pytaniu zamkniętym jest pozycja **„Inne — wpisz własną
 odpowiedź”**, która odsłania pole tekstowe. Pytania oznaczone gwiazdką
@@ -170,6 +182,23 @@ Wszystkie pytania siedzą w tablicy `SURVEY` w `ankieta.html`. Jeden wpis:
 Nowe pytanie samo dopisze sobie kolumnę w arkuszu. Jeśli chcesz, żeby
 trafiło do właściwej grupy w panelu, dopisz jego `id` do tablicy `GRUPY`
 w `panel.html` — inaczej wyląduje w sekcji „Pozostałe pytania”.
+
+## Kolory
+
+Cała paleta siedzi w zmiennych CSS na górze `ankieta.html`, akcentem jest
+Tiffany blue:
+
+```css
+--accent:#0B7A76;        /* teksty, obramowania, przyciski */
+--accent-vivid:#0ABAB5;  /* wypełnienia: pasek postępu, poświata, akcenty */
+--accent-soft:#DDF3F1;   /* tło zaznaczonych odpowiedzi */
+--gold:#A7761F;          /* pytanie o cel procentowy */
+```
+
+Głębszy odcień na teksty i przyciski jest konieczny: czysty `#0ABAB5`
+z białym napisem ma kontrast 2,4:1, czyli poniżej progu czytelności.
+Zmiana tych czterech linijek przemalowuje ankietę, intro 3D i panel —
+scena w intro czyta te same zmienne.
 
 ## Ochrona danych
 

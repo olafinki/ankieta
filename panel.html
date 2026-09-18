@@ -9,8 +9,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
 <style>
 :root{
-  --paper:#F2F4F3; --surface:#FFFFFF; --ink:#14191B; --ink-2:#4A565B; --ink-3:#78868A;
-  --line:#DBE2E0; --line-soft:#E9EEEC; --accent:#1F5B4C; --accent-ink:#FFFFFF; --accent-soft:#E5EFEA;
+  --paper:#F7F3EC; --surface:#FFFFFF; --ink:#14191B; --ink-2:#575F58; --ink-3:#8A8B80;
+  --line:#E4DDD1; --line-soft:#EFE9DF; --accent:#0B7A76; --accent-vivid:#0ABAB5; --accent-ink:#FFFFFF; --accent-soft:#DDF3F1;
   --gold:#A7761F; --gold-soft:#F5EEDF; --warn:#9B3E2E; --live:#2E7D5B; --r:8px;
   --sans:"IBM Plex Sans", ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
   --serif:"Newsreader", ui-serif, Georgia, serif;
@@ -18,14 +18,14 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#0E1312; --surface:#161D1B; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
-    --line:#27312E; --line-soft:#1D2624; --accent:#6BC4A6; --accent-ink:#0A1310; --accent-soft:#17261F;
+    --paper:#12110F; --surface:#1B1A17; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
+    --line:#2C2A25; --line-soft:#211F1B; --accent:#5FD6CF; --accent-vivid:#0ABAB5; --accent-ink:#04211F; --accent-soft:#10312F;
     --gold:#D8AE63; --gold-soft:#241E12; --warn:#E08A77; --live:#6BC4A6;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#0E1312; --surface:#161D1B; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
-  --line:#27312E; --line-soft:#1D2624; --accent:#6BC4A6; --accent-ink:#0A1310; --accent-soft:#17261F;
+  --paper:#12110F; --surface:#1B1A17; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
+  --line:#2C2A25; --line-soft:#211F1B; --accent:#5FD6CF; --accent-vivid:#0ABAB5; --accent-ink:#04211F; --accent-soft:#10312F;
   --gold:#D8AE63; --gold-soft:#241E12; --warn:#E08A77; --live:#6BC4A6;
 }
 *{box-sizing:border-box}
@@ -363,11 +363,11 @@ function otworz(id){
 }
 
 const GRUPY = [
-  { title: "Kim jest", ids: ["imie", "kontakt", "termin_matury"] },
+  { title: "Kim jest", ids: ["imie", "kontakt", "kto", "kontakt_forma", "termin_matury"] },
   { title: "Cel", ids: ["przedmiot", "poziom", "cel_procent", "stan_teraz", "po_co"] },
-  { title: "Rytm nauki", ids: ["tryb", "czas_tyg", "dni", "pora", "styl", "styl_opis"] },
-  { title: "Co przeszkadza", ids: ["braki", "dzialy", "przeszkody"] },
-  { title: "Warunki", ids: ["budzet", "materialy", "korepetycje", "do_kiedy", "kontrola", "wspolpraca", "uwagi"] }
+  { title: "Rytm nauki", ids: ["tryb", "czas_tyg", "dni", "dni_zajete", "skupienie", "pora", "styl", "styl_opis"] },
+  { title: "Co przeszkadza", ids: ["braki", "dzialy", "przeszkody", "nastroj"] },
+  { title: "Warunki", ids: ["budzet", "materialy", "korepetycje", "start", "do_kiedy", "kontrola", "wspolpraca", "skad", "uwagi"] }
 ];
 
 function rysujDetal(){

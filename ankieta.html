@@ -18,9 +18,10 @@
   --ink-3:#8A8B80;
   --line:#E4DDD1;
   --line-soft:#EFE9DF;
-  --accent:#1F5B4C;
+  --accent:#0B7A76;
+  --accent-vivid:#0ABAB5;
   --accent-ink:#FFFFFF;
-  --accent-soft:#E5EFEA;
+  --accent-soft:#DDF3F1;
   --gold:#A7761F;
   --gold-soft:#F5EEDF;
   --warn:#9B3E2E;
@@ -33,14 +34,14 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --paper:#12110F; --surface:#1B1A17; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
-    --line:#2C2A25; --line-soft:#211F1B; --accent:#6BC4A6; --accent-ink:#0A1310; --accent-soft:#17261F;
+    --line:#2C2A25; --line-soft:#211F1B; --accent:#5FD6CF; --accent-vivid:#0ABAB5; --accent-ink:#04211F; --accent-soft:#10312F;
     --gold:#D8AE63; --gold-soft:#241E12; --warn:#E08A77;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
   }
 }
 :root[data-theme="dark"]{
   --paper:#12110F; --surface:#1B1A17; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
-  --line:#2C2A25; --line-soft:#211F1B; --accent:#6BC4A6; --accent-ink:#0A1310; --accent-soft:#17261F;
+  --line:#2C2A25; --line-soft:#211F1B; --accent:#5FD6CF; --accent-vivid:#0ABAB5; --accent-ink:#04211F; --accent-soft:#10312F;
   --gold:#D8AE63; --gold-soft:#241E12; --warn:#E08A77;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
 }
@@ -79,7 +80,7 @@ img{max-width:100%}
   font-variant-numeric:tabular-nums;
 }
 .track{flex:1;height:3px;background:var(--line);border-radius:99px;overflow:hidden;min-width:60px}
-.fill{height:100%;width:0%;background:var(--accent);border-radius:99px;transition:width .35s cubic-bezier(.2,.8,.3,1)}
+.fill{height:100%;width:0%;background:linear-gradient(90deg, var(--accent), var(--accent-vivid));border-radius:99px;transition:width .35s cubic-bezier(.2,.8,.3,1)}
 .saved{
   font-family:var(--mono);font-size:11px;color:var(--ink-3);white-space:nowrap;
   opacity:0;transition:opacity .4s;
@@ -116,7 +117,8 @@ h1 em{font-style:italic;color:var(--accent)}
 .sec-head{display:flex;gap:16px;align-items:baseline;margin-bottom:34px}
 .sec-num{
   font-family:var(--mono);font-size:12px;color:var(--accent);
-  letter-spacing:.06em;flex:none;padding-top:2px;
+  letter-spacing:.06em;flex:none;
+  background:var(--accent-soft);border-radius:99px;padding:3px 10px;
 }
 .sec-head h2{
   font-family:var(--serif);font-weight:400;font-size:24px;letter-spacing:-.01em;
@@ -215,7 +217,7 @@ input::placeholder,textarea::placeholder{color:var(--ink-3)}
 .goal .opt:has(input:checked) .mark{background:var(--gold);border-color:var(--gold)}
 
 /* ---------- podsumowanie ---------- */
-.finish{margin-top:48px;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.finish{margin-top:48px;border:1px solid var(--line);border-top:3px solid var(--accent-vivid);border-radius:12px;background:var(--surface);overflow:hidden}
 .finish-head{padding:26px 24px 0}
 .finish-head h2{font-family:var(--serif);font-weight:400;font-size:26px;margin:0 0 8px;letter-spacing:-.01em}
 .finish-head p{margin:0;color:var(--ink-2);font-size:15px;max-width:52ch}
@@ -256,7 +258,9 @@ button.primary:hover{filter:brightness(1.08)}
   height:min(93svh, 840px);
   min-height:560px;
   overflow:hidden;
-  background:var(--paper);
+  background:
+    radial-gradient(72% 52% at 79% 6%, color-mix(in srgb, var(--accent-vivid) 16%, transparent) 0%, transparent 64%),
+    var(--paper);
   isolation:isolate;
 }
 .intro canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -347,7 +351,7 @@ html{scroll-behavior:smooth}
       <p class="lede">Odpowiedz na kilka pytań o cel, czas i to, jak uczysz się najlepiej. Ułożymy z tego tygodniowy plan skrojony na Twój rytm — z miejscem na odpoczynek i bez zarywania nocy.</p>
       <div class="intro-akcje">
         <a class="cta" href="#form">Zacznij ankietę <span class="strzalka" aria-hidden="true">↓</span></a>
-        <span class="intro-meta">ok. 6 minut · bez logowania</span>
+        <span class="intro-meta">ok. 8 minut · bez logowania</span>
       </div>
     </div>
     <div class="intro-stopka">
@@ -400,7 +404,8 @@ html{scroll-behavior:smooth}
    Ankieta startowa maturzysty
    Zmień dwie linie poniżej na dane swojej firmy — reszta działa sama.
    ========================================================================== */
-const FIRMA = "Twoja firma";
+/* Nazwa firmy w stopce. Zostaw pustą, a stopka po prostu jej nie pokaże. */
+const FIRMA = "";
 const KONTAKT_EMAIL = "kontakt@twojafirma.pl";
 
 /* Adres skryptu Google (kończy się na /exec). Zostaw pusty, a ankieta
@@ -425,6 +430,12 @@ const SURVEY = [
         q:"Gdzie mamy odesłać gotowy plan?",
         hint:"E-mail albo numer telefonu — wybierz, co wygodniejsze.",
         placeholder:"np. zuzia@example.com" },
+      { id:"kto", type:"radio", required:false, chips:true, other:true,
+        q:"Kto wypełnia ankietę?",
+        options:["Uczeń lub uczennica","Rodzic albo opiekun"] },
+      { id:"kontakt_forma", type:"radio", required:false, chips:true, other:true,
+        q:"Jak wolisz, żebyśmy się odezwali?",
+        options:["E-mail","Telefon","SMS","WhatsApp","Messenger"] },
       { id:"termin_matury", type:"radio", required:true, chips:true, other:true,
         q:"W którym terminie zdajesz maturę?",
         options:["Maj 2026","Maj 2027","Maj 2028","Poprawka w sierpniu"] }
@@ -485,6 +496,14 @@ const SURVEY = [
       { id:"dni", type:"radio", required:false, chips:true, other:true,
         q:"Ile dni w tygodniu realnie możesz usiąść do nauki?",
         options:["1–2 dni","3–4 dni","5–6 dni","Codziennie"] },
+      { id:"dni_zajete", type:"check", required:true, chips:true, other:true,
+        q:"W jakie dni masz stałe zajęcia?",
+        hint:"Treningi, praca, korepetycje, dojazdy — wszystko, co na sztywno zajmuje Ci popołudnie. Te dni ominiemy przy układaniu planu.",
+        options:["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Niedziela","Nie mam stałych zajęć"] },
+      { id:"skupienie", type:"radio", required:false, chips:true, other:true,
+        q:"Jak długo dajesz radę uczyć się bez przerwy?",
+        hint:"Od tego zależy, jak długie bloki wpiszemy w plan — nie ma sensu planować dwóch godzin, jeśli po czterdziestu minutach odpływasz.",
+        options:["Do 25 minut","30–45 minut","45–60 minut","1,5–2 godziny","Dłużej"] },
       { id:"pora", type:"radio", required:false, other:true,
         q:"O jakiej porze uczysz się najskuteczniej?",
         options:[
@@ -530,6 +549,15 @@ const SURVEY = [
         q:"Które działy albo typy zadań sprawiają Ci największą trudność?",
         hint:"Wypisz je z głowy, choćby hasłowo — to od nich zwykle zaczynamy plan.",
         placeholder:"np. stereometria, ciągi, zadania na dowodzenie" },
+      { id:"nastroj", type:"radio", required:false, other:true,
+        q:"Jak się czujesz z myślą o maturze?",
+        hint:"Nie ma złej odpowiedzi. Plan dla kogoś, kto panikuje, wygląda inaczej niż dla kogoś, kto jest spokojny.",
+        options:[
+          {v:"Spokojnie", note:"wiem, że dam radę, chcę to tylko poukładać"},
+          {v:"Lekki stres", note:"mobilizuje mnie, ale bywa męczący"},
+          {v:"Duży stres", note:"nie wiem, od czego zacząć"},
+          {v:"Odkładam to na później", note:"bo sama myśl mnie przytłacza"}
+        ] },
       { id:"przeszkody", type:"check", required:false, other:true,
         q:"Co najczęściej wybija Cię z systematycznej nauki?",
         options:[
@@ -572,6 +600,10 @@ const SURVEY = [
       { id:"korepetycje", type:"radio", required:false, chips:true, other:true,
         q:"Chodzisz obecnie na korepetycje lub kurs?",
         options:["Nie","Tak, raz w tygodniu","Tak, dwa razy lub częściej","Planuję zacząć"] },
+      { id:"start", type:"radio", required:true, chips:true, other:true,
+        q:"Od kiedy chcesz zacząć?",
+        hint:"Im wcześniej ruszamy, tym łagodniejszy może być plan.",
+        options:["Od razu","W przyszłym tygodniu","Od nowego miesiąca","Po najbliższej próbnej","Jeszcze nie wiem"] },
       { id:"do_kiedy", type:"radio", required:true, other:true,
         q:"Do kiedy chciałbyś skończyć się uczyć?",
         hint:"Chodzi o moment, w którym materiał jest przerobiony, a zostaje już tylko spokojne powtarzanie.",
@@ -597,6 +629,9 @@ const SURVEY = [
           {v:"Regularne zajęcia jeden na jeden"},
           {v:"W małej grupie"}
         ] },
+      { id:"skad", type:"radio", required:false, chips:true, other:true,
+        q:"Skąd o nas wiesz?",
+        options:["Z polecenia","Instagram","TikTok","YouTube","Google","Ze szkoły"] },
       { id:"uwagi", type:"textarea", required:false,
         q:"Czy jest coś jeszcze, co powinniśmy wiedzieć?",
         hint:"Dysleksja lub inne dostosowania, olimpiada, dłuższy wyjazd, praca na zmiany, cokolwiek, co wpływa na tydzień.",
@@ -1078,8 +1113,11 @@ if (ENDPOINT) {
   } catch (e) {}
 }
 
-document.getElementById("foot-text").textContent =
-  "Ankieta startowa · " + FIRMA + " · odpowiedzi trafiają wyłącznie do nas i służą do przygotowania Twojego planu nauki. Pytania oznaczone gwiazdką są wymagane.";
+document.getElementById("foot-text").textContent = [
+  "Ankieta startowa",
+  FIRMA.trim(),
+  "odpowiedzi trafiają wyłącznie do nas i służą do przygotowania Twojego planu nauki. Pytania oznaczone gwiazdką są wymagane."
+].filter(Boolean).join(" · ");
 updateProgress();
 renderSummary();
 if (Object.keys(answers).length) persist();
