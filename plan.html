@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Szkic planu nauki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+<style>
+:root{
+  --paper:#F7F3EC; --surface:#FFFFFF; --ink:#14191B; --ink-2:#575F58; --ink-3:#8A8B80;
+  --line:#E4DDD1; --line-soft:#EFE9DF;
+  --accent:#0B7A76; --accent-vivid:#0ABAB5; --accent-ink:#FFFFFF; --accent-soft:#DDF3F1;
+  --gold:#A7761F; --gold-soft:#F5EEDF; --warn:#9B3E2E; --r:8px;
+  --sans:"IBM Plex Sans", ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --serif:"Newsreader", ui-serif, Georgia, serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#12110F; --surface:#1B1A17; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
+    --line:#2C2A25; --line-soft:#211F1B;
+    --accent:#5FD6CF; --accent-vivid:#0ABAB5; --accent-ink:#04211F; --accent-soft:#10312F;
+    --gold:#D8AE63; --gold-soft:#241E12; --warn:#E08A77;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12110F; --surface:#1B1A17; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
+  --line:#2C2A25; --line-soft:#211F1B;
+  --accent:#5FD6CF; --accent-vivid:#0ABAB5; --accent-ink:#04211F; --accent-soft:#10312F;
+  --gold:#D8AE63; --gold-soft:#241E12; --warn:#E08A77;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55}
+[hidden]{display:none !important}
+.wrap{max-width:860px;margin:0 auto;padding-left:20px;padding-right:20px;padding-block:40px 72px}
+
+/* ---------- sterowanie ---------- */
+.top{display:flex;flex-wrap:wrap;gap:14px 18px;align-items:flex-end;margin-bottom:24px}
+.top-text{flex:1;min-width:230px}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(28px,4.6vw,40px);line-height:1.1;margin:0;letter-spacing:-.015em}
+.narzedzia{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{
+  font-family:var(--sans);font-size:14px;font-weight:500;cursor:pointer;
+  border-radius:var(--r);padding:9px 15px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink);transition:all .15s;
+}
+button:hover{border-color:var(--ink-3)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button[disabled]{opacity:.5;cursor:default}
+button.wlaczony{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+
+.zrodlo{
+  border:1px solid var(--line);border-top:3px solid var(--accent-vivid);border-radius:12px;
+  background:var(--surface);padding:18px 20px;margin-bottom:22px;
+  display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;
+}
+.pole{display:flex;flex-direction:column;gap:6px;flex:1;min-width:220px}
+.pole span{font-size:13px;color:var(--ink-2)}
+select,input[type="text"],input[type="password"]{
+  font-family:var(--sans);font-size:15px;color:var(--ink);background:var(--paper);
+  border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;width:100%;
+}
+select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.status{font-size:14px;color:var(--ink-2);margin:12px 0 0;min-height:0}
+.status:empty{display:none}
+.status.err{color:var(--warn)}
+.uwaga{font-size:13px;color:var(--ink-3);margin:10px 0 0}
+
+/* ---------- plan ---------- */
+.plan{border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.plan-head{padding:28px 28px 24px;border-bottom:1px solid var(--line-soft);background:var(--accent-soft)}
+.plan-head h2{font-family:var(--serif);font-weight:400;font-size:32px;margin:0 0 6px;letter-spacing:-.015em;line-height:1.1}
+.plan-head .pod{margin:0;color:var(--ink-2);font-size:15px}
+.chipy{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.chip{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;padding:4px 10px;border-radius:99px;
+  background:var(--surface);color:var(--accent);border:1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.chip.gold{color:var(--gold);border-color:color-mix(in srgb, var(--gold) 38%, transparent)}
+.chip.plain{color:var(--ink-3);border-color:var(--line)}
+
+.kafelki{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:var(--line-soft)}
+.kafel{background:var(--surface);padding:16px 18px}
+.kafel dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 5px}
+.kafel dd{margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.kafel dd small{font-size:13px;font-weight:400;color:var(--ink-3);margin-left:3px}
+
+.blok{padding:26px 28px;border-top:1px solid var(--line-soft)}
+.blok h3{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 16px;
+}
+.blok > p{margin:0 0 14px;color:var(--ink-2)}
+
+/* tydzień */
+.tydzien{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+@media (max-width:640px){ .tydzien{grid-template-columns:repeat(2,1fr)} }
+.dzien{border:1px solid var(--line);border-radius:var(--r);padding:10px;min-height:96px;background:var(--paper)}
+.dzien.nauka{background:var(--accent-soft);border-color:color-mix(in srgb, var(--accent) 35%, transparent)}
+.dzien.zajety{background:var(--gold-soft);border-color:color-mix(in srgb, var(--gold) 28%, transparent)}
+.dzien-nazwa{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:7px}
+.dzien.nauka .dzien-nazwa{color:var(--accent)}
+.dzien.zajety .dzien-nazwa{color:var(--gold)}
+.sesja{font-size:13.5px;font-weight:600;line-height:1.35;margin-bottom:4px}
+.sesja small{display:block;font-weight:400;color:var(--ink-2);font-size:12.5px}
+.dzien-pusty{font-size:13px;color:var(--ink-3)}
+
+/* etapy */
+.etap{display:grid;grid-template-columns:96px 1fr;gap:18px;padding-block:16px;border-bottom:1px solid var(--line-soft)}
+.etap:last-child{border-bottom:0}
+@media (max-width:560px){ .etap{grid-template-columns:1fr;gap:6px} }
+.etap-czas{font-family:var(--mono);font-size:12px;color:var(--accent);line-height:1.5}
+.etap-czas b{display:block;font-weight:500;color:var(--ink-3);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.etap h4{margin:0 0 5px;font-size:16.5px;font-weight:600}
+.etap p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.6}
+
+/* listy */
+ul.zasady{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+ul.zasady li{display:flex;gap:11px;font-size:14.5px;line-height:1.6;color:var(--ink-2)}
+ul.zasady li::before{
+  content:"";flex:none;width:7px;height:7px;border-radius:2px;background:var(--accent-vivid);margin-top:8px;
+}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+td:first-child{font-weight:600;white-space:nowrap}
+
+.stopka-plan{padding:18px 28px;border-top:1px solid var(--line-soft);background:var(--paper);font-size:13px;color:var(--ink-3)}
+.blank{padding:56px 24px;text-align:center;color:var(--ink-3)}
+.edycja [contenteditable="true"]{outline:1px dashed color-mix(in srgb, var(--accent) 45%, transparent);outline-offset:3px;border-radius:3px}
+
+.drop{
+  border:1.5px dashed var(--line);border-radius:12px;background:var(--surface);
+  padding:18px;text-align:center;cursor:pointer;margin-bottom:22px;font-size:14.5px;color:var(--ink-2);
+}
+.drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+
+@media print{
+  @page{margin:14mm}
+  body{background:#fff}
+  .wrap{max-width:none;padding:0}
+  .top,.zrodlo,.drop,.status,.uwaga{display:none !important}
+  .plan{border:0;border-radius:0}
+  .plan-head{background:#fff;border-bottom:2px solid #000;padding:0 0 14px}
+  .blok,.stopka-plan{padding-left:0;padding-right:0}
+  .kafelki{background:none;gap:0;border-block:1px solid #ddd}
+  .kafel{padding:10px 14px 10px 0}
+  .blok,.etap,.dzien{break-inside:avoid}
+  .dzien{min-height:0}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="top-text">
+      <p class="eyebrow">Generator</p>
+      <h1>Szkic planu nauki</h1>
+    </div>
+    <div class="narzedzia">
+      <button id="btn-edycja" type="button">Tryb edycji</button>
+      <button id="btn-kopiuj" type="button">Kopiuj tekst</button>
+      <button class="primary" id="btn-druk" type="button">Drukuj / PDF</button>
+    </div>
+  </div>
+
+  <div class="zrodlo">
+    <label class="pole" for="kursant"><span>Kursant</span>
+      <select id="kursant"><option value="">— najpierw wczytaj ankiety —</option></select>
+    </label>
+    <button id="btn-odswiez" type="button">Odśwież listę</button>
+    <button id="btn-polacz" type="button">Połączenie</button>
+  </div>
+
+  <div class="zrodlo" id="ustawienia" hidden>
+    <label class="pole" for="cfg-url"><span>Adres skryptu (kończy się na /exec)</span>
+      <input type="text" id="cfg-url" placeholder="https://script.google.com/macros/s/AKfy.../exec" autocomplete="off"></label>
+    <label class="pole" for="cfg-key"><span>Klucz odczytu</span>
+      <input type="password" id="cfg-key" placeholder="ten sam ciąg co w serwer.gs" autocomplete="off"></label>
+    <button class="primary" id="cfg-zapisz" type="button">Połącz</button>
+  </div>
+
+  <div class="drop" id="drop" tabindex="0" role="button">
+    Nie masz połączenia? Przeciągnij tu plik <code>.json</code> z ankietą albo kliknij, żeby wybrać.
+  </div>
+  <input type="file" id="picker" accept="application/json,.json" multiple hidden>
+  <p class="status" id="status"></p>
+
+  <section class="plan" id="plan">
+    <p class="blank">Wybierz kursanta z listy albo wczytaj plik z ankietą — plan ułoży się sam.</p>
+  </section>
+
+  <p class="uwaga">Plan powstaje z odpowiedzi w ankiecie. To szkic do sprawdzenia i dopisania własnych uwag, nie gotowiec — włącz tryb edycji, popraw, co trzeba, i dopiero wtedy drukuj.</p>
+</div>
+
+<script>
+/* ==========================================================================
+   Generator szkicu planu — czyta ankietę i układa z niej tygodniowy plan.
+   Połączenie z arkuszem dzieli z panelem (te same ustawienia w przeglądarce).
+   ========================================================================== */
+const KEY_URL = "panel-endpoint";
+const KEY_KLUCZ = "panel-klucz";
+
+const DNI = ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Niedziela"];
+const DNI_SKROT = ["Pon","Wt","Śr","Czw","Pt","Sob","Nd"];
+const MIESIACE = ["stycznia","lutego","marca","kwietnia","maja","czerwca","lipca","sierpnia","września","października","listopada","grudnia"];
+
+let ankiety = [];
+const $ = id => document.getElementById(id);
+
+function say(t, err){ const s = $("status"); s.textContent = t || ""; s.classList.toggle("err", !!err); }
+function ustawienia(){
+  try { return { url: localStorage.getItem(KEY_URL) || "", klucz: localStorage.getItem(KEY_KLUCZ) || "" }; }
+  catch (e) { return { url: "", klucz: "" }; }
+}
+
+/* ---------- odczyt ankiet ---------- */
+async function pobierz(){
+  const { url, klucz } = ustawienia();
+  if (!url) { $("ustawienia").hidden = false; say("Podaj adres skryptu i klucz — te same co w panelu."); return; }
+  say("Wczytuję ankiety…");
+  try {
+    const res = await fetch(url + (url.includes("?") ? "&" : "?") + "klucz=" + encodeURIComponent(klucz));
+    if (!res.ok) throw new Error("serwer odpowiedział " + res.status);
+    const out = await res.json();
+    if (!out.ok) throw new Error(out.blad === "zly-klucz" ? "klucz odczytu się nie zgadza" : (out.blad || "odmowa"));
+    scal(out.ankiety || []);
+    say(ankiety.length ? "" : "Arkusz jest na razie pusty.");
+  } catch (e) {
+    say("Nie udało się pobrać ankiet: " + e.message + ". Możesz wczytać plik .json z dysku.", true);
+  }
+}
+
+function scal(nowe){
+  nowe.forEach(w => {
+    const id = String(w.id || w.wypelniono || Math.random());
+    const rekord = { id, dane: w.dane || {}, imie: w.imie || "", kiedy: w.odebrano || w.wypelniono || "" };
+    const i = ankiety.findIndex(a => a.id === id);
+    if (i > -1) ankiety[i] = rekord; else ankiety.push(rekord);
+  });
+  ankiety.sort((a, b) => String(b.kiedy).localeCompare(String(a.kiedy)));
+  const sel = $("kursant");
+  const biezacy = sel.value;
+  sel.innerHTML = '<option value="">— wybierz kursanta —</option>';
+  ankiety.forEach(a => {
+    const o = document.createElement("option");
+    o.value = a.id;
+    o.textContent = (a.imie || val(a, "imie") || "Bez imienia") + (val(a, "przedmiot") ? " · " + val(a, "przedmiot").split(",")[0].trim() : "");
+    sel.appendChild(o);
+  });
+  if (biezacy && ankiety.some(a => a.id === biezacy)) sel.value = biezacy;
+}
+
+function val(a, id){ const d = a.dane && a.dane[id]; return d ? (d.odpowiedz || "") : ""; }
+function lista(a, id){ return val(a, id).split(",").map(x => x.trim()).filter(Boolean); }
+
+/* ---------- liczenie ---------- */
+function liczby(t){ return (String(t || "").match(/\d+(?:[.,]\d+)?/g) || []).map(x => parseFloat(x.replace(",", "."))); }
+function srednia(n){ return n.length ? n.reduce((a, b) => a + b, 0) / n.length : 0; }
+
+function godzinyTygodniowo(t){
+  const n = liczby(t);
+  if (!n.length) return 4;
+  if (/ponad|wi[ęe]cej/i.test(t)) return n[0] * 1.2;
+  if (/^\s*do\s/i.test(t)) return n[0];
+  return srednia(n);
+}
+function minutySesji(t, tryb){
+  const n = liczby(t);
+  let m = n.length ? (/godzin/i.test(t) ? srednia(n) * 60 : srednia(n)) : 45;
+  if (/d[łl]u[żz]ej/i.test(t || "")) m = 135;
+  if (/jedna d[łl]uga/i.test(tryb || "")) m = Math.max(m, 90);
+  if (/kr[óo]tkie odcinki/i.test(tryb || "")) m = Math.min(m, 45);
+  return Math.max(20, Math.round(m / 5) * 5);
+}
+function procent(t){ const n = liczby(t); return n.length ? Math.round(srednia(n)) : null; }
+function ileDniChce(t){
+  const n = liczby(t);
+  if (/codziennie/i.test(t || "")) return 7;
+  return n.length ? Math.round(srednia(n)) : 4;
+}
+function dataMatury(termin){
+  const rok = liczby(termin)[0];
+  const dzis = new Date();
+  if (/poprawk/i.test(termin || "")) {
+    const r = dzis.getMonth() > 7 ? dzis.getFullYear() + 1 : dzis.getFullYear();
+    return new Date(r, 7, 25);
+  }
+  if (rok && rok > 2000) return new Date(rok, 4, 7);
+  return new Date(dzis.getMonth() > 4 ? dzis.getFullYear() + 1 : dzis.getFullYear(), 4, 7);
+}
+function dataStartu(start){
+  const d = new Date(); d.setHours(0, 0, 0, 0);
+  if (/przysz[łl]ym tygodniu/i.test(start || "")) {
+    const p = new Date(d); p.setDate(p.getDate() + ((8 - p.getDay()) % 7 || 7)); return p;
+  }
+  if (/nowego miesi[ąa]ca/i.test(start || "")) return new Date(d.getFullYear(), d.getMonth() + 1, 1);
+  if (/pr[óo]bnej/i.test(start || "")) { const p = new Date(d); p.setDate(p.getDate() + 28); return p; }
+  return d;
+}
+function dataKonca(doKiedy, matura){
+  const k = new Date(matura);
+  if (/trzy miesi[ąa]ce/i.test(doKiedy || "")) k.setDate(k.getDate() - 90);
+  else if (/miesi[ąa]c przed/i.test(doKiedy || "")) k.setDate(k.getDate() - 30);
+  else if (/dwa tygodnie/i.test(doKiedy || "")) k.setDate(k.getDate() - 14);
+  return k;
+}
+function dataTekst(d){ return d.getDate() + " " + MIESIACE[d.getMonth()] + " " + d.getFullYear(); }
+function tygodnieMiedzy(a, b){ return Math.max(0, Math.round((b - a) / (7 * 86400000))); }
+
+function przedmioty(a){
+  return lista(a, "przedmiot").map(s => {
+    const m = s.match(/^(.*?)\s*\((.*)\)\s*$/);
+    const nazwa = (m ? m[1] : s).trim();
+    const poziom = m ? m[2].trim() : "";
+    let waga = 1.2;
+    if (/podstawa i rozszerzenie/i.test(poziom)) waga = 1.9;
+    else if (/rozszerzenie/i.test(poziom)) waga = 1.5;
+    else if (/podstawa/i.test(poziom)) waga = 1;
+    return { nazwa, poziom, waga };
+  });
+}
+
+function rozlozRownomiernie(tab, ile){
+  if (ile >= tab.length) return tab.slice();
+  const krok = tab.length / ile, out = [];
+  for (let i = 0; i < ile; i++) out.push(tab[Math.round(i * krok) % tab.length]);
+  return [...new Set(out)];
+}
+
+function przeplot(pary){
+  // pары: [{nazwa, ile}] → kolejka bez dwóch tych samych pod rząd, gdy się da
+  const kubelki = pary.map(p => ({ ...p }));
+  const out = [];
+  let ostatni = null;
+  while (kubelki.some(k => k.ile > 0)) {
+    const dostepne = kubelki.filter(k => k.ile > 0);
+    const inne = dostepne.filter(k => k.nazwa !== ostatni);
+    const wybor = (inne.length ? inne : dostepne).sort((a, b) => b.ile - a.ile)[0];
+    out.push(wybor.nazwa);
+    wybor.ile--;
+    ostatni = wybor.nazwa;
+  }
+  return out;
+}
+
+function poraTekst(t){
+  if (/rano/i.test(t)) return "rano, przed szkołą";
+  if (/wczesne popo/i.test(t)) return "zaraz po powrocie ze szkoły";
+  if (/p[óo][źz]ne popo/i.test(t)) return "późnym popołudniem, 16:00–19:00";
+  if (/wiecz[óo]r/i.test(t)) return "wieczorem, 19:00–22:00";
+  if (/noc/i.test(t)) return "późnym wieczorem";
+  return "o porze, która tego dnia pasuje";
+}
+
+const MATERIALY = [
+  { test: /^0\s*z[łl]/i, wiersze: [
+      ["Arkusze CKE", "Wszystkie z ostatnich lat, za darmo ze strony CKE. To najważniejszy materiał i nic nie kosztuje."],
+      ["Zbiory zadań", "Z biblioteki szkolnej albo używane od starszego rocznika."],
+      ["Kursy", "Darmowe kanały na YouTube — do teorii, której nie ma w notatkach."]
+    ] },
+  { test: /do 50/i, wiersze: [
+      ["Arkusze CKE", "Podstawa planu, za darmo."],
+      ["Jeden zbiór zadań", "Używany, do działu, który sprawia największą trudność."],
+      ["Fiszki", "Darmowa aplikacja na wzory i definicje."]
+    ] },
+  { test: /50[–-]150/i, wiersze: [
+      ["Repetytorium", "Jedno, dopasowane do poziomu — teoria i zadania w jednym."],
+      ["Zbiór zadań maturalnych", "Nowy, z rozwiązaniami krok po kroku."],
+      ["Arkusze CKE", "Za darmo, do całego etapu arkuszowego."]
+    ] },
+  { test: /150[–-]300/i, wiersze: [
+      ["Repetytorium i zbiór zadań", "Komplet na cały okres przygotowań."],
+      ["Kurs online", "Do działów, które idą najgorzej — taniej niż korepetycje."],
+      ["Arkusze CKE", "Za darmo, przez cały czas trwania planu."]
+    ] },
+  { test: /300[–-]600/i, wiersze: [
+      ["Kurs online z bazą zadań", "Trzon materiału, z bieżącym sprawdzaniem."],
+      ["Repetytorium i zbiór zadań", "Do pracy własnej między sesjami."],
+      ["Konsultacje", "Kilka pojedynczych spotkań na najtrudniejsze działy."]
+    ] },
+  { test: /powy[żz]ej 600/i, wiersze: [
+      ["Zajęcia indywidualne", "Regularne, na działy, które same nie ruszą."],
+      ["Kurs online z bazą zadań", "Do samodzielnej pracy między zajęciami."],
+      ["Komplet książek", "Repetytorium, zbiór zadań, arkusze CKE."]
+    ] }
+];
+
+const ZASADY = [
+  { pole:"nastroj", test:/odk[łl]adam/i, tekst:"Pierwszy tydzień jest celowo lekki. Chodzi o to, żeby w ogóle wystartować — ambicje wchodzą od drugiego tygodnia." },
+  { pole:"nastroj", test:/du[żz]y stres/i, tekst:"Zaczynamy od działu, który jest najbliżej opanowania. Szybka wygrana robi więcej dla spokoju niż rzucenie się na najtrudniejsze." },
+  { pole:"nastroj", test:/lekki stres/i, tekst:"Lekki stres pracuje na Twoją korzyść — plan go nie zwiększa, trzyma stałe tempo bez zrywów." },
+  { pole:"nastroj", test:/spokojnie/i, tekst:"Spokojna głowa pozwala trzymać równe tempo od pierwszego tygodnia, bez rozgrzewki." },
+  { pole:"przeszkody", test:/telefon/i, tekst:"Telefon na czas bloku poza zasięgiem ręki — w innym pokoju, nie ekranem do dołu." },
+  { pole:"przeszkody", test:/brak konkretnego planu/i, tekst:"Każdy blok ma z góry wpisane zadanie. Nie zaczynasz od decydowania, co dziś robić — to zżera najwięcej energii." },
+  { pole:"przeszkody", test:/odk[łl]adanie/i, tekst:"Zasada pięciu minut: siadasz na pięć minut bez zobowiązań. Zwykle po nich robi się dalej." },
+  { pole:"przeszkody", test:/zm[ęe]czenie/i, tekst:"Po szkole najpierw przerwa i jedzenie, dopiero potem blok. Nauka na resztkach nie wchodzi." },
+  { pole:"przeszkody", test:/inne przedmioty/i, tekst:"W tygodniu ze sprawdzianami przesuwamy blok, nie kasujemy. Plan ma się uginać, nie pękać." },
+  { pole:"przeszkody", test:/praca zarobkowa/i, tekst:"Dni z pracą są w planie puste z założenia — nie planujemy nauki po zmianie." },
+  { pole:"styl", test:/wizualnie/i, tekst:"Do każdego działu jedna kartka-schemat: wzory, zależności, typowe pułapki. Wraca się do niej przed arkuszem." },
+  { pole:"styl", test:/ze s[łl]uchu/i, tekst:"Trudniejsze tematy tłumacz sobie na głos, jakbyś uczył kogoś innego. Zacięcie się pokazuje dziurę." },
+  { pole:"styl", test:/przez zadania/i, tekst:"Zaczynasz od zadania, teorię doczytujesz dopiero, gdy się zatniesz. Odwrotna kolejność Cię nudzi." },
+  { pole:"styl", test:/czytaj[ąa]c/i, tekst:"Notatka własnymi słowami po każdym bloku — trzy zdania wystarczą, byle własne." },
+  { pole:"styl", test:/t[łl]umacz[ąa]c/i, tekst:"Raz w tygodniu wytłumacz komuś jeden temat. Kto rozumie, potrafi powiedzieć prosto." },
+  { pole:"styl", test:/w ruchu/i, tekst:"Powtórki wzorów na stojąco albo w czasie spaceru — z fiszkami w ręku." },
+  { pole:"braki", test:/systematyczno/i, tekst:"Liczy się seria, nie długość. Lepiej dwadzieścia minut w zaplanowany dzień niż trzy godziny raz na dwa tygodnie." },
+  { pole:"braki", test:/motywacji/i, tekst:"Na widoku kartka z celem procentowym i kierunkiem. W marcu to jedyne, co czasem trzyma przy biurku." },
+  { pole:"braki", test:/rozplanowania czasu/i, tekst:"Każdy arkusz piszesz z zegarem od pierwszego tygodnia etapu arkuszowego. Czas to osobna umiejętność." }
+];
+
+function zbuduj(a){
+  const p = przedmioty(a);
+  const matura = dataMatury(val(a, "termin_matury"));
+  let start = dataStartu(val(a, "start"));
+  let koniec = dataKonca(val(a, "do_kiedy"), matura);
+  if (koniec <= start) { koniec = new Date(start); koniec.setDate(koniec.getDate() + 28); }
+  const tygodnie = Math.max(1, tygodnieMiedzy(start, koniec));
+  const powtorki = tygodnieMiedzy(koniec, matura);
+
+  const godz = godzinyTygodniowo(val(a, "czas_tyg"));
+  const sesjaMin = minutySesji(val(a, "skupienie"), val(a, "tryb"));
+  let ileSesji = Math.max(2, Math.round(godz * 60 / sesjaMin));
+
+  const zajete = lista(a, "dni_zajete").filter(x => DNI.includes(x));
+  const wolne = DNI.filter(d => !zajete.includes(d));
+  const chce = ileDniChce(val(a, "dni"));
+  const ileDni = Math.max(1, Math.min(chce, wolne.length || 1, ileSesji));
+  const dniNauki = rozlozRownomiernie(wolne.length ? wolne : DNI, ileDni);
+  ileSesji = Math.min(ileSesji, dniNauki.length * 2);
+
+  // przydział przedmiotów do sesji
+  const suma = p.reduce((s, x) => s + x.waga, 0) || 1;
+  const pary = p.map(x => ({ nazwa: x.nazwa, ile: Math.max(1, Math.round(ileSesji * x.waga / suma)) }));
+  let kolejka = przeplot(pary);
+  while (kolejka.length < ileSesji) kolejka.push(kolejka[kolejka.length - 1] || (p[0] && p[0].nazwa) || "Nauka");
+  kolejka.length = ileSesji;
+
+  const tydzien = DNI.map(d => ({ dzien: d, zajety: zajete.includes(d), sesje: [] }));
+  const n = dniNauki.length;
+  kolejka.forEach((przedmiot, i) => {
+    const obieg = Math.floor(i / n);
+    const poz = i % n;
+    // co drugi obieg idzie od końca tygodnia, żeby w jednym dniu nie wylądował
+    // dwa razy ten sam przedmiot, a dokładka trafiła na weekend
+    const d = dniNauki[obieg % 2 === 0 ? poz : n - 1 - poz];
+    const wiersz = tydzien.find(x => x.dzien === d);
+    if (wiersz) wiersz.sesje.push(przedmiot);
+  });
+  const podwojne = tydzien.some(d => d.sesje.length > 1);
+
+  // etapy
+  const braki = lista(a, "braki");
+  const luka = (procent(val(a, "cel_procent")) || 70) - (procent(val(a, "stan_teraz")) || 40);
+  const trudne = val(a, "dzialy").trim();
+  const etapy = [
+    { nazwa:"Fundamenty i zaległości",
+      waga: braki.some(b => /teorii od podstaw/i.test(b)) ? 0.32 : 0.14,
+      opis:"Odbudowa podstaw" + (trudne ? ", zaczynając od działów wskazanych w ankiecie: " + trudne + "." : ".") +
+           " Na tym etapie więcej teorii niż zadań, ale każdą porcję zamykasz trzema zadaniami, żeby od razu ją sprawdzić." },
+    { nazwa:"Przerabianie działów",
+      waga: 0.3,
+      opis:"Dział po dziale, w kolejności od najsłabszego do najmocniejszego. Każdy dział zamykasz tak samo: teoria, zadania typowe, pięć zadań maturalnych z tego działu." },
+    { nazwa:"Technika zadań maturalnych",
+      waga: braki.some(b => /techniki zada/i.test(b)) ? 0.3 : 0.22,
+      opis:"Zadania z arkuszy pogrupowane tematycznie. Chodzi o rozpoznawanie typu zadania i schematu rozwiązania — na maturze nie ma czasu na wymyślanie od zera." },
+    { nazwa:"Arkusze na czas",
+      waga: 0.24,
+      opis:"Co najmniej jeden cały arkusz w tygodniu, z zegarem. Po każdym analiza błędów i powrót tylko do tego, co wyszło słabo." }
+  ];
+  if (luka > 30) { etapy[0].waga += 0.06; etapy[1].waga += 0.06; }
+  const sumaWag = etapy.reduce((s, e) => s + e.waga, 0);
+  let kursor = 1;
+  etapy.forEach((e, i) => {
+    let ile = Math.max(1, Math.round(tygodnie * e.waga / sumaWag));
+    if (i === etapy.length - 1) ile = Math.max(1, tygodnie - kursor + 1);
+    e.od = kursor; e.do = Math.min(tygodnie, kursor + ile - 1);
+    kursor = e.do + 1;
+  });
+  const widoczne = etapy.filter(e => e.od <= tygodnie);
+
+  const zasady = ZASADY.filter(z => {
+    const v = val(a, z.pole);
+    return v && z.test.test(v);
+  }).map(z => z.tekst);
+  if (/raz w tygodniu/i.test(val(a, "korepetycje"))) zasady.push("Korepetycje raz w tygodniu wchodzą w plan jako jeden z bloków — nie dokładamy do nich osobnej sesji tego samego dnia.");
+  if (/planuj[ęe] zacz/i.test(val(a, "korepetycje"))) zasady.push("Jeśli ruszą korepetycje, zastąpią jeden z bloków w tygodniu, a nie dojdą do nich.");
+
+  const mat = MATERIALY.find(m => m.test.test(val(a, "budzet")));
+
+  return {
+    imie: a.imie || val(a, "imie") || "Kursant",
+    kontakt: val(a, "kontakt"),
+    przedmioty: p, matura, start, koniec, tygodnie, powtorki,
+    godz, sesjaMin, ileSesji, tydzien, dniNauki, zajete, podwojne, etapy: widoczne,
+    cel: val(a, "cel_procent"), teraz: val(a, "stan_teraz"),
+    pora: poraTekst(val(a, "pora")),
+    materialy: mat ? mat.wiersze : MATERIALY[0].wiersze,
+    budzet: val(a, "budzet"),
+    zasady, kontrola: val(a, "kontrola"), wspolpraca: val(a, "wspolpraca"),
+    uwagi: val(a, "uwagi").trim(), termin: val(a, "termin_matury")
+  };
+}
+
+/* ---------- rysowanie ---------- */
+function el(tag, cls, txt){ const n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; }
+
+function rysuj(pl){
+  const box = $("plan");
+  box.innerHTML = "";
+
+  const head = el("div", "plan-head");
+  head.appendChild(el("h2", null, "Plan nauki — " + pl.imie));
+  head.appendChild(el("p", "pod", "Od " + dataTekst(pl.start) + " do " + dataTekst(pl.koniec) +
+    ", czyli " + pl.tygodnie + " " + odmiana(pl.tygodnie, "tydzień", "tygodnie", "tygodni") +
+    ". Matura: " + dataTekst(pl.matura) + "."));
+  const chipy = el("div", "chipy");
+  pl.przedmioty.forEach(p => chipy.appendChild(el("span", "chip", p.nazwa + (p.poziom ? " · " + p.poziom : ""))));
+  if (pl.cel) chipy.appendChild(el("span", "chip gold", "cel " + pl.cel));
+  if (pl.teraz) chipy.appendChild(el("span", "chip plain", "teraz " + pl.teraz));
+  head.appendChild(chipy);
+  box.appendChild(head);
+
+  const kafelki = el("dl", "kafelki");
+  const kafel = (etykieta, wartosc, dopisek) => {
+    const k = el("div", "kafel");
+    k.appendChild(el("dt", null, etykieta));
+    const dd = el("dd", null, wartosc);
+    if (dopisek) { const s = el("small", null, dopisek); dd.appendChild(s); }
+    k.appendChild(dd);
+    kafelki.appendChild(k);
+  };
+  kafel("Tygodni nauki", String(pl.tygodnie));
+  kafel("Sesji w tygodniu", String(pl.ileSesji));
+  kafel("Długość bloku", String(pl.sesjaMin), "min");
+  kafel("Tygodniowo", (Math.round(pl.ileSesji * pl.sesjaMin / 6) / 10).toLocaleString("pl-PL"), "h");
+  kafel("Łącznie", String(Math.round(pl.tygodnie * pl.ileSesji * pl.sesjaMin / 60)), "h");
+  box.appendChild(kafelki);
+
+  // tydzień
+  const bt = el("div", "blok");
+  bt.appendChild(el("h3", null, "Tydzień w praktyce"));
+  bt.appendChild(el("p", null, "Bloki po " + pl.sesjaMin + " minut, najlepiej " + pl.pora +
+    ". Dni z zajęciami na sztywno zostają puste — plan ma się mieścić w Twoim tygodniu, nie odwrotnie." +
+    (pl.podwojne ? " W dniu z dwoma blokami zrób między nimi co najmniej pół godziny przerwy." : "")));
+  const grid = el("div", "tydzien");
+  pl.tydzien.forEach((d, i) => {
+    const kol = el("div", "dzien" + (d.sesje.length ? " nauka" : d.zajety ? " zajety" : ""));
+    kol.appendChild(el("div", "dzien-nazwa", DNI_SKROT[i]));
+    if (d.sesje.length) {
+      d.sesje.forEach(s => {
+        const w = el("div", "sesja", s);
+        w.appendChild(el("small", null, pl.sesjaMin + " min"));
+        kol.appendChild(w);
+      });
+    } else {
+      kol.appendChild(el("div", "dzien-pusty", d.zajety ? "stałe zajęcia" : "wolne"));
+    }
+    grid.appendChild(kol);
+  });
+  bt.appendChild(grid);
+  box.appendChild(bt);
+
+  // etapy
+  const be = el("div", "blok");
+  be.appendChild(el("h3", null, "Etapy"));
+  pl.etapy.forEach(e => {
+    const row = el("div", "etap");
+    const czas = el("div", "etap-czas");
+    czas.appendChild(el("b", null, "tydzień"));
+    czas.appendChild(document.createTextNode(e.od === e.do ? String(e.od) : e.od + "–" + e.do));
+    row.appendChild(czas);
+    const tresc = el("div");
+    tresc.appendChild(el("h4", null, e.nazwa));
+    tresc.appendChild(el("p", null, e.opis));
+    row.appendChild(tresc);
+    be.appendChild(row);
+  });
+  if (pl.powtorki > 0) {
+    const row = el("div", "etap");
+    const czas = el("div", "etap-czas");
+    czas.appendChild(el("b", null, "po planie"));
+    czas.appendChild(document.createTextNode(pl.powtorki + " tyg."));
+    row.appendChild(czas);
+    const tresc = el("div");
+    tresc.appendChild(el("h4", null, "Powtórki do matury"));
+    tresc.appendChild(el("p", null, "Materiał jest przerobiony " + pl.powtorki + " " +
+      odmiana(pl.powtorki, "tydzień", "tygodnie", "tygodni") + " przed maturą. Ten czas to już tylko powtarzanie i arkusze — żadnych nowych tematów."));
+    row.appendChild(tresc);
+    be.appendChild(row);
+  }
+  box.appendChild(be);
+
+  // materiały
+  const bm = el("div", "blok");
+  bm.appendChild(el("h3", null, "Materiały" + (pl.budzet ? " — budżet " + pl.budzet : "")));
+  const tab = el("table");
+  const thead = el("thead");
+  const trh = el("tr");
+  ["Co", "Po co"].forEach(t => trh.appendChild(el("th", null, t)));
+  thead.appendChild(trh); tab.appendChild(thead);
+  const tbody = el("tbody");
+  pl.materialy.forEach(([co, poco]) => {
+    const tr = el("tr");
+    tr.appendChild(el("td", null, co));
+    tr.appendChild(el("td", null, poco));
+    tbody.appendChild(tr);
+  });
+  tab.appendChild(tbody);
+  bm.appendChild(tab);
+  box.appendChild(bm);
+
+  // zasady
+  if (pl.zasady.length) {
+    const bz = el("div", "blok");
+    bz.appendChild(el("h3", null, "Zasady na ten plan"));
+    const ul = el("ul", "zasady");
+    pl.zasady.forEach(z => ul.appendChild(el("li", null, z)));
+    bz.appendChild(ul);
+    box.appendChild(bz);
+  }
+
+  // kontrola
+  const bk = el("div", "blok");
+  bk.appendChild(el("h3", null, "Jak pilnujemy postępów"));
+  const czesci = [];
+  if (/tygodniowy/i.test(pl.kontrola)) czesci.push("Co tydzień krótkie podsumowanie: co weszło, co nie weszło, co przesuwamy.");
+  else if (/miesi[ęe]czny/i.test(pl.kontrola)) czesci.push("Raz w miesiącu przegląd: czy tempo się trzyma i czy etapy nie uciekają.");
+  else czesci.push("Plan dostajesz w całości; kontakt wtedy, gdy coś przestaje działać.");
+  if (/konsultacje/i.test(pl.wspolpraca)) czesci.push("Raz w tygodniu konsultacje na pytania z bieżącego materiału.");
+  if (/jeden na jeden/i.test(pl.wspolpraca)) czesci.push("Regularne zajęcia jeden na jeden wchodzą w miejsce jednego z bloków.");
+  if (/grupie/i.test(pl.wspolpraca)) czesci.push("Praca w małej grupie — wspólne omawianie arkuszy.");
+  czesci.push("Po pierwszych dwóch tygodniach weryfikujemy plan. Jeśli " + pl.ileSesji + " bloków w tygodniu okaże się za dużo, tniemy — lepszy mniejszy plan, który działa.");
+  bk.appendChild(el("p", null, czesci.join(" ")));
+  if (pl.uwagi) {
+    bk.appendChild(el("h3", null, "Co jeszcze wiemy"));
+    bk.appendChild(el("p", null, pl.uwagi));
+  }
+  box.appendChild(bk);
+
+  const st = el("div", "stopka-plan");
+  st.textContent = "Szkic wygenerowany z ankiety startowej" + (pl.kontakt ? " · kontakt: " + pl.kontakt : "") +
+    " · " + new Date().toLocaleDateString("pl-PL");
+  box.appendChild(st);
+}
+
+function odmiana(n, f1, f2, f5){
+  if (n === 1) return f1;
+  const d = n % 10, s = n % 100;
+  return (d >= 2 && d <= 4 && !(s >= 12 && s <= 14)) ? f2 : f5;
+}
+
+function pokaz(id){
+  const a = ankiety.find(x => x.id === id);
+  if (!a) { $("plan").innerHTML = '<p class="blank">Wybierz kursanta z listy albo wczytaj plik z ankietą — plan ułoży się sam.</p>'; return; }
+  try { rysuj(zbuduj(a)); say(""); }
+  catch (e) { say("Nie udało się ułożyć planu z tej ankiety: " + e.message, true); }
+}
+
+/* ---------- obsługa ---------- */
+$("kursant").addEventListener("change", e => pokaz(e.target.value));
+$("btn-odswiez").addEventListener("click", pobierz);
+$("btn-polacz").addEventListener("click", () => {
+  const { url, klucz } = ustawienia();
+  $("cfg-url").value = url; $("cfg-key").value = klucz;
+  $("ustawienia").hidden = !$("ustawienia").hidden;
+});
+$("cfg-zapisz").addEventListener("click", async () => {
+  const url = $("cfg-url").value.trim(), klucz = $("cfg-key").value.trim();
+  if (!/^https:\/\/script\.google\.com\/.+\/exec$/.test(url)) {
+    say("Adres powinien zaczynać się od https://script.google.com/ i kończyć na /exec.", true); return;
+  }
+  try { localStorage.setItem(KEY_URL, url); localStorage.setItem(KEY_KLUCZ, klucz); } catch (e) {}
+  $("ustawienia").hidden = true;
+  await pobierz();
+});
+
+$("btn-druk").addEventListener("click", () => window.print());
+$("btn-edycja").addEventListener("click", e => {
+  const wlaczone = $("plan").classList.toggle("edycja");
+  $("plan").setAttribute("contenteditable", wlaczone ? "true" : "false");
+  e.target.classList.toggle("wlaczony", wlaczone);
+  e.target.textContent = wlaczone ? "Koniec edycji" : "Tryb edycji";
+  say(wlaczone ? "Możesz poprawiać tekst planu bezpośrednio na stronie. Zmiany znikną po przeładowaniu — wydrukuj albo skopiuj." : "");
+});
+$("btn-kopiuj").addEventListener("click", async () => {
+  const tekst = $("plan").innerText.replace(/\n{3,}/g, "\n\n").trim();
+  if (!tekst) { say("Najpierw wybierz kursanta.", true); return; }
+  try { await navigator.clipboard.writeText(tekst); say("Plan skopiowany do schowka."); }
+  catch (e) { say("Przeglądarka nie dała dostępu do schowka — zaznacz tekst i skopiuj ręcznie.", true); }
+});
+
+const drop = $("drop");
+drop.addEventListener("click", () => $("picker").click());
+drop.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("picker").click(); } });
+$("picker").addEventListener("change", () => wczytajPliki([...$("picker").files]));
+["dragenter", "dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave", "drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => wczytajPliki([...(e.dataTransfer?.files || [])]));
+
+async function wczytajPliki(files){
+  const jsony = files.filter(f => /\.json$/i.test(f.name) || f.type === "application/json");
+  if (!jsony.length) { say("To nie są pliki z ankiety — szukaj plików .json.", true); return; }
+  let ok = 0;
+  for (const f of jsony) {
+    try {
+      const d = JSON.parse(await f.text());
+      if (!d || !d.dane) continue;
+      d.plik = f.name;
+      scal([d]); ok++;
+    } catch (e) { /* uszkodzony plik pomijamy */ }
+  }
+  if (!ok) { say("Nie rozpoznaliśmy formatu tych plików.", true); return; }
+  const ostatni = ankiety[0];
+  $("kursant").value = ostatni.id;
+  pokaz(ostatni.id);
+  say(ok + " " + odmiana(ok, "ankieta wczytana", "ankiety wczytane", "ankiet wczytanych") + " z pliku.");
+}
+
+if (ustawienia().url) pobierz();
+else $("ustawienia").hidden = false;
+</script>
+</body>
+</html>

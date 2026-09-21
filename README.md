@@ -7,6 +7,7 @@ w którym odpowiedzi pojawiają się same — jako osobna zakładka dla każdej 
 |---|---|---|
 | `ankieta.html` | 30 pytań o cel, czas, budżet i sposób uczenia się | kursant |
 | `panel.html` | zakładki z odpowiedziami, na żywo z arkusza, eksport CSV | Ty |
+| `plan.html` | układa szkic tygodniowego planu z jednej ankiety, do druku | Ty |
 | `serwer.gs` | skrypt Google, który przyjmuje ankiety i wpisuje je do arkusza | wklejasz raz przy konfiguracji |
 
 ## Automatyczny obieg — konfiguracja raz, ok. 10 minut
@@ -182,6 +183,51 @@ Wszystkie pytania siedzą w tablicy `SURVEY` w `ankieta.html`. Jeden wpis:
 Nowe pytanie samo dopisze sobie kolumnę w arkuszu. Jeśli chcesz, żeby
 trafiło do właściwej grupy w panelu, dopisz jego `id` do tablicy `GRUPY`
 w `panel.html` — inaczej wyląduje w sekcji „Pozostałe pytania”.
+
+## Szkic planu z ankiety
+
+`plan.html` bierze odpowiedzi jednego kursanta i składa z nich gotowy
+szkic planu. Łączy się z tym samym arkuszem co panel — jeśli panel masz
+już podłączony w tej przeglądarce, plan zadziała od razu; w innym razie
+wklejasz adres `/exec` i klucz tak samo jak tam. Bez połączenia można
+przeciągnąć plik `.json` odesłany mailem.
+
+Wybierasz kursanta z listy i dostajesz:
+
+- **nagłówek** — przedmioty z poziomami, cel procentowy, wynik obecny,
+  zakres dat i data matury policzona z terminu z ankiety,
+- **liczby** — ile tygodni nauki, ile bloków w tygodniu, jak długi blok,
+  ile godzin tygodniowo i łącznie,
+- **tydzień w praktyce** — siatka siedmiu dni; dni ze stałymi zajęciami
+  zostają puste, reszta dostaje bloki z przypisanym przedmiotem,
+- **etapy** — podział tygodni na fundamenty, przerabianie działów,
+  technikę zadań i arkusze na czas, plus okres powtórek do matury,
+- **materiały** dobrane do zadeklarowanego budżetu,
+- **zasady** wyciągnięte z odpowiedzi o styl nauki, przeszkody
+  i nastawienie,
+- **sposób pilnowania postępów** z odpowiedzi o kontrolę i współpracę.
+
+Co z czego wynika:
+
+| Pole w planie | Z czego liczone |
+|---|---|
+| liczba tygodni | `start` i `do_kiedy` względem daty matury z `termin_matury` |
+| długość bloku | `skupienie`, korygowane przez `tryb` |
+| liczba bloków | `czas_tyg` podzielone przez długość bloku |
+| dni nauki | `dni` minus `dni_zajete` |
+| podział na przedmioty | `przedmiot` z poziomami — rozszerzenie waży więcej niż podstawa |
+| długość etapów | `braki` oraz różnica między `cel_procent` a `stan_teraz` |
+
+**Tryb edycji** odblokowuje tekst planu do poprawek bezpośrednio na
+stronie — zmiany są tymczasowe, więc popraw i od razu drukuj albo
+kopiuj. **Drukuj / PDF** chowa całe sterowanie i wypuszcza sam plan
+(u nas wyszły trzy strony A4).
+
+To szkic, nie gotowiec: algorytm nie wie, ile realnie zajmie konkretny
+dział ani co się wydarzy w marcu. Ma zdjąć z Ciebie pierwsze czterdzieści
+minut roboty, a nie zastąpić Twojej oceny.
+
+Trzymaj ten plik u siebie razem z panelem — ma w sobie klucz odczytu.
 
 ## Kolory
 
