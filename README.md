@@ -8,6 +8,7 @@ w którym odpowiedzi pojawiają się same — jako osobna zakładka dla każdej 
 | `ankieta.html` | 30 pytań o cel, czas, budżet i sposób uczenia się | kursant |
 | `panel.html` | zakładki z odpowiedziami, na żywo z arkusza, eksport CSV | Ty |
 | `plan.html` | układa szkic tygodniowego planu z jednej ankiety, do druku | Ty |
+| `matma.html` | rozwiązuje zadania z matmy krok po kroku na koncie Claude; działa otwarta w claude.ai | uczeń / Ty |
 | `serwer.gs` | skrypt Google, który przyjmuje ankiety i wpisuje je do arkusza | wklejasz raz przy konfiguracji |
 
 ## Automatyczny obieg — konfiguracja raz, ok. 10 minut

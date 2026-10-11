@@ -1,0 +1,704 @@
+<!--strip-->
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--/strip-->
+<title>Matma krok po kroku</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+/* Jedna kolumna jak zeszyt: treść zadania na kratce, pod nią rozwiązanie i rozmowa o nim. */
+:root{
+  --paper:#F7F3EC;
+  --surface:#FFFFFF;
+  --ink:#14191B;
+  --ink-2:#575F58;
+  --ink-3:#8A8B80;
+  --line:#E4DDD1;
+  --grid:#E3EEF0;
+  --accent:#0B7A76;
+  --accent-vivid:#0ABAB5;
+  --accent-ink:#FFFFFF;
+  --accent-soft:#DDF3F1;
+  --gold:#A7761F;
+  --gold-soft:#F5EEDF;
+  --warn:#9B3E2E;
+  --warn-soft:#F7E6E1;
+  --shadow:0 1px 2px rgba(20,25,27,.05), 0 8px 24px -16px rgba(20,25,27,.28);
+  --r:8px;
+  --sans:"IBM Plex Sans", ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --serif:"Newsreader", ui-serif, Georgia, "Times New Roman", serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#12110F; --surface:#1B1A17; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
+    --line:#2C2A25; --grid:#1F2A29; --accent:#5FD6CF; --accent-vivid:#0ABAB5; --accent-ink:#04211F; --accent-soft:#10312F;
+    --gold:#D8AE63; --gold-soft:#241E12; --warn:#E08A77; --warn-soft:#2A1A16;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12110F; --surface:#1B1A17; --ink:#E7EDEA; --ink-2:#AAB7B3; --ink-3:#7E8C88;
+  --line:#2C2A25; --grid:#1F2A29; --accent:#5FD6CF; --accent-vivid:#0ABAB5; --accent-ink:#04211F; --accent-soft:#10312F;
+  --gold:#D8AE63; --gold-soft:#241E12; --warn:#E08A77; --warn-soft:#2A1A16;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+[hidden]{display:none !important}
+img{max-width:100%}
+::selection{background:var(--accent-soft);color:var(--ink)}
+
+.wrap{max-width:760px;margin:0 auto;padding-left:20px;padding-right:20px;padding-block:40px 80px;display:flex;flex-direction:column;gap:28px}
+@media (max-width:480px){ .wrap{padding-left:16px;padding-right:16px;padding-block:28px 64px} }
+
+/* ---------- nagłówek ---------- */
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,6vw,46px);line-height:1.08;letter-spacing:-.015em;margin:0 0 12px;text-wrap:balance}
+h1 em{font-style:italic;color:var(--accent)}
+.lede{margin:0;color:var(--ink-2);font-size:16.5px;max-width:58ch}
+
+/* ---------- komunikat o dostępności ---------- */
+.notice{border:1px solid var(--line);background:var(--gold-soft);color:var(--ink);border-radius:var(--r);padding:12px 14px;font-size:14.5px}
+.notice.err{background:var(--warn-soft);border-color:color-mix(in srgb, var(--warn) 35%, var(--line))}
+
+/* ---------- zeszyt z zadaniem ---------- */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.label{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.link{background:none;border:0;padding:4px 2px;color:var(--accent);font:500 13.5px var(--sans);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.link:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+textarea{
+  display:block;width:100%;border:0;resize:vertical;min-height:150px;
+  padding:14px 16px;font:16px/28px var(--sans);color:var(--ink);
+  background-color:var(--surface);
+  background-image:linear-gradient(var(--grid) 1px, transparent 1px),linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:14px 14px;background-position:-1px 13px;
+}
+textarea:focus{outline:none}
+.sheet:focus-within{border-color:var(--accent)}
+.photo{display:flex;align-items:center;gap:12px;padding:10px 14px;border-top:1px solid var(--line)}
+.photo img{width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--line);flex:none}
+.photo .meta{min-width:0;font-size:14px;color:var(--ink-2);flex:1;overflow-wrap:anywhere}
+.drop .sheet{outline:2px dashed var(--accent);outline-offset:4px}
+
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding:12px 14px;border-top:1px solid var(--line);background:color-mix(in srgb, var(--paper) 55%, var(--surface))}
+.controls .grow{flex:1 1 auto}
+
+button{
+  font:500 14.5px var(--sans);color:var(--ink);background:var(--surface);
+  border:1px solid var(--line);border-radius:6px;padding:9px 14px;cursor:pointer;
+  transition:border-color .15s, background-color .15s;
+}
+button:hover{border-color:var(--ink-3)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button:disabled{opacity:.5;cursor:default}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button.primary:hover{filter:brightness(1.08)}
+.file-btn{position:relative;overflow:hidden}
+.file-btn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.file-btn:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.seg label{position:relative;padding:8px 12px;font-size:14px;cursor:pointer;color:var(--ink-2);white-space:nowrap}
+.seg label + label{border-left:1px solid var(--line)}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg input:checked + span{color:var(--accent);font-weight:600}
+.seg label:has(input:checked){background:var(--accent-soft)}
+.seg label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- rozmowa ---------- */
+.thread{display:flex;flex-direction:column;gap:18px}
+.turn-user{align-self:flex-end;max-width:85%;background:var(--accent-soft);border-radius:var(--r);padding:10px 14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.turn-user .tag{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.answer{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:6px 22px 18px;min-width:0}
+@media (max-width:480px){ .answer{padding:4px 14px 14px} }
+.answer-meta{display:flex;justify-content:space-between;gap:12px;align-items:center;padding-top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.answer.example .answer-meta{color:var(--gold)}
+.thinking{display:flex;align-items:center;gap:10px;color:var(--ink-2);padding-block:14px 4px;font-size:15px}
+.dots{display:inline-flex;gap:4px}
+.dots i{width:6px;height:6px;border-radius:99px;background:var(--accent);opacity:.3;animation:blink 1.2s infinite}
+.dots i:nth-child(2){animation-delay:.2s}
+.dots i:nth-child(3){animation-delay:.4s}
+@keyframes blink{50%{opacity:1}}
+
+/* treść odpowiedzi */
+.md{overflow-wrap:break-word}
+.md h1,.md h2,.md h3,.md h4{font-family:var(--serif);font-weight:500;line-height:1.2;margin:22px 0 8px;text-wrap:balance}
+.md h3{font-size:22px;color:var(--accent)}
+.md h2{font-size:24px}
+.md h4{font-size:18px}
+.md p{margin:8px 0}
+.md ol,.md ul{padding-left:22px;margin:8px 0}
+.md li{margin:6px 0}
+.md li::marker{color:var(--accent);font-weight:600}
+.md strong{font-weight:600}
+.md hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+.md blockquote{margin:10px 0;padding:6px 14px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 6px 6px 0}
+.md code{font-family:var(--mono);font-size:.9em;background:var(--paper);padding:1px 5px;border-radius:4px}
+.md pre{overflow-x:auto;background:var(--paper);padding:10px 12px;border-radius:6px}
+.md table{border-collapse:collapse;margin:10px 0}
+.md .tbl{overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:5px 10px;text-align:left}
+.md .math-d{display:block;overflow-x:auto;overflow-y:hidden;margin:10px 0;padding-block:2px;text-align:center}
+.md .math-i{white-space:nowrap}
+.md mjx-container{color:var(--ink)}
+.md .math-raw{font-family:var(--mono);font-size:.92em;color:var(--ink-2)}
+
+.followup{display:flex;flex-direction:column;gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font-size:14px;padding:7px 12px;border-radius:99px}
+.ask{display:flex;gap:10px;align-items:flex-end}
+.ask textarea{min-height:64px;height:64px;border:1px solid var(--line);border-radius:var(--r);background-image:none;padding:10px 12px;line-height:1.5;flex:1;min-width:0}
+.ask textarea:focus{border-color:var(--accent)}
+.bar{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+.small{font-size:13.5px;color:var(--ink-3)}
+.err-line{color:var(--warn);font-size:14.5px;margin:8px 0 0}
+
+footer{border-top:1px solid var(--line);padding-top:16px;font-size:13.5px;color:var(--ink-3)}
+
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important;animation:none !important}
+}
+</style>
+<!--strip-->
+</head>
+<body>
+<!--/strip-->
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Matematyka · poziom rozszerzony</p>
+    <h1>Matma <em>krok po kroku</em></h1>
+    <p class="lede">Wpisz zadanie albo wrzuć jego zdjęcie. Dostaniesz rozwiązanie z wyjaśnieniem, o co w nim chodzi i dlaczego robimy każdy krok. Potem możesz dopytać o to, czego nie rozumiesz.</p>
+  </header>
+
+  <div class="notice" id="unavailable" hidden>Ta strona korzysta z Twojego konta Claude, więc działa tylko otwarta w claude.ai (w przeglądarce albo w aplikacji) po zalogowaniu.</div>
+
+  <form id="task-form" novalidate>
+    <div class="sheet">
+      <div class="sheet-head">
+        <label class="label" for="task">Treść zadania</label>
+        <button class="link" type="button" id="btn-example">Wstaw przykładowe zadanie</button>
+      </div>
+      <textarea id="task" placeholder="Np. Wyznacz wszystkie wartości parametru m, dla których…&#10;&#10;Wzory możesz pisać zwyczajnie: x^2, sqrt(3), log_2(x)."></textarea>
+      <div class="photo" id="photo" hidden>
+        <img id="photo-img" alt="Zdjęcie zadania">
+        <div class="meta"><span id="photo-name"></span><br><span class="small">Zdjęcie zostanie wysłane razem z treścią.</span></div>
+        <button type="button" id="btn-photo-remove">Usuń</button>
+      </div>
+      <div class="controls">
+        <span class="file-btn" id="photo-pick" hidden>
+          <button type="button" tabindex="-1">Dodaj zdjęcie</button>
+          <input type="file" id="photo-input" accept="image/jpeg,image/png,image/webp,image/gif" aria-label="Dodaj zdjęcie zadania">
+        </span>
+        <div class="seg" role="radiogroup" aria-label="Rodzaj pomocy">
+          <label><input type="radio" name="mode" id="mode-full" value="full" checked><span>Pełne rozwiązanie</span></label>
+          <label><input type="radio" name="mode" id="mode-hint" value="hint"><span>Tylko podpowiedź</span></label>
+        </div>
+        <span class="grow"></span>
+        <button class="primary" type="submit" id="btn-solve">Rozwiąż</button>
+      </div>
+    </div>
+  </form>
+
+  <section class="thread" id="thread" aria-live="polite"></section>
+
+  <section class="followup" id="followup" hidden>
+    <div class="chips" id="chips">
+      <button type="button" data-q="Nie rozumiem. Wyjaśnij to jeszcze raz prościej, jakbyś tłumaczył komuś, kto słabo pamięta ten dział. Użyj prostego przykładu.">Wyjaśnij prościej</button>
+      <button type="button" data-q="Pokaż teraz pełne rozwiązanie krok po kroku." id="chip-full" hidden>Pokaż pełne rozwiązanie</button>
+      <button type="button" data-q="Daj mi jedno podobne zadanie do samodzielnego przećwiczenia (bez rozwiązania). Odpowiedź końcową podaj na samym dole w jednej linii, żebym mógł się sprawdzić.">Daj podobne zadanie</button>
+      <button type="button" data-q="Jak to zadanie byłoby punktowane na maturze? Za które kroki są punkty i gdzie najłatwiej je stracić?">Jak to punktują?</button>
+    </div>
+    <form class="ask" id="ask-form" novalidate>
+      <label class="label" for="ask" hidden>Twoje pytanie</label>
+      <textarea id="ask" placeholder="Dopytaj albo wklej swoje rozwiązanie do sprawdzenia"></textarea>
+      <button class="primary" type="submit" id="btn-ask">Wyślij</button>
+    </form>
+    <div class="bar">
+      <button type="button" id="btn-new">Nowe zadanie</button>
+      <button type="button" id="btn-stop" hidden>Zatrzymaj</button>
+    </div>
+  </section>
+
+  <footer>
+    Odpowiedzi pisze Claude na Twoim koncie i wliczają się do limitu Twojego planu. Przy pierwszym użyciu claude.ai zapyta, czy pozwolić tej stronie korzystać z Claude. Claude może się pomylić, dlatego każde rozwiązanie kończy się sprawdzeniem wyniku. Przejrzyj je.
+  </footer>
+</div>
+
+<script>
+window.MathJax = {
+  tex: { packages: { "[+]": ["ams"] } },
+  svg: { fontCache: "local" },
+  startup: { typeset: false },
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" id="mathjax-script"></script>
+<script>
+(() => {
+"use strict";
+
+const RULES = `Jesteś cierpliwym, konkretnym nauczycielem matematyki. Przygotowujesz ucznia liceum do matury z matematyki na poziomie rozszerzonym (CKE, formuła 2023). Uczeń przysyła zadanie tekstem albo na zdjęciu.
+
+Zasady pisania:
+- Pisz po polsku, zwracaj się do ucznia na „ty”, prostym językiem.
+- Formatuj w Markdown. Matematykę zapisuj w LaTeX: w tekście $...$, wzory w osobnej linii $$...$$. Nie używaj \\( \\) ani \\[ \\]. Nie używaj bloków kodu.
+- Licz dokładnie: ułamki, pierwiastki, π. Zaokrąglaj tylko, gdy zadanie tego wymaga.
+- Nie pomijaj kroków, za które na maturze są punkty: dziedzina, założenia, wszystkie warunki dla parametru, odrzucenie rozwiązań spoza dziedziny, uzasadnienie.
+- Gdy używasz wzoru z tablic CKE („Wybrane wzory matematyczne”), napisz to.
+- Jeśli zdjęcie jest nieczytelne albo treść niepełna, napisz, jak ją odczytałeś i co zakładasz. Nie zmyślaj danych.
+
+Układ odpowiedzi na nowe zadanie (nagłówki ###):
+### Treść zadania
+Przepisz zadanie dokładnie (zwłaszcza gdy przyszło na zdjęciu).
+### O co chodzi
+Własnymi słowami: co mamy dane, czego szukamy, z jakiego to działu i jaki jest główny pomysł na zadanie.
+### Plan
+2–4 krótkie punkty: jaką drogą idziemy i dlaczego właśnie taką.
+### Rozwiązanie krok po kroku
+Numerowane kroki. Przy każdym: co robimy i dlaczego. Przekształcenia pokazuj po kolei.
+### Sprawdzenie
+Zweryfikuj wynik (podstaw, oszacuj, sprawdź warunki).
+### Odpowiedź
+Jedno zdanie, tak jak w arkuszu maturalnym.
+### Na co uważać
+1–3 typowe błędy w takich zadaniach.
+
+Gdy uczeń dopytuje o coś w trakcie rozmowy, odpowiadaj krótko i wprost na pytanie, bez przepisywania całego rozwiązania od nowa. Gdy wkleja własne rozwiązanie, wskaż konkretnie, gdzie jest błąd albo potwierdź, że jest dobrze.`;
+
+const HINT = `TRYB PODPOWIEDZI: nie rozwiązuj zadania i nie podawaj wyniku. Napisz tylko sekcje „Treść zadania” i „O co chodzi”, a potem sekcję „### Podpowiedź” z jedną konkretną wskazówką, od czego zacząć. Na końcu zapytaj, czy pokazać pełne rozwiązanie.`;
+
+const EXAMPLE_TASK = "Wyznacz wszystkie wartości parametru m, dla których równanie x^2 + (m − 2)x + m + 1 = 0 ma dwa różne rozwiązania dodatnie.";
+
+const EXAMPLE_ANSWER = `### O co chodzi
+Mamy równanie kwadratowe, w którym współczynniki zależą od $m$. Szukamy takich $m$, żeby równanie miało **dwa różne** pierwiastki i żeby **oba były dodatnie**. To klasyczne zadanie z parametrem: każdy warunek z treści zamieniamy na nierówność, a na końcu bierzemy część wspólną.
+
+### Plan
+1. Dwa różne pierwiastki, czyli $\\Delta > 0$.
+2. Oba dodatnie, czyli ich suma i iloczyn są dodatnie (wzory Viète'a).
+3. Część wspólna wszystkich warunków.
+
+### Rozwiązanie krok po kroku
+1. **Wyróżnik.** Tu $a = 1$, $b = m - 2$, $c = m + 1$.
+$$\\Delta = (m-2)^2 - 4(m+1) = m^2 - 8m = m(m-8)$$
+$\\Delta > 0 \\iff m \\in (-\\infty, 0) \\cup (8, \\infty)$.
+2. **Suma pierwiastków.** $x_1 + x_2 = -\\frac{b}{a} = 2 - m > 0 \\iff m < 2$.
+3. **Iloczyn pierwiastków.** $x_1 x_2 = \\frac{c}{a} = m + 1 > 0 \\iff m > -1$.
+4. **Część wspólna.** $m \\in (-1, 0)$.
+
+### Sprawdzenie
+Dla $m = -\\tfrac12$: $x^2 - \\tfrac52 x + \\tfrac12 = 0$, $\\Delta = \\tfrac{17}{4} > 0$, suma $\\tfrac52 > 0$, iloczyn $\\tfrac12 > 0$. Zgadza się.
+
+### Odpowiedź
+Równanie ma dwa różne rozwiązania dodatnie dla $m \\in (-1, 0)$.
+
+### Na co uważać
+- Sam warunek $x_1 x_2 > 0$ mówi tylko, że pierwiastki mają ten sam znak. Bez sumy nie wiesz, czy oba są dodatnie.
+- Wzorów Viète'a używasz dopiero, gdy wiesz, że pierwiastki istnieją, czyli razem z $\\Delta > 0$.`;
+
+const $ = id => document.getElementById(id);
+const els = {
+  form: $("task-form"), task: $("task"), solve: $("btn-solve"), example: $("btn-example"),
+  photo: $("photo"), photoImg: $("photo-img"), photoName: $("photo-name"),
+  photoPick: $("photo-pick"), photoInput: $("photo-input"), photoRemove: $("btn-photo-remove"),
+  thread: $("thread"), followup: $("followup"), chips: $("chips"), chipFull: $("chip-full"),
+  askForm: $("ask-form"), ask: $("ask"), askBtn: $("btn-ask"),
+  newBtn: $("btn-new"), stop: $("btn-stop"), unavailable: $("unavailable"),
+};
+
+let sample = null;        // undefined = still waiting, null = unavailable
+let sampleReady = false;
+let imageLimits = null;
+let photoBlob = null;
+let photoUrl = null;
+let turns = [];           // [{role, content}] bez instrukcji
+let busy = false;
+let ctl = null;
+
+/* ---------- renderowanie Markdown + LaTeX ---------- */
+
+const svgCache = new Map();
+let mathReady = false;
+if (window.MathJax && window.MathJax.startup && window.MathJax.startup.promise) {
+  window.MathJax.startup.promise.then(onMathReady).catch(() => {});
+} else {
+  document.getElementById("mathjax-script")?.addEventListener("load", () => {
+    window.MathJax?.startup?.promise?.then(onMathReady);
+  });
+}
+
+function onMathReady() {
+  try { document.head.appendChild(window.MathJax.svgStylesheet()); } catch (_) {}
+  mathReady = true;
+  rerenderAll();
+}
+
+const MATH_RE = /\$\$([\s\S]+?)\$\$|\\\[([\s\S]+?)\\\]|\\\(([\s\S]+?)\\\)|\$((?:\\\$|[^$\n])+?)\$/g;
+
+function mathNode(tex, display) {
+  const key = (display ? "D" : "I") + tex;
+  if (mathReady) {
+    let node = svgCache.get(key);
+    if (!node) {
+      try {
+        node = window.MathJax.tex2svg(tex, { display });
+        svgCache.set(key, node);
+      } catch (_) { node = null; }
+    }
+    if (node) return node.cloneNode(true);
+  }
+  const raw = document.createElement("span");
+  raw.className = "math-raw";
+  raw.textContent = display ? tex : "$" + tex + "$";
+  return raw;
+}
+
+function renderMarkdown(el, text) {
+  el.dataset.src = text;
+  const maths = [];
+  const src = text.replace(MATH_RE, (m, d1, d2, i1, i2) => {
+    const display = d1 != null || d2 != null;
+    const tex = (d1 ?? d2 ?? i1 ?? i2).trim();
+    maths.push({ tex, display });
+    return (display ? "\n\nMATHD" : "MATHI") + (maths.length - 1) + "X" + (display ? "\n\n" : "");
+  });
+  let html;
+  if (window.marked && window.DOMPurify) {
+    html = DOMPurify.sanitize(marked.parse(src, { gfm: true, breaks: false }));
+  } else {
+    const d = document.createElement("div");
+    d.textContent = src;
+    html = d.innerHTML.replace(/\n/g, "<br>");
+  }
+  html = html
+    .replace(/<p>\s*MATHD(\d+)X\s*<\/p>/g, '<span class="math-d" data-m="$1"></span>')
+    .replace(/MATHD(\d+)X/g, '<span class="math-d" data-m="$1"></span>')
+    .replace(/MATHI(\d+)X/g, '<span class="math-i" data-m="$1"></span>')
+    .replace(/<table>/g, '<div class="tbl"><table>').replace(/<\/table>/g, "</table></div>");
+  el.innerHTML = html;
+  el.querySelectorAll("[data-m]").forEach(span => {
+    const m = maths[Number(span.dataset.m)];
+    if (m) span.appendChild(mathNode(m.tex, m.display));
+  });
+}
+
+function rerenderAll() {
+  document.querySelectorAll(".md[data-src]").forEach(el => renderMarkdown(el, el.dataset.src));
+}
+
+/* ---------- elementy rozmowy ---------- */
+
+function addUserTurn(text, tag, img) {
+  const div = document.createElement("div");
+  div.className = "turn-user";
+  if (tag) {
+    const t = document.createElement("span");
+    t.className = "tag";
+    t.textContent = tag;
+    div.appendChild(t);
+  }
+  div.appendChild(document.createTextNode(text));
+  if (img) {
+    const i = document.createElement("img");
+    i.src = img;
+    i.alt = "Zdjęcie zadania";
+    i.style.cssText = "display:block;margin-top:8px;max-height:220px;border-radius:6px";
+    div.appendChild(i);
+  }
+  els.thread.appendChild(div);
+  return div;
+}
+
+function addAnswer(label) {
+  const box = document.createElement("article");
+  box.className = "answer";
+  box.innerHTML = '<div class="answer-meta"><span class="who"></span><span class="tier"></span></div>'
+    + '<div class="thinking"><span class="dots"><i></i><i></i><i></i></span><span>Claude myśli nad zadaniem…</span></div>'
+    + '<div class="md"></div>';
+  box.querySelector(".who").textContent = label;
+  els.thread.appendChild(box);
+  return {
+    box,
+    md: box.querySelector(".md"),
+    thinking: box.querySelector(".thinking"),
+    tier: box.querySelector(".tier"),
+  };
+}
+
+function showExample() {
+  els.thread.innerHTML = "";
+  addUserTurn(EXAMPLE_TASK, "Przykład");
+  const a = addAnswer("Przykład · tak wygląda odpowiedź");
+  a.box.classList.add("example");
+  a.thinking.remove();
+  renderMarkdown(a.md, EXAMPLE_ANSWER);
+}
+
+/* ---------- zdjęcie ---------- */
+
+function setPhoto(file) {
+  if (!file) return;
+  if (!imageLimits) return;
+  if (!imageLimits.mediaTypes.includes(file.type)) {
+    flash("To zdjęcie ma nieobsługiwany format. Wyślij JPG, PNG, WebP albo GIF.");
+    return;
+  }
+  if (file.size > imageLimits.maxInputBytes) {
+    flash("Zdjęcie jest za duże. Zrób mniejsze albo przytnij je do samego zadania.");
+    return;
+  }
+  clearPhoto();
+  photoBlob = file;
+  photoUrl = URL.createObjectURL(file);
+  els.photoImg.src = photoUrl;
+  els.photoName.textContent = file.name || "Wklejone zdjęcie";
+  els.photo.hidden = false;
+}
+
+function clearPhoto() {
+  photoBlob = null;
+  photoUrl = null;
+  els.photo.hidden = true;
+  els.photoImg.removeAttribute("src");
+  els.photoInput.value = "";
+}
+
+function flash(msg) {
+  let p = document.getElementById("form-err");
+  if (!p) {
+    p = document.createElement("p");
+    p.id = "form-err";
+    p.className = "err-line";
+    els.form.appendChild(p);
+  }
+  p.textContent = msg;
+  p.hidden = !msg;
+}
+
+/* ---------- komunikaty błędów ---------- */
+
+function errorText(code) {
+  switch (code) {
+    case "not_granted": return "Strona nie ma zgody na korzystanie z Claude. Odśwież ją i przy pytaniu o zgodę wybierz „Zezwól”.";
+    case "sampling_disabled":
+    case "capability_disabled":
+    case "not_declared":
+    case "capability_removed": return "Claude nie jest dostępny dla tego konta w tym widoku.";
+    case "rate_limited": return "Wykorzystałeś na razie limit wiadomości w swoim planie albo wysłałeś kilka pytań naraz. Spróbuj ponownie za jakiś czas.";
+    case "session_expired": return "Sesja wygasła. Zaloguj się ponownie w claude.ai i odśwież stronę.";
+    case "image_rejected": return "Nie udało się odczytać zdjęcia. Wyślij inne zdjęcie (JPG lub PNG) albo przepisz treść.";
+    case "images_unavailable": return "W tym widoku nie da się wysłać zdjęcia. Przepisz treść zadania.";
+    case "refused": return "Claude nie odpowiedział na tę wiadomość. Sformułuj ją inaczej.";
+    case "empty_completion": return "Odpowiedź przyszła pusta. Spróbuj sformułować pytanie krócej.";
+    case "prompt_too_large": return "Rozmowa zrobiła się za długa. Kliknij „Nowe zadanie”.";
+    default: return "Połączenie się przerwało. Spróbuj wysłać jeszcze raz.";
+  }
+}
+
+/* ---------- wywołanie Claude ---------- */
+
+function setBusy(on) {
+  busy = on;
+  els.solve.disabled = on || !sample;
+  els.askBtn.disabled = on || !sample;
+  els.chips.querySelectorAll("button").forEach(b => { b.disabled = on || !sample; });
+  els.stop.hidden = !on;
+  els.followup.hidden = !on && turns.length === 0;
+}
+
+async function ask(userText, label, images) {
+  if (!sample || busy) return;
+  turns.push({ role: "user", content: userText });
+  const a = addAnswer(label);
+  els.followup.hidden = false;
+  ctl = new AbortController();
+  setBusy(true);
+  a.box.scrollIntoView({ behavior: "smooth", block: "start" });
+  const opts = {
+    signal: ctl.signal,
+    cache: false,
+    modelTier: "complex",
+    onText: ({ text }) => {
+      if (a.thinking.isConnected) a.thinking.remove();
+      renderMarkdown(a.md, text);
+    },
+  };
+  if (images) opts.images = images;
+  try {
+    const res = await sample([{ role: "user", content: RULES }, ...turns], opts);
+    a.thinking.remove();
+    renderMarkdown(a.md, res.text);
+    turns.push({ role: "assistant", content: res.text });
+    if (res.modelTierApplied && res.modelTierApplied !== "complex") {
+      a.tier.textContent = "model szybszy niż zwykle";
+    }
+    if (res.truncated) {
+      const p = document.createElement("p");
+      p.className = "err-line";
+      p.textContent = "Odpowiedź urwała się, bo była za długa. Napisz „kontynuuj”, żeby dostać resztę.";
+      a.box.appendChild(p);
+    }
+  } catch (e) {
+    a.thinking.remove();
+    const code = e && e.code;
+    if (code === "refused") a.md.innerHTML = "";
+    if (e && e.text && code !== "refused") {
+      renderMarkdown(a.md, e.text);
+      turns.push({ role: "assistant", content: e.text });
+    } else {
+      turns.pop();
+      if (code === "cancelled") a.box.remove();
+    }
+    if (code !== "cancelled") {
+      const p = document.createElement("p");
+      p.className = "err-line";
+      p.textContent = errorText(code);
+      a.box.appendChild(p);
+    }
+    if (code === "not_granted" || code === "sampling_disabled") {
+      sample = null;
+    }
+  } finally {
+    ctl = null;
+    setBusy(false);
+  }
+}
+
+els.form.addEventListener("submit", e => {
+  e.preventDefault();
+  const text = els.task.value.trim();
+  if (!text && !photoBlob) {
+    flash("Wpisz treść zadania albo dodaj jego zdjęcie.");
+    els.task.focus();
+    return;
+  }
+  flash("");
+  const hint = document.getElementById("mode-hint").checked;
+  turns = [];
+  els.thread.innerHTML = "";
+  let content = "ZADANIE:\n" + (text || "(treść jest na załączonym zdjęciu)");
+  if (photoBlob && text) content += "\n\nDo wiadomości załączam też zdjęcie zadania.";
+  if (hint) content += "\n\n" + HINT;
+  els.chipFull.hidden = !hint;
+  addUserTurn(text || "Zadanie ze zdjęcia", hint ? "Zadanie · podpowiedź" : "Zadanie", photoUrl);
+  const img = photoBlob;
+  photoBlob = null;
+  els.photo.hidden = true;
+  els.photoInput.value = "";
+  els.task.value = "";
+  saveDraft();
+  ask(content, hint ? "Podpowiedź" : "Rozwiązanie", img || undefined);
+});
+
+els.askForm.addEventListener("submit", e => {
+  e.preventDefault();
+  const q = els.ask.value.trim();
+  if (!q) { els.ask.focus(); return; }
+  els.ask.value = "";
+  addUserTurn(q);
+  ask(q, "Odpowiedź");
+});
+els.ask.addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+    e.preventDefault();
+    els.askForm.requestSubmit();
+  }
+});
+
+els.chips.addEventListener("click", e => {
+  const b = e.target.closest("button[data-q]");
+  if (!b || busy) return;
+  if (b === els.chipFull) els.chipFull.hidden = true;
+  addUserTurn(b.textContent);
+  ask(b.dataset.q, "Odpowiedź");
+});
+
+els.stop.addEventListener("click", () => ctl && ctl.abort());
+
+els.newBtn.addEventListener("click", () => {
+  if (ctl) ctl.abort();
+  turns = [];
+  els.followup.hidden = true;
+  showExample();
+  els.task.focus();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+els.example.addEventListener("click", () => {
+  els.task.value = EXAMPLE_TASK;
+  saveDraft();
+  els.task.focus();
+});
+
+/* zdjęcie: wybór, wklejenie, upuszczenie */
+els.photoInput.addEventListener("change", () => setPhoto(els.photoInput.files[0]));
+els.photoRemove.addEventListener("click", clearPhoto);
+document.addEventListener("paste", e => {
+  if (!imageLimits) return;
+  const item = [...(e.clipboardData?.items || [])].find(i => i.kind === "file" && i.type.startsWith("image/"));
+  if (item) { e.preventDefault(); setPhoto(item.getAsFile()); }
+});
+els.form.addEventListener("dragover", e => { if (imageLimits) { e.preventDefault(); els.form.classList.add("drop"); } });
+els.form.addEventListener("dragleave", () => els.form.classList.remove("drop"));
+els.form.addEventListener("drop", e => {
+  els.form.classList.remove("drop");
+  const f = e.dataTransfer?.files?.[0];
+  if (f && imageLimits) { e.preventDefault(); setPhoto(f); }
+});
+
+/* szkic zadania zostaje w przeglądarce */
+function saveDraft() {
+  try { localStorage.setItem("matma.szkic", els.task.value); } catch (_) {}
+}
+els.task.addEventListener("input", saveDraft);
+try {
+  const d = localStorage.getItem("matma.szkic");
+  if (d) els.task.value = d;
+} catch (_) {}
+
+/* ---------- start ---------- */
+
+showExample();
+setBusy(false);
+els.solve.disabled = true;
+
+(async () => {
+  const s = window.claude && typeof window.claude.use === "function"
+    ? await window.claude.use("sample").catch(() => null)
+    : null;
+  sample = s;
+  sampleReady = true;
+  if (!s) {
+    els.unavailable.hidden = false;
+    setBusy(false);
+    return;
+  }
+  setBusy(false);
+  try {
+    const lim = await s.limits();
+    if (lim && lim.images) {
+      imageLimits = lim.images;
+      els.photoPick.hidden = false;
+      els.photoInput.accept = imageLimits.mediaTypes.join(",");
+    }
+  } catch (_) {}
+})();
+})();
+</script>
+<!--strip-->
+</body>
+</html>
+<!--/strip-->
